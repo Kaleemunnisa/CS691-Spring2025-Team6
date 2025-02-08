@@ -76,33 +76,33 @@ By developing a smart travel app that provides real-time, location-based recomme
 
 ### Members
 
-<table style="max-width: 700px;  width: 700px; margin: 0 auto;">
+<table>
   <tr>
     <td style="text-align: center;">
-      <img src="./team_members/satya.JPG" width="240" alt="Satya Nandan Thota">
+      <img src="./team_members/satya.JPG" width="200" alt="Satya Nandan Thota">
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Ram.jpeg" width="200" height="150" alt="Sri Ramgopal Tandra"> 
+      <img src="./team_members/Ram.jpeg" width="200" alt="Sri Ramgopal Tandra"> 
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Vijay.jpeg" width="140" alt="Vijay Kumar Chelluboyana">
+      <img src="./team_members/Vijay.jpeg" width="200" alt="Vijay Kumar Chelluboyana">
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Bharath.jpeg" width="180" alt="Bharath Babu"> 
+      <img src="./team_members/Bharath.jpeg" width="200" alt="Bharath Babu"> 
     </td>
   </tr>
   <tr>
     <td style="text-align: center;">
-  <p style="font-size: 12px;"><strong>Satya Nandan Thota</strong></p>
+  <p style="font-size: 10px;"><strong>Satya Nandan Thota</strong></p>
 </td>
 <td style="text-align: center;">
-  <p style="font-size: 12px;"><strong>Sri Ramgopal Tandra</strong></p>
+  <p style="font-size: 10px;"><strong>Sri Ramgopal Tandra</strong></p>
 </td>
 <td style="text-align: center;">
-  <p style="font-size: 12px;"><strong>Vijay Kumar Chelluboyana</strong></p>
+  <p style="font-size: 10px;"><strong>Vijay Kumar Chelluboyana</strong></p>
 </td>
 <td style="text-align: center;">
-  <p style="font-size: 12px;"><strong>Bharath Babu</strong></p>
+  <p style="font-size: 10px;"><strong>Bharath Babu</strong></p>
 </td>
   </tr>
 </table>
