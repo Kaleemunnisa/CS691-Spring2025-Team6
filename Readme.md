@@ -102,7 +102,7 @@ By developing a smart travel app that provides real-time, location-based recomme
   <p style="font-size: 10px;"><strong>Vijay Kumar Chelluboyana</strong></p>
 </td>
 <td style="text-align: center;">
-  <p style="font-size: 10px;"><strong>Bharath </strong></p>
+  <p style="font-size: 10px;"><strong>Bharath Babu</strong></p>
 </td>
   </tr>
 </table>
