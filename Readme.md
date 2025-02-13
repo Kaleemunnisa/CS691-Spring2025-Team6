@@ -85,7 +85,7 @@ By developing a smart travel app that provides real-time, location-based recomme
       <img src="./team_members/Ram.jpeg" width="200" alt="Sri Ramgopal Tandra"> 
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Vijay.jpeg" width="200" alt="Vijay Kumar Chelluboyana">
+      <img src="./team_members/Vijay.jpeg" width="200" alt="Vijay Kumar">
     </td>
     <td style="text-align: center;">
       <img src="./team_members/Bharath.jpeg" width="200" alt="Bharath Babu"> 
