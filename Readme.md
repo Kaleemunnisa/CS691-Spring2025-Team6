@@ -106,3 +106,30 @@ By developing a smart travel app that provides real-time, location-based recomme
 </td>
   </tr>
 </table>
+
+### Our Work
+
+<table>
+  <tr>
+    <td style="text-align: center;">
+  <p style="font-size: 10px;"><strong>Login Screen</strong></p>
+</td>
+<td style="text-align: center;">
+  <p style="font-size: 10px;"><strong>Input Section for City</strong></p>
+</td>
+<td style="text-align: center;">
+  <p style="font-size: 10px;"><strong>Suggestions Screen</strong></p>
+</td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="./snapshots/login-screen.png" width="200" alt="Satya Nandan Thota">
+    </td>
+    <td style="text-align: center;">
+      <img src="./snapshots/input-section-home.png" width="200" alt="Sri Ramgopal Tandra"> 
+    </td>
+    <td style="text-align: center;">
+      <img src="./snapshots/input-suggestion-on-search.png" width="200" alt="Vijay Kumar">
+    </td>
+  </tr>
+</table>
