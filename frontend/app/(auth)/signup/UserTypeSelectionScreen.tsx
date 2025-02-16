@@ -12,7 +12,7 @@ const UserTypeSelectionScreen = ({
   return (
     <View style={styles.container}>
       {/* Animation 1 */}
-      <TouchableOpacity onPress={() => onSelect("Travel")}>
+      <TouchableOpacity onPress={() => onSelect("tourist")}>
         <View style={styles.animationWrapper}>
           <Text style={styles.watermark}>Travel</Text>
           <LottieAnimation
@@ -24,7 +24,7 @@ const UserTypeSelectionScreen = ({
       </TouchableOpacity>
 
       {/* Animation 2 */}
-      <TouchableOpacity onPress={() => onSelect("Guide")}>
+      <TouchableOpacity onPress={() => onSelect("guide")}>
         <View style={styles.animationWrapper}>
           <Text style={styles.watermark}>Guide</Text>
           <LottieAnimation
@@ -36,7 +36,7 @@ const UserTypeSelectionScreen = ({
       </TouchableOpacity>
 
       {/* Animation 3 */}
-      <TouchableOpacity onPress={() => onSelect("Business")}>
+      <TouchableOpacity onPress={() => onSelect("business")}>
         <View style={styles.animationWrapper}>
           <Text style={styles.watermark}>Business</Text>
           <LottieAnimation

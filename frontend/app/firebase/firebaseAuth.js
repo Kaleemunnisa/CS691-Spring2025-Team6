@@ -11,7 +11,7 @@ import { auth, db } from "../../firebaseConfig";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
 // Function to create a new user
-const signUp = async (userType, userData) => {
+export const signUp = async (userType, userData) => {
   try {
     // Create the user with email and password
     const userCredential = await createUserWithEmailAndPassword(
