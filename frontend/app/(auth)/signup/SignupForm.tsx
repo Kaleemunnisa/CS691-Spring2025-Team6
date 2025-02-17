@@ -15,33 +15,11 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { signUp } from "../../firebase/firebaseAuth";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { db } from "../../../firebaseConfig"; // Import Firestore
-import { doc, setDoc } from "firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignupForm = () => {
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
   const { userType } = useLocalSearchParams();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [touristData, setTouristData] = useState({
     name: "",
     email: "",
@@ -72,6 +50,34 @@ const SignupForm = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // Listen for keyboard visibility changes
+  useEffect(() => {
+    console.log(userType);
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  // Handle form field changes based on userType
   const handleChange = (name: string, value: string) => {
     if (userType === "tourist") {
       setTouristData({ ...touristData, [name]: value });
@@ -82,7 +88,12 @@ const SignupForm = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(guideData);
+  }, [guideData]);
+  // Handle form submission
   const handleSubmit = async () => {
+    // Check if passwords match
     if (
       (touristData.password &&
         touristData.password !== touristData.confirmPassword) ||
@@ -95,36 +106,67 @@ const SignupForm = () => {
       return;
     }
 
+    // Validate email format for all user types
+    const emailData =
+      userType === "tourist"
+        ? touristData
+        : userType === "guide"
+        ? guideData
+        : businessData;
+    if (!isValidEmail(emailData.email)) {
+      setError("Invalid email format");
+      return;
+    }
+
+    // Validate required fields for each user type
+    let userData;
+    if (userType === "tourist") {
+      if (
+        !touristData.name ||
+        !touristData.email ||
+        !touristData.password ||
+        !touristData.username
+      ) {
+        setError("Please fill in all required fields for tourist.");
+        return;
+      }
+      userData = touristData;
+    } else if (userType === "guide") {
+      if (
+        !guideData.name ||
+        !guideData.email ||
+        !guideData.password ||
+        !guideData.username ||
+        !guideData.location ||
+        !guideData.yearsOfExperience
+      ) {
+        setError("Please fill in all required fields for guide.");
+        return;
+      }
+      userData = guideData;
+    } else if (userType === "business") {
+      if (
+        !businessData.name ||
+        !businessData.email ||
+        !businessData.password ||
+        !businessData.username ||
+        !businessData.businessType ||
+        !businessData.location
+      ) {
+        setError("Please fill in all required fields for business.");
+        return;
+      }
+      userData = businessData;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const userCredential = await signUp(
-        userType,
-        touristData || guideData || businessData
-      );
-      const { uid } = userCredential.user;
-
-      // Save data to respective Firestore collection
-      if (userType === "tourist") {
-        await setDoc(doc(firestore, "tourists", uid), {
-          ...touristData,
-          uid,
-        });
-      } else if (userType === "guide") {
-        await setDoc(doc(firestore, "guides", uid), {
-          ...guideData,
-          uid,
-        });
-      } else if (userType === "business") {
-        await setDoc(doc(firestore, "businesses", uid), {
-          ...businessData,
-          uid,
-        });
-      }
-
+      // Pass the correct user data to signUp
+      await signUp(userType, userData);
       console.log("Signup successful!");
-      router.navigate("/(tabs)/(home)");
+      router.navigate("/(tabs)/(home)"); // Navigate to home screen after successful signup
     } catch (err) {
       setError("Signup failed. " + (err as any).message);
       console.error(err);
@@ -134,16 +176,11 @@ const SignupForm = () => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-      }}
-    >
+    <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 10} // Adjusted for header space
+          keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 10}
           style={styles.container}
         >
           <ScrollView
@@ -164,7 +201,9 @@ const SignupForm = () => {
               style={styles.input}
               placeholder="Email"
               keyboardType="email-address"
-              onChangeText={(value) => handleChange("email", value)}
+              onChangeText={(value) =>
+                handleChange("email", value.toLowerCase())
+              }
             />
             <TextInput
               style={styles.input}
@@ -246,14 +285,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    padding: 20,
   },
   scrollContainer: {
-    padding: 20,
-    alignItems: "center",
+    paddingBottom: 20,
     justifyContent: "center",
+    alignItems: "center",
     // backgroundColor: "red",
-    // height: "100%",
   },
   title: {
     fontSize: 24,
