@@ -10,7 +10,6 @@ import { auth, db } from "../../firebaseConfig";
 // Sign up with email and password
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
-// Function to create a new user
 export const signUp = async (userType, userData) => {
   try {
     // Create the user with email and password
@@ -24,29 +23,35 @@ export const signUp = async (userType, userData) => {
 
     // Common user info to store
     const userInfo = {
-      name: userData.name,
       email: userData.email,
       username: userData.username,
+      uid: userId,
+      userType: userType, // Adding userType
     };
+
+    // Add user info to the 'users' collection
+    await setDoc(doc(db, "users", userId), userInfo);
 
     // Add user info to the correct collection based on the user type
     if (userType === "tourist") {
-      await setDoc(doc(db, "users", userId), userInfo);
+      await setDoc(doc(db, "tourists", userId), {
+        ...userInfo,
+        name: userData.name,
+      });
     } else if (userType === "guide") {
-      const guideInfo = {
+      await setDoc(doc(db, "guides", userId), {
         ...userInfo,
         location: userData.location,
         yearsOfExperience: userData.yearsOfExperience,
-      };
-      await setDoc(doc(db, "guides", userId), guideInfo);
+      });
     } else if (userType === "business") {
-      const businessInfo = {
+      await setDoc(doc(db, "businesses", userId), {
         ...userInfo,
         businessType: userData.businessType,
         location: userData.location,
-      };
-      await setDoc(doc(db, "businesses", userId), businessInfo);
+      });
     }
+
     console.log("User signed up successfully");
   } catch (error) {
     console.error("Error signing up user:", error);
