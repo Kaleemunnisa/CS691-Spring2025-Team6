@@ -110,10 +110,11 @@ const styles = StyleSheet.create({
   formContainer: {
     marginTop: 20,
     // backgroundColor:'red',
+    paddingBottom: 30,
   },
   input: {
     height: 45, // Slightly taller input for better UX
-    borderColor: "gray",
+    borderColor: "#82C0D0",
     borderWidth: 2,
     marginBottom: 16,
     paddingLeft: 10, // More padding for readability

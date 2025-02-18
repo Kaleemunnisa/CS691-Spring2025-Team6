@@ -32,7 +32,7 @@ const LoginScreen = () => {
             </View>
 
             {/* Header */}
-            <Text style={styles.header}>Login</Text>
+            <Text style={styles.header}>Ready for your next adventure?</Text>
 
             {/* Login form */}
             <LoginForm />
@@ -53,8 +53,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
+    // margin:-10,
     flex: 1,
-    paddingTop: 5,
+    paddingTop: 0,
     padding: 30,
     justifyContent: "center",
     // flexGrow: 1,
@@ -63,10 +64,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#23486A",
   },
   header: {
-    fontSize: 32,
+    fontSize: 25,
     textAlign: "center",
-    marginBottom: 20,
-    color: "white",
+    marginBottom: 10,
+    color: "#BCCCDC",
   },
   bottomText: {
     position: "absolute",
