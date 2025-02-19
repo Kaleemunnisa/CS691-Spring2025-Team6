@@ -14,6 +14,7 @@ import { auth, db } from "../../../firebaseConfig"; // Import auth and db from f
 import { useRouter } from "expo-router"; // Import the router
 
 import { signIn } from "../../firebase/firebaseAuth";
+import { primaryBtnColor } from "../colors";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     color: "#82C0D0",
   },
   loginINbtn: {
-    backgroundColor: "#82C0D0",
+    backgroundColor: primaryBtnColor,
     maxWidth: 200, // or any value you prefer
     alignSelf: "center",
     width: "100%", // Ensures it respects maxWidth

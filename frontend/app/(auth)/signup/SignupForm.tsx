@@ -11,14 +11,25 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { signUp } from "../../firebase/firebaseAuth";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { text } from "@fortawesome/fontawesome-svg-core";
+import {
+  primaryBtnColor,
+  primaryColor,
+  signUpFormBG,
+  textColor,
+} from "../colors";
 
+const capitalizeFirstLetter = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+};
 const SignupForm = () => {
-  const { userType } = useLocalSearchParams();
+  const { userType } = useLocalSearchParams() as { userType: string };
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [touristData, setTouristData] = useState({
     name: "",
@@ -189,13 +200,28 @@ const SignupForm = () => {
               !keyboardVisible && { height: "100%" },
             ]}
           >
-            <Text style={styles.title}>Signup</Text>
+            <Text style={styles.title}>
+              Be Our {capitalizeFirstLetter(userType as string)}
+            </Text>
+            <View
+              style={{
+                marginVertical: 5,
+                height: 30,
+                width: "100%",
+                // backgroundColor:'white'
+                
+              }}
+            >
+              {loading && <ActivityIndicator size="large" color="#007BFF" />}
+              {error && <Text style={styles.error}>{error}</Text>}
+            </View>
 
             {/* Common Fields */}
             <TextInput
               style={styles.input}
               placeholder="Full Name"
               onChangeText={(value) => handleChange("name", value)}
+              placeholderTextColor={textColor}
             />
             <TextInput
               style={styles.input}
@@ -204,23 +230,27 @@ const SignupForm = () => {
               onChangeText={(value) =>
                 handleChange("email", value.toLowerCase())
               }
+              placeholderTextColor={textColor}
             />
             <TextInput
               style={styles.input}
               placeholder="Username"
               onChangeText={(value) => handleChange("username", value)}
+              placeholderTextColor={textColor}
             />
             <TextInput
               style={styles.input}
               placeholder="Password"
               secureTextEntry
               onChangeText={(value) => handleChange("password", value)}
+              placeholderTextColor={textColor}
             />
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
               secureTextEntry
               onChangeText={(value) => handleChange("confirmPassword", value)}
+              placeholderTextColor={textColor}
             />
 
             {/* Guide-Specific Fields */}
@@ -230,6 +260,7 @@ const SignupForm = () => {
                   style={styles.input}
                   placeholder="Location"
                   onChangeText={(value) => handleChange("location", value)}
+                  placeholderTextColor={textColor}
                 />
                 <TextInput
                   style={styles.input}
@@ -238,6 +269,7 @@ const SignupForm = () => {
                   onChangeText={(value) =>
                     handleChange("yearsOfExperience", value)
                   }
+                  placeholderTextColor={textColor}
                 />
               </>
             )}
@@ -250,30 +282,55 @@ const SignupForm = () => {
                   selectedValue={businessData.businessType}
                   onValueChange={(value) => handleChange("businessType", value)}
                   style={styles.picker}
+                  itemStyle={styles.pickerItem}
                 >
-                  <Picker.Item label="Select Business Type" value="" />
-                  <Picker.Item label="Restaurant" value="restaurant" />
-                  <Picker.Item label="Cafe & Bakery" value="cafe" />
-                  <Picker.Item label="Stay Provider" value="stay" />
-                  <Picker.Item label="Movie Theaters" value="movie" />
-                  <Picker.Item label="Game Spots" value="games" />
+                  {/* <Picker.Item
+                    label="Select Business Type"
+                    value=""
+                    color={textColor}
+                  /> */}
+                  <Picker.Item
+                    label="Restaurant"
+                    value="restaurant"
+                    color={textColor}
+                  />
+                  <Picker.Item
+                    label="Cafe & Bakery"
+                    value="cafe"
+                    color={textColor}
+                  />
+                  <Picker.Item
+                    label="Stay Provider"
+                    value="stay"
+                    color={textColor}
+                  />
+                  <Picker.Item
+                    label="Movie Theaters"
+                    value="movie"
+                    color={textColor}
+                  />
+                  <Picker.Item label="Game Spots" value="games" color="black" />
                 </Picker>
                 <TextInput
                   style={styles.input}
                   placeholder="Business Location"
                   onChangeText={(value) => handleChange("location", value)}
+                  placeholderTextColor={textColor}
                 />
               </>
             )}
 
-            <Button
-              title={loading ? "Signing up..." : "Sign Up"}
-              onPress={handleSubmit}
-              disabled={loading}
-            />
-
-            {loading && <ActivityIndicator size="large" color="#007BFF" />}
-            {error && <Text style={styles.error}>{error}</Text>}
+            <View style={styles.signupCtn}>
+              {/* Sign Up Button */}
+              <TouchableOpacity
+                style={styles.signUpButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.signUpText}>
+                  {loading ? "Signing up..." : "Sign Up"}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
@@ -282,9 +339,30 @@ const SignupForm = () => {
 };
 
 const styles = StyleSheet.create({
+  signupCtn: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  signUpButton: {
+    backgroundColor: primaryBtnColor,
+    //  backgroundColor: 'blue', // Background color for the button
+    paddingVertical: 12, // Vertical padding for the button
+    paddingHorizontal: 30, // Horizontal padding for the button
+    borderRadius: 5, // Rounded corners
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10, // Adjust for spacing
+  },
+
+  signUpText: {
+    fontSize: 16, // Ensure same text size as tagline
+    fontWeight: "bold",
+    color: "#fff",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: signUpFormBG,
     justifyContent: "center",
     padding: 20,
   },
@@ -297,7 +375,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 6,
   },
   label: {
     fontSize: 16,
@@ -316,9 +394,17 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: "100%",
-    marginBottom: 10,
+    marginBottom: -50,
+    marginTop: -60,
+  },
+  pickerItem: {
+    fontSize: 13, // Change font size of Picker items
+    fontWeight: "400",
+    color: "#333",
   },
   error: {
+    textAlign:'center',
+    alignSelf:'center',
     color: "red",
     marginTop: 10,
   },

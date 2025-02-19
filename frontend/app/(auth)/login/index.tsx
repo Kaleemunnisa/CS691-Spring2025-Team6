@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import LoginForm from "./LoginForm"; // Import the login form component
 import LottieAnimation from "../../animations-helper/DotLottieAnimations"; // Lottie animation component
+import { primaryColor } from "../colors";
 
 const LoginScreen = () => {
   return (
@@ -32,7 +33,7 @@ const LoginScreen = () => {
             </View>
 
             {/* Header */}
-            <Text style={styles.header}>Ready for your next adventure?</Text>
+            <Text style={styles.header}>Welcome Back!</Text>
 
             {/* Login form */}
             <LoginForm />
@@ -61,13 +62,15 @@ const styles = StyleSheet.create({
     // flexGrow: 1,
     // alignItems:'center'
     // height: "100%",
-    backgroundColor: "#23486A",
+    backgroundColor: primaryColor,
   },
   header: {
-    fontSize: 25,
+    fontSize: 20,
     textAlign: "center",
     marginBottom: 10,
     color: "#BCCCDC",
+    fontFamily: "Arial",
+    fontWeight: "500",
   },
   bottomText: {
     position: "absolute",

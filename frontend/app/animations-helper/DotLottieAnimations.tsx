@@ -4,15 +4,15 @@ import LottieView from "lottie-react-native";
 
 interface LottieAnimationProps {
   source: any; // Path to the animation JSON file
-  width?: number;
-  height?: number;
+  width?: any;
+  height?: any;
   loop?: boolean;
   autoPlay?: boolean;
 }
 
 const LottieAnimation: React.FC<LottieAnimationProps> = ({
   source,
-  width = 400,
+  width = "100%",
   height = 400,
   loop = true,
   autoPlay = true,
@@ -24,6 +24,7 @@ const LottieAnimation: React.FC<LottieAnimationProps> = ({
         autoPlay={autoPlay}
         loop={loop}
         style={{ width, height }}
+        resizeMode="cover"
       />
     </View>
   );
