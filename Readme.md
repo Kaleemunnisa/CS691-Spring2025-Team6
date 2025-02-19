@@ -105,16 +105,16 @@ By developing a smart travel app that provides real-time, location-based recomme
 <table>
   <tr>
     <td style="text-align: center;">
-      <img src="./team_members/satya.JPG" width="200" alt="Satya Nandan Thota">
+      <img src="https://github.com/user-attachments/assets/2e38c683-dff5-4e8c-88a2-ddd98e208d8e" width="200" alt="Satya Nandan Thota">
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Ram.jpeg" width="200" alt="Sri Ramgopal Tandra"> 
+      <img src="https://github.com/user-attachments/assets/992ede56-1746-4f79-ae7c-55bc15a10922" width="200" alt="Sri Ramgopal Tandra"> 
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Vijay.jpeg" width="200" alt="Vijay Kumar">
+      <img src="https://github.com/user-attachments/assets/fb5f0c18-f6c9-4ce3-894c-1d82f329790e" width="200" alt="Vijay Kumar">
     </td>
     <td style="text-align: center;">
-      <img src="./team_members/Bharath.jpeg" width="200" alt="Bharath Babu"> 
+      <img src="https://github.com/user-attachments/assets/35cd8d4b-c778-4b8e-9fb9-5937cce34f43" width="200" alt="Bharath Babu"> 
     </td>
   </tr>
   <tr>
