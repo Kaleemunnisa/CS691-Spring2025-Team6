@@ -29,14 +29,40 @@ By developing a smart travel app that provides real-time, location-based recomme
 
 ---
 
-### Technologies
+### 🛠 Technologies
 
-- **Frontend**: React Native, HTML/CSS, JS.
-- **Backend**: Node.js, Express.js for API development.
-- **Database**: MongoDB, MySQL.
-- **APIs**: Open-source APIs.
-- **Authentication**: Firebase Authentication.
-- **Cloud Storage**: Firebase Cloud Storage, Cloudinary Services.
+<table>
+  <tr>
+    <td><strong>Frontend</strong></td>
+    <td><img src="https://github.com/user-attachments/assets/0c8992b9-4b35-4d99-a074-4af972055be1" alt="React Native" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/7c8a1003-d1ad-4147-b494-ff505f802d92" alt="Type Script" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/2e0cc9e2-a8ba-4b29-84b5-3a5d8a9e464c" alt="JavaScript" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/6d49a155-d8e1-4d65-90f9-a0965d852a92" alt="CSS" width="50"></td>
+    
+  </tr>
+  <tr>
+    <td><strong>Backend</strong></td>
+    <td><img src="https://github.com/user-attachments/assets/df8f5f7c-444a-47b8-a121-57aa64607587" alt="Node.js" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/a3acd54c-cd01-4f50-87c5-9eab20f829f9" alt="Express.js" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/219134c2-5826-4f32-a982-7127c2cbce40" alt="MySQL" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/fa6dc75f-5190-4092-a66d-465634cb5dfe" alt="Firestore Database" width="50"></td>
+  </tr>
+  <tr>
+    <td><strong>APIs & Services</strong></td>
+    <td><img src="https://github.com/user-attachments/assets/df1c8dd3-c58b-461b-9393-b3de6cdd3394" alt="Ticketmaster API" width="70"></td>
+    <td><img src="https://github.com/user-attachments/assets/4a5f4624-37f2-4317-91a5-3e4000c070ce" alt="Firebase" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/d056bb06-3008-4dc3-8b5b-670e8ef8b901" alt="Firebase Authentication" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/dbb7c56f-8c89-46c7-a8fb-bffa1a1cf9a2" alt="GeoAPIfy" width="70"></td>
+  </tr>
+
+  <tr>
+  <td><strong>Tools</strong></td>
+  <td><img src="https://github.com/user-attachments/assets/a905a623-5c18-4a3b-ae65-296aa20e3d14" alt="Git" width="50"></td>
+  <td><img src="https://github.com/user-attachments/assets/4865c78b-7f7d-4749-9d6a-8902fbc158b9" alt="Github" width="50"></td>
+  <td><img src="https://github.com/user-attachments/assets/9da0c736-5a58-4e66-91e6-fd7bd113e141" alt="Jira" width="50"></td>
+  <td><img src="https://github.com/user-attachments/assets/cfab6159-7e32-4625-9d3a-896be59ac5fc" alt="VS code" width="50"></td>
+  </tr>
+</table>
 
 ---
 
