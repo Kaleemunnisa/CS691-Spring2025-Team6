@@ -1,99 +1,131 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import { primaryColor } from "@/app/(auth)/colors";
+import React from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Image,
+} from "react-native";
 
-const { width, height } = Dimensions.get('window');
-
-export default function HomeScreen() {
-  const [images, setImages] = useState([]);
-
-
+const ProfileScreen = () => {
+  const user = {
+    name: "John Doe",
+    username: "@johndoe",
+    profileImage:
+      "https://github.com/user-attachments/assets/2e38c683-dff5-4e8c-88a2-ddd98e208d8e", // Replace with actual user image
+  };
 
   return (
-    <View style={styles.container}>
-     
-
-      <View style={styles.contentWrapper}>
-        <Text style={styles.text}>Explore the Best Destinations</Text>
-        <TextInput style={styles.textInput} placeholder="Enter your destination" />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Let's Go</Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      {/* Profile Section with fixed height based on content */}
+      <View style={styles.profileSection}>
+        <View style={styles.profileCard}>
+          <View style={styles.profileRow}>
+            <Image
+              source={{ uri: user.profileImage }}
+              style={styles.profileImage}
+            />
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>{user.name}</Text>
+              <Text style={styles.userUsername}>{user.username}</Text>
+            </View>
+          </View>
+        </View>
       </View>
-    </View>
+
+      {/* Scrollable Events Section taking remaining space */}
+      <ScrollView
+        style={styles.eventsSection}
+        contentContainerStyle={styles.eventsContainer}
+      >
+        <Text style={styles.heading}>Added Events Section</Text>
+        {/* Sample events */}
+        {[...Array(10)].map((_, index) => (
+          <View key={index} style={styles.eventCard}>
+            <Text>Event {index + 1}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#F6F4F0',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    backgroundColor: "#fff",
   },
-  scrollView: {
-    marginTop: 30,
-    marginBottom: 20,
+  profileSection: {
+    padding: 16,
+    paddingVertical: 20,
+    backgroundColor: "#fff",
   },
-  cityName: {
-    position: 'absolute',
-    top: '40%',
-    paddingHorizontal: 5,
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+  profileCard: {
+    width: "100%",
+    backgroundColor: primaryColor, // Dynamic primary color
+    padding: 16,
+    borderRadius: 10,
+
+    // iOS Shadow
+    shadowColor: primaryColor,
+    shadowOffset: { width: 0, height: 8 }, // Creates depth
+    shadowOpacity: 1, // Adjust for smoothness
+    shadowRadius: 20,
+
+    // Android Shadow
+    elevation: 6, // Required for Android shadows
   },
-  rectangle: {
-    width: width * 0.9,
-    height: height * 0.4,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ddd',
-    borderRadius: 20,
+
+  profileRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-  },
-  button: {
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: '#3498db',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  contentWrapper: {
-    width: '100%',
-    height: height * 0.23,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  textInput: {
-    width: 200,
-    height: 40,
-    borderColor: '#ccc',
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 16,
+
+    // White Border
     borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+    borderColor: "#ffffff", // White border
+  },
+  userInfo: {
+    flex: 1,
+  },
+  userName: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  userUsername: {
+    color: "#fff",
+    fontSize: 14,
+    // color: "#666",
+  },
+  eventsSection: {
+    flex: 1, // Takes remaining space
+    // backgroundColor: "#fff",
+    // marginTop: 30,
+    position: "relative", // Allows the blending effect to overlay
+  },
+
+  eventsContainer: {
+    padding: 16,
+  },
+  eventCard: {
+    backgroundColor: "rgba(224, 226, 227, 0.31)",
+    padding: 16,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
 });
+
+export default ProfileScreen;
