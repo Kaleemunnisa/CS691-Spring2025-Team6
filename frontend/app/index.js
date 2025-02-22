@@ -9,7 +9,5 @@ export default function Index() {
   // Toggle between login and signup (signin) screens
   //const toggleScreen = () => setIsSignIn(!isSignIn);
 
-  return (
-    <LoginScreen />
-  );
+  return <LoginScreen />;
 }
