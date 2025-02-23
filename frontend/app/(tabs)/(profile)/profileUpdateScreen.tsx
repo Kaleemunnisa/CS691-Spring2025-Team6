@@ -12,7 +12,7 @@ import Feather from "@expo/vector-icons/Feather";
 
 interface updateScreenProps {
   editClick: boolean;
-  closeEditProfile: () => {};
+  closeEditProfile: () => void;
 }
 
 const ProfileUpdateScreen: React.FC<updateScreenProps> = ({
