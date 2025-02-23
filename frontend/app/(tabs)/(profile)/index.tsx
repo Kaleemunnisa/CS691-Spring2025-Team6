@@ -10,7 +10,7 @@ import {
   Animated,
 } from "react-native";
 
-import getCurrentUserData from "@/app/api/fetchUserDetails";
+import getCurrentUserData from "@/services/api/fetchUserDetails";
 import ProfileUpdateScreen from "./profileUpdateScreen";
 import ProfileSection from "./profileSection";
 
@@ -28,11 +28,15 @@ const ProfileScreen = () => {
       }
     });
   }, []);
-  
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfileUpdateScreen  editClick={editClick} closeEditProfile={()=>{setEditClick(false)}}/>
+      <ProfileUpdateScreen
+        editClick={editClick}
+        closeEditProfile={() => {
+          setEditClick(false);
+        }}
+      />
       {/* <View></View> */}
       {/* Profile Section with fixed height based on content */}
       <ProfileSection userDate={userData} setEditClick={setEditClick} />

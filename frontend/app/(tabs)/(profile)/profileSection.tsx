@@ -11,7 +11,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import getCurrentUserData from "@/app/api/fetchUserDetails";
+import getCurrentUserData from "@/services/api/fetchUserDetails";
 import { MaterialIcons } from "@expo/vector-icons"; // Make sure you have this installed
 
 interface ProfileSectionProps {

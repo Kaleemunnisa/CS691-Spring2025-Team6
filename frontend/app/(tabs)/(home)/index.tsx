@@ -15,11 +15,12 @@ import {
 
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // import EventCard from "./EventCard";
-import { fetchEvents } from "../../api/fetchEvents";
+// import { fetchEvents } from "../../api/fetchEvents";
+import { fetchEvents } from "@/services/api/fetchEvents";
 import BackGround from "./BackGround";
 import FilterTabBar from "./filterTabs/FilterTabBar";
 import InputSection from "./inputSection/InputSection";
-import KeyboardAvoidingContainer from "@/app/keyBoard_utilities/KeyboardAvoidingContainer";
+import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidingContainer";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");

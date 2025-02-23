@@ -11,7 +11,7 @@ import {
   Platform,
 } from "react-native";
 import LoginForm from "./LoginForm"; // Import the login form component
-import LottieAnimation from "../../animations-helper/DotLottieAnimations"; // Lottie animation component
+import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations"; // Lottie animation component
 import { primaryColor } from "../colors";
 
 const LoginScreen = () => {
@@ -26,7 +26,7 @@ const LoginScreen = () => {
             {/* Lottie animation */}
             <View style={{ position: "relative" }}>
               <LottieAnimation
-                source={require("../../../assets/animations/travel-animation.json")}
+                source={require("@/assets/animations/travel-animation.json")}
                 width={250}
                 height={250}
               />
