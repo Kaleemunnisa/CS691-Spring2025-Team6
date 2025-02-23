@@ -1,5 +1,5 @@
 import { primaryColor } from "@/app/(auth)/colors";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -9,31 +9,28 @@ import {
   Image,
 } from "react-native";
 
+import getCurrentUserData from "@/app/api/fetchUserDetails";
+import ProfileUpdateScreen from "./profileUpdateScreen";
+import ProfileSection from "./profileSection";
+
 const ProfileScreen = () => {
-  const user = {
-    name: "John Doe",
-    username: "@johndoe",
-    profileImage:
-      "https://github.com/user-attachments/assets/2e38c683-dff5-4e8c-88a2-ddd98e208d8e", // Replace with actual user image
-  };
+  const [userData, setUserData] = useState<any>(null);
+  //changing the userdata
+  useEffect(() => {
+    getCurrentUserData().then((currentUser) => {
+      if (currentUser) {
+        setUserData(currentUser);
+      } else {
+        console.log("no user logged in?");
+      }
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      <ProfileUpdateScreen height={"0%"} />
       {/* Profile Section with fixed height based on content */}
-      <View style={styles.profileSection}>
-        <View style={styles.profileCard}>
-          <View style={styles.profileRow}>
-            <Image
-              source={{ uri: user.profileImage }}
-              style={styles.profileImage}
-            />
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{user.name}</Text>
-              <Text style={styles.userUsername}>{user.username}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+      <ProfileSection userDate={userData} />
 
       {/* Scrollable Events Section taking remaining space */}
       <ScrollView
@@ -57,54 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  profileSection: {
-    padding: 16,
-    paddingVertical: 20,
-    backgroundColor: "#fff",
-  },
-  profileCard: {
-    width: "100%",
-    backgroundColor: primaryColor, // Dynamic primary color
-    padding: 16,
-    borderRadius: 10,
 
-    // iOS Shadow
-    shadowColor: primaryColor,
-    shadowOffset: { width: 0, height: 8 }, // Creates depth
-    shadowOpacity: 1, // Adjust for smoothness
-    shadowRadius: 20,
-
-    // Android Shadow
-    elevation: 6, // Required for Android shadows
-  },
-
-  profileRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 16,
-
-    // White Border
-    borderWidth: 1,
-    borderColor: "#ffffff", // White border
-  },
-  userInfo: {
-    flex: 1,
-  },
-  userName: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  userUsername: {
-    color: "#fff",
-    fontSize: 14,
-    // color: "#666",
-  },
   eventsSection: {
     flex: 1, // Takes remaining space
     // backgroundColor: "#fff",
