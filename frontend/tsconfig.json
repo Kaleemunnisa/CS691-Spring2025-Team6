@@ -13,5 +13,5 @@
     "expo-env.d.ts",
     "app/(tabs)/(home)/filterTabs/FilterTabBar.jsx",
     "app/(tabs)/(home)/inputSection/InputSection.jsx"
-  ]
+, "app/(tabs)/(profile)/index.jsx"  ]
 }

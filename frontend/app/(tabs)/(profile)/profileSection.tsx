@@ -1,6 +1,7 @@
 // import React from 'react';
 import React, { useEffect, useState } from "react";
 import { primaryColor } from "@/app/(auth)/colors";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   SafeAreaView,
   View,
@@ -8,15 +9,23 @@ import {
   ScrollView,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import getCurrentUserData from "@/app/api/fetchUserDetails";
+import { MaterialIcons } from "@expo/vector-icons"; // Make sure you have this installed
+
 interface ProfileSectionProps {
   userDate: {
     name: String;
     userName: String;
   };
+  setEditClick: any;
 }
-const ProfileSection: React.FC<ProfileSectionProps> = ({ userDate }) => {
+
+const ProfileSection: React.FC<ProfileSectionProps> = ({
+  userDate,
+  setEditClick,
+}) => {
   const user = {
     name: "John Doe",
     username: "@johndoe",
@@ -24,6 +33,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userDate }) => {
       "https://github.com/user-attachments/assets/2e38c683-dff5-4e8c-88a2-ddd98e208d8e", // Replace with actual user image
   };
 
+  const handleEditClick = () => {
+    setEditClick(true); // Toggle edit state
+  };
   //userData
 
   return (
@@ -45,6 +57,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userDate }) => {
               <Text style={styles.userUsername}>Name</Text>
             </View>
           )}
+
+          <TouchableOpacity onPress={handleEditClick} style={styles.editIcon}>
+            <FontAwesome name="edit" size={26} color="white" />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -78,6 +94,7 @@ const styles = StyleSheet.create({
   profileRow: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   profileImage: {
     width: 60,
@@ -106,5 +123,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // color: "#666",
     marginTop: 5,
+  },
+  editIcon: {
+    padding: 10,
+    // backgroundColor: "rgb(255, 255, 255)",
+    borderRadius: 50,
   },
 });

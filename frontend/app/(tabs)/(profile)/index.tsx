@@ -1,5 +1,5 @@
 import { primaryColor } from "@/app/(auth)/colors";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
+  Animated,
 } from "react-native";
 
 import getCurrentUserData from "@/app/api/fetchUserDetails";
@@ -15,6 +16,8 @@ import ProfileSection from "./profileSection";
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>(null);
+
+  const [editClick, setEditClick] = useState(false);
   //changing the userdata
   useEffect(() => {
     getCurrentUserData().then((currentUser) => {
@@ -25,12 +28,14 @@ const ProfileScreen = () => {
       }
     });
   }, []);
+  
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfileUpdateScreen height={"0%"} />
+      <ProfileUpdateScreen  editClick={editClick} closeEditProfile={()=>{setEditClick(false)}}/>
+      {/* <View></View> */}
       {/* Profile Section with fixed height based on content */}
-      <ProfileSection userDate={userData} />
+      <ProfileSection userDate={userData} setEditClick={setEditClick} />
 
       {/* Scrollable Events Section taking remaining space */}
       <ScrollView
