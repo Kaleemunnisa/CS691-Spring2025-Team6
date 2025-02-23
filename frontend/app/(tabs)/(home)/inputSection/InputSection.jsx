@@ -11,11 +11,11 @@ import {
   ScrollView,
 } from "react-native";
 // import { fetchEvents } from "../api/fetchEvents";
-import { fetchEvents } from "@/app/api/fetchEvents";
-import useKeyboardStatus from "@/app/keyBoard_utilities/KeyboardStatus";
+import { fetchEvents } from "@/services/api/fetchEvents";
+import useKeyboardStatus from "@/utils/keyBoard_utilities/KeyboardStatus";
 
 // import { fetchCitySuggestions } from "../api/fetchCitySuggestions";
-import { fetchCitySuggestions } from "@/app/api/fetchCitySuggestions";
+import { fetchCitySuggestions } from "@/services/api/fetchCitySuggestions";
 
 // import { fetchCitySuggestions } from "../api/fetchCitySuggestions";
 
@@ -26,9 +26,9 @@ function InputSection({
   setLat,
   city,
   setCity,
-  
+
   setState,
-stateCode,
+  stateCode,
   setStateCode,
   // country,
   // setCountry,
@@ -47,9 +47,6 @@ stateCode,
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isKeyboardVisible = useKeyboardStatus();
 
-  
-  
-  
   useEffect(() => {
     setChangeToClear(cityEvents.length > 0);
   }, [cityEvents]);
@@ -69,7 +66,7 @@ stateCode,
             index ===
             self.findIndex(
               (t) =>
-                t.placeID===item.placeID&&
+                t.placeID === item.placeID &&
                 t.city === item.city &&
                 t.state === item.state &&
                 t.stateCode === item.stateCode &&

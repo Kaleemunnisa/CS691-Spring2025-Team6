@@ -1,99 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import { primaryColor } from "@/app/(auth)/colors";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Image,
+  Animated,
+} from "react-native";
 
-const { width, height } = Dimensions.get('window');
+import getCurrentUserData from "@/services/api/fetchUserDetails";
+import ProfileUpdateScreen from "./profileUpdateScreen";
+import ProfileSection from "./profileSection";
 
-export default function HomeScreen() {
-  const [images, setImages] = useState([]);
+const ProfileScreen = () => {
+  const [userData, setUserData] = useState<any>(null);
 
-
+  const [editClick, setEditClick] = useState(false);
+  //changing the userdata
+  useEffect(() => {
+    getCurrentUserData().then((currentUser) => {
+      if (currentUser) {
+        setUserData(currentUser);
+      } else {
+        console.log("no user logged in?");
+      }
+    });
+  }, []);
 
   return (
-    <View style={styles.container}>
-     
+    <SafeAreaView style={styles.container}>
+      <ProfileUpdateScreen
+        editClick={editClick}
+        closeEditProfile={() => {
+          setEditClick(false);
+        }}
+      />
+      {/* <View></View> */}
+      {/* Profile Section with fixed height based on content */}
+      <ProfileSection userDate={userData} setEditClick={setEditClick} />
 
-      <View style={styles.contentWrapper}>
-        <Text style={styles.text}>Explore the Best Destinations</Text>
-        <TextInput style={styles.textInput} placeholder="Enter your destination" />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Let's Go</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      {/* Scrollable Events Section taking remaining space */}
+      <ScrollView
+        style={styles.eventsSection}
+        contentContainerStyle={styles.eventsContainer}
+      >
+        <Text style={styles.heading}>Added Events Section</Text>
+        {/* Sample events */}
+        {[...Array(10)].map((_, index) => (
+          <View key={index} style={styles.eventCard}>
+            <Text>Event {index + 1}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#F6F4F0',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    backgroundColor: "#fff",
   },
-  scrollView: {
-    marginTop: 30,
-    marginBottom: 20,
+
+  eventsSection: {
+    flex: 1, // Takes remaining space
+    // backgroundColor: "#fff",
+    // marginTop: 30,
+    position: "relative", // Allows the blending effect to overlay
   },
-  cityName: {
-    position: 'absolute',
-    top: '40%',
-    paddingHorizontal: 5,
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+
+  eventsContainer: {
+    padding: 16,
   },
-  rectangle: {
-    width: width * 0.9,
-    height: height * 0.4,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ddd',
-    borderRadius: 20,
+  eventCard: {
+    backgroundColor: "rgba(224, 226, 227, 0.31)",
+    padding: 16,
+    marginBottom: 10,
+    borderRadius: 8,
   },
-  image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-  },
-  button: {
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: '#3498db',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  contentWrapper: {
-    width: '100%',
-    height: height * 0.23,
-    alignItems: 'center',
-  },
-  text: {
+  heading: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  textInput: {
-    width: 200,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
 });
+
+export default ProfileScreen;
