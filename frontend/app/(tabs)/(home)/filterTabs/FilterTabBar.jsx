@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
-import EventCard from "./events/Events";
+import { getAuth } from "firebase/auth";
+
+// import EventCard from "./events/Events";
 // import MapScreen from "./places/MapScreen";
 // import PlaceListScreen from "./places/PlaceListScreen";
 // import Map from "./places/Map";
 import MapScreen from "./places/MapScreen";
+
+import EventSection from "./events/EventSection";
+import EventScreen from "./events/EventScreen";
+import userAuth from "@/services/firebase/userAuth";
 
 const OutlinedButton = ({ title, onPress, isActive, activeColor }) => (
   <TouchableOpacity
@@ -23,6 +35,7 @@ const OutlinedButton = ({ title, onPress, isActive, activeColor }) => (
 );
 
 const FilterTabBar = ({ placeID, lon, lat, city, cityEvents, otherEvents }) => {
+  const { user, loading } = userAuth();
   const [activeTab, setActiveTab] = useState("Events");
   console.log("FilterTabBar");
   console.log("cityEvents inside FilterTabBar:", cityEvents.length);
@@ -68,18 +81,23 @@ const FilterTabBar = ({ placeID, lon, lat, city, cityEvents, otherEvents }) => {
 
       {/* Content Display */}
       <View style={[styles.contentContainer]}>
-        {activeTab === "Events" &&
+        {loading ? (
+          <ActivityIndicator size="large" color="!0000ff" />
+        ) : (
+          activeTab === "Events" &&
           (cityEvents.length === 0 ? (
             <Text>Loading Events...</Text>
           ) : (
             <View>
-              <EventCard
+              <EventScreen
+                uid={user.uid}
                 city={city}
                 cityEvents={cityEvents}
                 otherEvents={otherEvents}
               />
             </View>
-          ))}
+          ))
+        )}
         {activeTab === "Places" && (
           <View style={styles.mapContentetContainer}>
             <MapScreen city_id={placeID} lat={lat} lon={lon} />

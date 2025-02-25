@@ -8,16 +8,22 @@ import {
   StyleSheet,
   Image,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 
-import getCurrentUserData from "@/services/api/fetchUserDetails";
+import getCurrentUserData from "@/services/firebase/fetchUserDetails";
 import ProfileUpdateScreen from "./profileUpdateScreen";
 import ProfileSection from "./profileSection";
+import { getUserFavorites } from "@/services/firebase/favourites";
+import userAuth from "@/services/firebase/userAuth";
+import FavoritesSection from "./favoritesSection";
+// import { faV } from "@fortawesome/free-solid-svg-icons";
 
 const ProfileScreen = () => {
-  const [userData, setUserData] = useState<any>(null);
-
+  const [userData, setUserData] = useState<any>();
   const [editClick, setEditClick] = useState(false);
+
+  const { user, loading } = userAuth();
   //changing the userdata
   useEffect(() => {
     getCurrentUserData().then((currentUser) => {
@@ -31,29 +37,27 @@ const ProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfileUpdateScreen
-        editClick={editClick}
-        closeEditProfile={() => {
-          setEditClick(false);
-        }}
-      />
-      {/* <View></View> */}
-      {/* Profile Section with fixed height based on content */}
-      <ProfileSection userDate={userData} setEditClick={setEditClick} />
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={styles.loadingIndicator}
+        />
+      ) : (
+        <>
+          <ProfileUpdateScreen
+            editClick={editClick}
+            closeEditProfile={() => {
+              setEditClick(false);
+            }}
+          />
 
-      {/* Scrollable Events Section taking remaining space */}
-      <ScrollView
-        style={styles.eventsSection}
-        contentContainerStyle={styles.eventsContainer}
-      >
-        <Text style={styles.heading}>Added Events Section</Text>
-        {/* Sample events */}
-        {[...Array(10)].map((_, index) => (
-          <View key={index} style={styles.eventCard}>
-            <Text>Event {index + 1}</Text>
-          </View>
-        ))}
-      </ScrollView>
+          {/* Profile Section with fixed height based on content */}
+          <ProfileSection userDate={userData} setEditClick={setEditClick} />
+
+          <FavoritesSection uid={user?.uid || ""} />
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -62,6 +66,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  loadingIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   eventsSection: {
