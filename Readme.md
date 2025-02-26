@@ -132,3 +132,5 @@ By developing a smart travel app that provides real-time, location-based recomme
 </td>
   </tr>
 </table>
+
+[You can download our Literature-Review here](https://github.com/user-attachments/files/18977895/Literature-Review-Team6.pdf)
