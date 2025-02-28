@@ -40,6 +40,8 @@ export default function HomeScreen() {
 
   const [showContent, setShowContent] = useState(false);
 
+  const [noEvents, setNoEvents] = useState(false);
+
   const clearEvents = () => {
     setPlaceID("");
     setCity("");
@@ -55,7 +57,7 @@ export default function HomeScreen() {
     let cityEventsLength: any = cityEvents.length;
     console.log({ cityEventsLength });
     console.log(cityEvents);
-    // setShowContent(() => cityEventsLength > 0);
+    setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
     console.log(otherEvents);
   }, [cityEvents]);
