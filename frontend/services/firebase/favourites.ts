@@ -31,7 +31,7 @@ export const saveUserFavorite = async (uid: string, event: any) => {
 };
 
 // Fetch all favorites (both events and spots)
-export const getUserFavorites = async (uid: string) => {
+export const getUserFavorites = async (uid: string|null) => {
   if (!uid) return null;
 
   const userRef = doc(db, "user_favorites", uid);

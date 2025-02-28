@@ -12,38 +12,41 @@ interface EventCardProps {
   event: any;
   uid?: string; // User ID (optional)
   showFavorite?: boolean; // Controls whether favorite button is shown
+  setShouldFetchFavorites?:any;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
   event,
   uid,
   showFavorite = false,
+    setShouldFetchFavorites,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
+
+  const checkFavoriteStatus = async () => {
+    // @ts-ignore
+    const userRef = doc(db, "user_favorites", uid);
+    try {
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        if (
+            userData?.events?.some(
+                (savedEvent: any) => savedEvent.id === event.id
+            )
+        ) {
+          setIsFavorite(true);
+          console.log(isFavorite);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking favorite status:", error);
+    }
+  };
   useEffect(() => {
     console.log(uid);
     if (!showFavorite || !uid || !event.id) return;
-
-    const checkFavoriteStatus = async () => {
-      const userRef = doc(db, "user_favorites", uid);
-      try {
-        const docSnap = await getDoc(userRef);
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          if (
-            userData?.events?.some(
-              (savedEvent: any) => savedEvent.id === event.id
-            )
-          ) {
-            setIsFavorite(true);
-            console.log(isFavorite);
-          }
-        }
-      } catch (error) {
-        console.error("Error checking favorite status:", error);
-      }
-    };
 
     checkFavoriteStatus();
   }, [uid, event, showFavorite]);
@@ -57,6 +60,7 @@ const EventCard: React.FC<EventCardProps> = ({
       await saveUserFavorite(uid, event);
     }
     setIsFavorite(!isFavorite);
+    setShouldFetchFavorites(true);
   };
 
   return (

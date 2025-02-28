@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
+  ActivityIndicator, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent,
 } from "react-native";
 import { getUserFavorites } from "@/services/firebase/favourites"; // Import your getUserFavorites function
 import EventCard from "@/components/EventCard"; // Import EventCard component
@@ -16,25 +16,45 @@ interface FavoritesSectionProps {
 }
 const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
   const [favorites, setFavorites] = useState<any[] | null>(null);
+  const [scrollY, setScrollY] = useState(0);
+  const[showFavorites, setShowFavorites] = useState(false);
+
+  //dynamic event fetching when any event is removed or added
+  const [shouldFetchFavorites, setShouldFetchFavorites] = useState<boolean>(false);
+
+
+  //fetch fav events
+  const fetchFavorites = async () => {
+    const favoriteData = await getUserFavorites(uid);
+    if (favoriteData) {
+      setFavorites(favoriteData.events); // Assuming `events` is an array of favorite events
+      setShouldFetchFavorites(false);
+    }
+  };
+
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      const favoriteData = await getUserFavorites(uid);
-      if (favoriteData) {
-        setFavorites(favoriteData.events); // Assuming `events` is an array of favorite events
-      }
-    };
-
-    if (uid) {
+  if (uid) {
       fetchFavorites();
-      //   const intervalId = setInterval(fetchFavorites, 10000); // Set interval to fetch every 2 seconds
-
-      //   // Clear the interval when the component unmounts or the uid changes
-      //   return () => clearInterval(intervalId);
     }
     console.log("favourties", favorites);
     // console.log("fav events",events);
+    console.log("shouldFetchFavorites", shouldFetchFavorites);
   }, [uid]);
+
+  useEffect(() => {
+    if(shouldFetchFavorites){
+      fetchFavorites();
+    }
+  }, [shouldFetchFavorites]);
+
+  useEffect(() => {
+    if(favorites?.length!==0){
+      setShowFavorites(true);
+    }else{
+      setShowFavorites(false);
+    }
+  }, []);
 
   if (!favorites) {
     return (
@@ -44,29 +64,58 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
     );
   }
 
+
+
+  //handle Scroll
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentScrollPosition = event.nativeEvent.contentOffset.y;
+    setScrollY(currentScrollPosition);
+    // console.log("Scrolled to:", currentScrollPosition);
+    // Add any additional logic here based on scroll position
+    if(currentScrollPosition < 0 && currentScrollPosition <=-90) {
+      fetchFavorites();
+      setShouldFetchFavorites(true);
+    }
+
+
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>
         Fa
         <FontAwesome name="heart" size={24} color="red" />
         orites
+
       </Text>
-      {favorites.length === 0 ? (
+      {shouldFetchFavorites && (
+          <ActivityIndicator size="large"  />
+      )}
+
+      {!showFavorites ? (
         <Text>Add Fav</Text>
       ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={favorites}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <EventCard
-              key={index}
-              event={item}
-              uid={uid}
-              showFavorite={true} // Pass showFavorite prop
+          <>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={favorites}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                    <EventCard
+                        key={index}
+                        event={item}
+                        uid={uid}
+                        showFavorite={true} // Pass showFavorite prop
+                        setShouldFetchFavorites={setShouldFetchFavorites}
+                    />
+
+                )}
+                onScroll={handleScroll}
+                scrollEventThrottle={30}
             />
-          )}
-        />
+          </>
+
 
         // <ActivityIndicator size={24} />
       )}
