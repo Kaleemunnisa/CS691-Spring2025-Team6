@@ -50,7 +50,9 @@ const EventCard: React.FC<EventCardProps> = ({
     <View style={styles.contentSection}>
       <ScrollView style={styles.scrollView}>
         {/* City-Specific Events Section */}
-        <Text style={[styles.sectionTitle,{marginTop:10}]}>Events in {city}</Text>
+        <Text style={[styles.sectionTitle, { marginTop: 10 }]}>
+          Events in {city}
+        </Text>
         {cityEvents.length > 0 ? (
           cityEvents.map((event: any, index: any) => (
             <View key={index} style={styles.eventCard}>

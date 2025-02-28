@@ -15,11 +15,12 @@ import {
 
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // import EventCard from "./EventCard";
-import { fetchEvents } from "../../api/fetchEvents";
+// import { fetchEvents } from "../../api/fetchEvents";
+import { fetchEvents } from "@/services/api/fetchEvents";
 import BackGround from "./BackGround";
 import FilterTabBar from "./filterTabs/FilterTabBar";
 import InputSection from "./inputSection/InputSection";
-import KeyboardAvoidingContainer from "@/app/keyBoard_utilities/KeyboardAvoidingContainer";
+import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidingContainer";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");
@@ -39,6 +40,8 @@ export default function HomeScreen() {
 
   const [showContent, setShowContent] = useState(false);
 
+  const [noEvents, setNoEvents] = useState(false);
+
   const clearEvents = () => {
     setPlaceID("");
     setCity("");
@@ -46,6 +49,7 @@ export default function HomeScreen() {
     setCityEvents([]);
     setOtherEvents({});
     setExpandedGenre(null);
+    setShowContent(false);
   };
 
   useEffect(() => {
@@ -53,7 +57,7 @@ export default function HomeScreen() {
     let cityEventsLength: any = cityEvents.length;
     console.log({ cityEventsLength });
     console.log(cityEvents);
-    setShowContent(() => cityEventsLength > 0);
+    setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
     console.log(otherEvents);
   }, [cityEvents]);
@@ -81,6 +85,7 @@ export default function HomeScreen() {
         setLoading={setLoading}
         clearEvents={clearEvents}
         showContent={showContent}
+        setShowContent={setShowContent}
         cityEvents={cityEvents}
       />
 

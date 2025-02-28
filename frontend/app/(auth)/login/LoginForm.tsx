@@ -8,12 +8,9 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
-import { auth, db } from "../../../firebaseConfig"; // Import auth and db from firebaseConfig
 import { useRouter } from "expo-router"; // Import the router
 
-import { signIn } from "../../firebase/firebaseAuth";
+import { signIn } from "@/services/firebase/firebaseAuth";
 import { primaryBtnColor } from "../colors";
 
 const LoginForm = () => {

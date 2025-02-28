@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   ActivityIndicator,
   KeyboardAvoidingView,
   ScrollView,
@@ -14,16 +13,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { signUp } from "../../firebase/firebaseAuth";
+import { signUp } from "@/services/firebase/firebaseAuth";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { text } from "@fortawesome/fontawesome-svg-core";
-import {
-  primaryBtnColor,
-  primaryColor,
-  signUpFormBG,
-  textColor,
-} from "../colors";
+import { primaryBtnColor, signUpFormBG, textColor } from "../colors";
 
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -209,7 +202,6 @@ const SignupForm = () => {
                 height: 30,
                 width: "100%",
                 // backgroundColor:'white'
-                
               }}
             >
               {loading && <ActivityIndicator size="large" color="#007BFF" />}
@@ -403,8 +395,8 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   error: {
-    textAlign:'center',
-    alignSelf:'center',
+    textAlign: "center",
+    alignSelf: "center",
     color: "red",
     marginTop: 10,
   },

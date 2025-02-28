@@ -4,7 +4,7 @@ import MapView, { Marker } from "react-native-maps";
 import PlaceCard from "./PlaceCard"; // Your place details component
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHome, faUser, faBurger } from "@fortawesome/free-solid-svg-icons";
-import BouncingIcon from "@/app/iconHelpers/BouncingIcons";
+import BouncingIcon from "@/utils/iconHelpers/BouncingIcons";
 // import { BouncingIcon } from "@/app/iconHelpers/BouncingIcons";
 // import ApiKeys from "@/app/api/ApiKeys";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";

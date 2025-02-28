@@ -8,7 +8,7 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import LottieAnimation from "../../animations-helper/DotLottieAnimations";
+import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 // import { useState, useEffect } from "react";
 
 const getContrastColor = (bgColor: string) => {
@@ -70,7 +70,7 @@ const UserTypeSelectionScreen = ({
                 Travel
               </Text>
               <LottieAnimation
-                source={require("../../../assets/animations/travellers-animation.json")}
+                source={require("@/assets/animations/travellers-animation.json")}
                 width={270}
                 height={270}
               />
@@ -88,7 +88,7 @@ const UserTypeSelectionScreen = ({
                 Guide
               </Text>
               <LottieAnimation
-                source={require("../../../assets/animations/guide-animation.json")}
+                source={require("@/assets/animations/guide-animation.json")}
                 width={300}
                 height={270}
               />
@@ -106,7 +106,7 @@ const UserTypeSelectionScreen = ({
                 Business
               </Text>
               <LottieAnimation
-                source={require("../../../assets/animations/business-animation.json")}
+                source={require("@/assets/animations/business-animation.json")}
                 width={300}
                 height={270}
               />
