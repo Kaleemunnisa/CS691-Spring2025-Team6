@@ -47,6 +47,7 @@ export default function HomeScreen() {
     setCityEvents([]);
     setOtherEvents({});
     setExpandedGenre(null);
+    setShowContent(false);
   };
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function HomeScreen() {
     let cityEventsLength: any = cityEvents.length;
     console.log({ cityEventsLength });
     console.log(cityEvents);
-    setShowContent(() => cityEventsLength > 0);
+    // setShowContent(() => cityEventsLength > 0);
     console.log("city_id->>>>>", placeID);
     console.log(otherEvents);
   }, [cityEvents]);
@@ -82,6 +83,7 @@ export default function HomeScreen() {
         setLoading={setLoading}
         clearEvents={clearEvents}
         showContent={showContent}
+        setShowContent={setShowContent}
         cityEvents={cityEvents}
       />
 

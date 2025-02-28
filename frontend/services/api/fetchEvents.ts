@@ -70,6 +70,7 @@ export const fetchEvents = async (
 
     sortedEvents.forEach(
       (event: {
+        id: String;
         _embedded: {
           venues: {
             [x: string]: any;
@@ -84,6 +85,7 @@ export const fetchEvents = async (
         const eventCity =
           event._embedded?.venues?.[0]?.city?.name || "Unknown City";
         const eventData = {
+          id: event.id,
           name: event.name,
           dateTime:
             event.dates?.start?.localDate +
@@ -125,6 +127,7 @@ export const fetchEvents = async (
 
       fallbackEvents.forEach(
         (event: {
+          id: String;
           name: any;
           dates: { start: { localDate: string; localTime: string } };
           _embedded: { venues: any[] };
@@ -132,6 +135,7 @@ export const fetchEvents = async (
           classifications: { segment: { name: any } }[];
         }) => {
           const eventData = {
+            id: event.id,
             name: event.name,
             dateTime:
               event.dates?.start?.localDate +
