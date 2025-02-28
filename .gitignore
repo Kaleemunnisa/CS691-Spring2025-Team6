@@ -3,3 +3,10 @@ frontend/package-lock.json
 frontend/package-lock.json
 screnshots
 .DS_store
+.gitignore
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/git_toolbox_prj.xml
+.idea/git_toolbox_blame.xml
+.idea/CS691-Spring2025-Team6.iml
