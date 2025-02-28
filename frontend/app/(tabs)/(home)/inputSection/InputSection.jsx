@@ -21,6 +21,7 @@ import { fetchCitySuggestions } from "@/services/api/fetchCitySuggestions";
 
 function InputSection({
   showContent,
+  setShowContent,
   setPlaceID,
   setLon,
   setLat,
@@ -170,7 +171,7 @@ function InputSection({
             {showContent && <Text style={styles.cityName}>{city}</Text>}
 
             <View style={styles.buttonContainer}>
-              {changeToClear ? (
+              {showContent ? (
                 <TouchableOpacity
                   style={[styles.button, styles.clearButton]}
                   onPress={clearEvents}
@@ -189,7 +190,7 @@ function InputSection({
                       setCityEvents,
                       setOtherEvents
                     );
-
+                    setShowContent(true);
                     setShowSuggestions(false);
                   }}
                 >
