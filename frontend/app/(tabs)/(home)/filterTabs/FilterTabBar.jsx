@@ -19,6 +19,7 @@ import MapScreen from "./places/MapScreen";
 import EventSection from "./events/EventSection";
 import EventScreen from "./events/EventScreen";
 import userAuth from "@/services/firebase/userAuth";
+import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 
 const OutlinedButton = ({ title, onPress, isActive, activeColor }) => (
   <TouchableOpacity
@@ -86,7 +87,14 @@ const FilterTabBar = ({ placeID, lon, lat, city, cityEvents, otherEvents }) => {
         ) : (
           activeTab === "Events" &&
           (cityEvents.length === 0 ? (
-            <Text>Loading Events...</Text>
+            // <Text>Loading Events...</Text>
+            <View style={styles.noDataFoundContainer}>
+              <LottieAnimation
+                source={require("@/assets/animations/nop-Data-Found.json")}
+                width={270}
+                height={270}
+              />
+            </View>
           ) : (
             <View>
               <EventScreen
@@ -112,6 +120,12 @@ const FilterTabBar = ({ placeID, lon, lat, city, cityEvents, otherEvents }) => {
 export default FilterTabBar;
 
 const styles = StyleSheet.create({
+  noDataFoundContainer: {
+    // backgroundColor:'black',
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: 100,
+  },
   buttonShodow: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
