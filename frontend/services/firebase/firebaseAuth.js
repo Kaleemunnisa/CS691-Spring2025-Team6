@@ -23,6 +23,7 @@ export const signUp = async (userType, userData) => {
 
     // Common user info to store
     const userInfo = {
+      profilepicture: userData.profilePicture,
       email: userData.email,
       username: userData.username,
       uid: userId,
