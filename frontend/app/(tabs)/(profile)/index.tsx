@@ -53,7 +53,7 @@ const ProfileScreen = () => {
           />
 
           {/* Profile Section with fixed height based on content */}
-          <ProfileSection userDate={userData} setEditClick={setEditClick} />
+          <ProfileSection userData={userData} setEditClick={setEditClick} />
 
           <FavoritesSection uid={user?.uid || ""} />
         </>
