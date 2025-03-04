@@ -31,7 +31,7 @@ By developing a smart travel app that provides real-time, location-based recomme
 
 ### 🛠 Technologies
 
-<table>
+<table  style="text-align: center;">
   <tr>
     <td><strong>Frontend</strong></td>
     <td><img src="https://github.com/user-attachments/assets/0c8992b9-4b35-4d99-a074-4af972055be1" alt="React Native" width="50"></td>
@@ -39,12 +39,13 @@ By developing a smart travel app that provides real-time, location-based recomme
     <td><img src="https://github.com/user-attachments/assets/2e0cc9e2-a8ba-4b29-84b5-3a5d8a9e464c" alt="JavaScript" width="50"></td>
     <td><img src="https://github.com/user-attachments/assets/6d49a155-d8e1-4d65-90f9-a0965d852a92" alt="CSS" width="50"></td>
     
+    
   </tr>
   <tr>
     <td><strong>Backend</strong></td>
     <td><img src="https://github.com/user-attachments/assets/df8f5f7c-444a-47b8-a121-57aa64607587" alt="Node.js" width="50"></td>
-    <td><img src="https://github.com/user-attachments/assets/a3acd54c-cd01-4f50-87c5-9eab20f829f9" alt="Express.js" width="50"></td>
-    <td><img src="https://github.com/user-attachments/assets/219134c2-5826-4f32-a982-7127c2cbce40" alt="MySQL" width="50"></td>
+    <td><img src="https://github.com/user-attachments/assets/e035e5a8-f658-4eec-b6ed-4a25d3551e4f" alt="Fast API" width="100"></td>
+    <td><img src="https://github.com/user-attachments/assets/dc0cf798-85f2-4500-ac6b-a4ff1ddcef6a" alt="CSS" width="40"></td>
     <td><img src="https://github.com/user-attachments/assets/fa6dc75f-5190-4092-a66d-465634cb5dfe" alt="Firestore Database" width="50"></td>
   </tr>
   <tr>

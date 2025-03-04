@@ -10,24 +10,17 @@ import {
 } from "react-native";
 import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 // import { useState, useEffect } from "react";
+import Feather from "@expo/vector-icons/Feather";
 
-const getContrastColor = (bgColor: string) => {
-  const hex = bgColor.replace("#", "");
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-  return luminance > 0.5 ? "#000" : "#fff";
-};
-
+import { useRouter, useLocalSearchParams } from "expo-router";
+import { primaryBtnColor } from "../colors";
 const { height: screenHeight } = Dimensions.get("window");
 const UserTypeSelectionScreen = ({
   onSelect,
 }: {
   onSelect: (userType: string) => void;
 }) => {
+  const router = useRouter();
   const slideAnim = useState<Animated.Value>(
     new Animated.Value(screenHeight)
   )[0]; // Start with 300 (below screen)
@@ -43,6 +36,9 @@ const UserTypeSelectionScreen = ({
 
   return (
     <SafeAreaView style={styles.selectionArea}>
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <Feather name="arrow-left" size={30} color="black" />
+      </TouchableOpacity>
       <View>
         <Text style={{ fontSize: 18, fontWeight: "bold", color: "blue" }}>
           Select Your Role
@@ -124,6 +120,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+  },
+  backButton: {
+    position: "absolute",
+    left: 20,
+    top: 50,
   },
   button: {
     backgroundColor: "blue",

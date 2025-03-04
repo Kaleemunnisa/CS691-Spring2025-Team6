@@ -9,13 +9,17 @@ import {
 } from "react-native";
 // import { AnimatedView } from "react-native-reanimated/lib/typescript/component/View";
 import Feather from "@expo/vector-icons/Feather";
+import { primaryBtnColor } from "@/app/(auth)/colors";
+import ProfileDetailsUpdateSection from "./ProfileDetailsUpdateSection";
 
 interface updateScreenProps {
+  userData: any;
   editClick: boolean;
   closeEditProfile: () => void;
 }
 
 const ProfileUpdateScreen: React.FC<updateScreenProps> = ({
+  userData,
   editClick,
   closeEditProfile,
 }) => {
@@ -32,10 +36,19 @@ const ProfileUpdateScreen: React.FC<updateScreenProps> = ({
   return (
     <Animated.View style={[styles.container, { right: rightPosition }]}>
       <SafeAreaView style={styles.viewContainer}>
-        <TouchableOpacity onPress={closeEditProfile}>
-          <Feather name="arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text>Satya</Text>
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity
+            onPress={closeEditProfile}
+            style={styles.backButton}
+          >
+            <Feather name="arrow-left" size={24} color="white" style={[]} />
+          </TouchableOpacity>
+          <Text style={styles.EditProfileText}>Update Profile</Text>
+        </View>
+
+        <View style={[{ width: "100%", height: "100%" }]}>
+          <ProfileDetailsUpdateSection userData={userData} />
+        </View>
       </SafeAreaView>
     </Animated.View>
   );
@@ -55,8 +68,44 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     flex: 1, // Makes the View fill the entire screen
-    justifyContent: "center", // Centers content vertically
-    alignItems: "center", // Centers content horizontally
+    // justifyContent: "flex-start", // Centers content vertically
+    // alignItems: "center", // Centers content horizontally
+    // backgroundColor:'red'
+  },
+  backButtonContainer: {
+    position: "relative",
+    // alignSelf:'flex-start'
+    // backgroundColor: "red",
+    display: "flex",
+    flexDirection: "row",
+  },
+  backButton: {
+    position: "absolute",
+    // left:10,
+    zIndex: 10,
+    backgroundColor: primaryBtnColor,
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 3,
+    width: 50,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    // width:30,
+  },
+  EditProfileText: {
+    // alignContent: "center",
+    textAlignVertical: "center",
+    paddingVertical: 10,
+    // paddingLeft: 15,
+    // width: "100%",
+    // backgroundColor: "grey",
+    textAlign: "center",
+    flex: 1,
+    justifyContent: "center",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

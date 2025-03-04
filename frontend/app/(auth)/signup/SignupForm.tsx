@@ -17,6 +17,8 @@ import { signUp } from "@/services/firebase/firebaseAuth";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { primaryBtnColor, signUpFormBG, textColor } from "../colors";
+import Feather from "@expo/vector-icons/Feather";
+import ProfilePicture from "@/components/ProfilePicture";
 
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -25,25 +27,28 @@ const SignupForm = () => {
   const { userType } = useLocalSearchParams() as { userType: string };
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [touristData, setTouristData] = useState({
+    profilePicture: "",
     name: "",
     email: "",
-    username: "",
+    userName: "",
     password: "",
     confirmPassword: "",
   });
   const [guideData, setGuideData] = useState({
+    profilePicture: "",
     name: "",
     email: "",
-    username: "",
+    userName: "",
     password: "",
     confirmPassword: "",
     location: "",
     yearsOfExperience: "",
   });
   const [businessData, setBusinessData] = useState({
+    profilePicture: "",
     name: "",
     email: "",
-    username: "",
+    userName: "",
     password: "",
     confirmPassword: "",
     businessType: "",
@@ -129,7 +134,7 @@ const SignupForm = () => {
         !touristData.name ||
         !touristData.email ||
         !touristData.password ||
-        !touristData.username
+        !touristData.userName
       ) {
         setError("Please fill in all required fields for tourist.");
         return;
@@ -140,7 +145,7 @@ const SignupForm = () => {
         !guideData.name ||
         !guideData.email ||
         !guideData.password ||
-        !guideData.username ||
+        !guideData.userName ||
         !guideData.location ||
         !guideData.yearsOfExperience
       ) {
@@ -153,7 +158,7 @@ const SignupForm = () => {
         !businessData.name ||
         !businessData.email ||
         !businessData.password ||
-        !businessData.username ||
+        !businessData.userName ||
         !businessData.businessType ||
         !businessData.location
       ) {
@@ -181,30 +186,43 @@ const SignupForm = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity onPress={() => router.back()}>
+        <Feather name="arrow-left" size={24} color="black" />
+      </TouchableOpacity>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 10}
-          style={styles.container}
         >
           <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={[
               styles.scrollContainer,
               !keyboardVisible && { height: "100%" },
             ]}
           >
+            {/* Profile Picture Input Section */}
+            <View style={{ marginVertical: 0 }}>
+              <ProfilePicture />
+            </View>
+
+            <View style={{ marginVertical: 5, height: 30, width: "100%" }}>
+              {/* {loading && <ActivityIndicator size="large" color="#007BFF" />} */}
+              {error && <Text style={styles.error}>{error}</Text>}
+            </View>
             <Text style={styles.title}>
               Be Our {capitalizeFirstLetter(userType as string)}
             </Text>
             <View
               style={{
-                marginVertical: 5,
+                marginVertical: 0,
                 height: 30,
                 width: "100%",
                 // backgroundColor:'white'
               }}
             >
-              {loading && <ActivityIndicator size="large" color="#007BFF" />}
+              {loading && <ActivityIndicator size={18} color="#007BFF" />}
               {error && <Text style={styles.error}>{error}</Text>}
             </View>
 
@@ -303,12 +321,15 @@ const SignupForm = () => {
                   />
                   <Picker.Item label="Game Spots" value="games" color="black" />
                 </Picker>
+
                 <TextInput
                   style={styles.input}
                   placeholder="Business Location"
                   onChangeText={(value) => handleChange("location", value)}
                   placeholderTextColor={textColor}
                 />
+
+                {/* images of businessData */}
               </>
             )}
 
@@ -331,6 +352,25 @@ const SignupForm = () => {
 };
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 75,
+    backgroundColor: "#E0E0E0",
+    justifyContent: "center",
+    alignItems: "center",
+    // marginBottom: 15,
+    alignSelf: "center",
+  },
+  profileImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 75,
+  },
+  imagePlaceholder: {
+    color: "gray",
+    fontSize: 16,
+  },
   signupCtn: {
     width: "100%",
     justifyContent: "center",
@@ -359,18 +399,19 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   scrollContainer: {
+    paddingTop: 20,
     paddingBottom: 20,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     // backgroundColor: "red",
   },
   title: {
-    fontSize: 24,
+    fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 6,
+    // marginBottom: 6,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
     marginTop: 10,
     alignSelf: "flex-start",

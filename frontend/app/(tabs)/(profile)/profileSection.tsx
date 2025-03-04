@@ -2,37 +2,21 @@
 import React, { useEffect, useState } from "react";
 import { primaryColor } from "@/app/(auth)/colors";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  SafeAreaView,
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import getCurrentUserData from "@/services/firebase/fetchUserDetails";
-import { MaterialIcons } from "@expo/vector-icons"; // Make sure you have this installed
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 interface ProfileSectionProps {
-  userDate: {
-    name: String;
-    userName: String;
+  userData: {
+    profilePicture: string;
+    name: string;
+    userName: string;
   };
   setEditClick: any;
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
-  userDate,
+  userData,
   setEditClick,
 }) => {
-  const user = {
-    name: "John Doe",
-    username: "@johndoe",
-    profileImage:
-      "https://github.com/user-attachments/assets/2e38c683-dff5-4e8c-88a2-ddd98e208d8e", // Replace with actual user image
-  };
-
   const handleEditClick = () => {
     setEditClick(true); // Toggle edit state
   };
@@ -43,13 +27,13 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
       <View style={styles.profileCard}>
         <View style={styles.profileRow}>
           <Image
-            source={{ uri: user.profileImage }}
+            source={{ uri: userData?.profilePicture }}
             style={styles.profileImage}
           />
-          {userDate ? (
+          {userData ? (
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>{userDate.name}</Text>
-              <Text style={styles.userUsername}>{userDate.userName}</Text>
+              <Text style={styles.userName}>{userData.name}</Text>
+              <Text style={styles.userUsername}>{userData.userName}</Text>
             </View>
           ) : (
             <View style={styles.userInfo}>
