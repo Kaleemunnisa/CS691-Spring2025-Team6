@@ -35,6 +35,7 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
 
   useEffect(() => {
   if (uid) {
+    console.log("uid", uid);
       fetchFavorites();
     }
     console.log("favourties", favorites);

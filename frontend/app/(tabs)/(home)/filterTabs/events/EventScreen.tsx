@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import EventSection from "./EventSection";
+import RecommendationsSection from "./RecommendationsSection";
 
 interface EventScreenProps {
   uid: string;
@@ -15,9 +16,10 @@ const EventScreen: React.FC<EventScreenProps> = ({
   cityEvents,
   otherEvents,
 }) => {
-  console.log("EventsScreen",uid);
+  console.log("EventsScreen", uid);
   return (
     <ScrollView style={styles.container}>
+      <RecommendationsSection uid={uid} cityEvents={cityEvents} />
       <EventSection
         uid={uid}
         sectionTitle={`Events in ${city}`}

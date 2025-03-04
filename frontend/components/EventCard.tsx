@@ -98,6 +98,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
+    minWidth:320,
+    maxWidth:360,
   },
   eventTitle: {
     fontSize: 16,

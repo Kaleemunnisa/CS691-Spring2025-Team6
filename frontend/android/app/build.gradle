@@ -147,7 +147,6 @@ android {
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-core:21.1.1")
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

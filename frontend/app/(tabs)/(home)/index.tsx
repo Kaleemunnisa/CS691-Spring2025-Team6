@@ -21,6 +21,10 @@ import BackGround from "./BackGround";
 import FilterTabBar from "./filterTabs/FilterTabBar";
 import InputSection from "./inputSection/InputSection";
 import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidingContainer";
+// import auth from "@react-native-firebase/auth";
+import { getUserFavorites } from "@/services/firebase/favourites";
+// import auth from "@react-native-firebase/auth";
+import userAuth from "@/services/firebase/userAuth";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");
@@ -31,9 +35,12 @@ export default function HomeScreen() {
   const [stateCode, setStateCode] = useState("");
   const [country, setCountry] = useState("");
   const [countryCode, setCountryCode] = useState("");
+  // Events from the entered city_id
   const [cityEvents, setCityEvents] = useState<any[]>([]);
-  // Events from the entered city
+  const [userFavorites, setUserFavorites] = useState<any[]>([]);
+
   const [otherEvents, setOtherEvents] = useState<Record<string, any[]>>({}); // Events grouped by genre
+  const [recommendations, setRecommendations] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedGenre, setExpandedGenre] = useState<string | null>(null); // Track expanded genre for "See More"
   const tabBarHeight = useBottomTabBarHeight(); // Get the height of the bottom tab bar
@@ -41,6 +48,8 @@ export default function HomeScreen() {
   const [showContent, setShowContent] = useState(false);
 
   const [noEvents, setNoEvents] = useState(false);
+
+  const [userUid, setUserUid] = useState<any>();
 
   const clearEvents = () => {
     setPlaceID("");
@@ -61,7 +70,6 @@ export default function HomeScreen() {
     console.log("city_id->>>>>", placeID);
     console.log(otherEvents);
   }, [cityEvents]);
-
   return (
     <View style={[styles.safeArea, { bottom: tabBarHeight }]}>
       <BackGround loading={loading} />
