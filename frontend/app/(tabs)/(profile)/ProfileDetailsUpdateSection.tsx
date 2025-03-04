@@ -1,3 +1,4 @@
+import ProfilePicture from "@/components/ProfilePicture";
 import React, { useState } from "react";
 import {
   View,
@@ -10,14 +11,24 @@ import {
   Keyboard,
   TextInput,
   Button,
-  Image,
+  Platform,
 } from "react-native";
 
+import {
+  getAuth,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
+import ChangePasswordScreen from "./components/ChangePasswordSection";
+import TextInputWithIcon from "./components/TextInputWithIcon";
 interface ProfileDetailsUpdateSectionProps {
   userData: {
     profilePicture: string;
     name: string;
     userName: string;
+    email: string;
+    userType: string;
   };
 }
 
@@ -27,51 +38,88 @@ const ProfileDetailsUpdateSection: React.FC<
   // Set initial state based on userData
   const [name, setName] = useState(userData.name);
   const [userName, setUserName] = useState(userData.userName);
+  const [email, setEmail] = useState(userData.email);
+  // const [useType,s]
   const [profilePicture, setProfilePicture] = useState(userData.profilePicture);
 
-  // Handle updating user details
-  const handleSave = () => {
-    // Save the updated data to Firebase or any storage
-    console.log("Updated User Data:", { name, userName, profilePicture });
+  // State for password and confirm password
+  const [changePasswordAllow, setChangePasswordAllow] = useState(false);
+  // const [oldPassword, setOldPassword] = useState("");
+  // const [newPassword, setNewPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
 
-    // Add Firebase saving logic here
-  };
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+  // Handle updating user details
+  // const handleSave = () => {
+  //   if (newPassword != "" && confirmPassword !== confirmPassword) {
+  //     alert("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   // Save the updated data to Firebase or any storage
+  //   console.log("Updated User Data:", {
+  //     name,
+  //     userName,
+  //     profilePicture,
+  //     newPassword,
+  //   });
+
+  //   // Add Firebase saving logic here
+  // };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
-        behavior="padding"
-        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === "ios" ? "height" : "height"} // Ensure proper keyboard handling on both iOS & Android
+        style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+          >
             <View style={styles.viewContainer}>
-              {/* <Text style={styles.title}>Profile Update Section</Text> */}
-
               {/* Display Profile Picture */}
               <View style={styles.profilePictureContainer}>
-                <Image
-                  source={{ uri: profilePicture }}
-                  style={styles.profilePicture}
+                <ProfilePicture
+                  firebasePictureUrl={userData.profilePicture}
+                  editScreen={true}
                 />
-                <Button title="Change Profile Picture" onPress={() => {}} />
               </View>
 
               {/* Text Inputs for Name and UserName */}
-              <TextInput
-                style={styles.input}
+              <TextInputWithIcon
+                icon="pencil"
                 placeholder="Name"
                 value={name}
-                onChangeText={setName}
+                onChange={(e) => setName(e.nativeEvent.text)}
               />
-              <TextInput
-                style={styles.input}
+              <TextInputWithIcon
+                icon="pencil"
                 placeholder="UserName"
                 value={userName}
-                onChangeText={setUserName}
+                onChange={(e) => setUserName(e.nativeEvent.text)}
+              />
+              <TextInputWithIcon
+                icon="pencil"
+                placeholder="Email"
+                value={userData.email}
+                onChange={(e) => setEmail(e.nativeEvent.text)}
               />
 
-              <Button title="Save" onPress={handleSave} />
+              <TextInput
+                style={styles.input}
+                placeholder="Change Password"
+                value={"*******"}
+                secureTextEntry
+                editable={false}
+                onTouchEnd={() => setChangePasswordAllow(!changePasswordAllow)}
+              />
+              {changePasswordAllow && <ChangePasswordScreen />}
+
+              <Button title="Save" />
             </View>
           </ScrollView>
         </TouchableWithoutFeedback>
@@ -83,21 +131,24 @@ const ProfileDetailsUpdateSection: React.FC<
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
+    // backgroundColor: "red",
   },
   scrollContainer: {
-    flexGrow: 1,
+    // flexGrow: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
+    // backgroundColor: "gray",
+    height: "100%",
   },
   viewContainer: {
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+    // backgroundColor: "green",
+    height: "100%",
+    paddingBottom: 100,
+    paddingTop: 10,
   },
   input: {
     width: "80%",

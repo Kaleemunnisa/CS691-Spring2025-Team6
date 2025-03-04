@@ -11,7 +11,6 @@ import {
   Keyboard,
   StyleSheet,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { signUp } from "@/services/firebase/firebaseAuth";
@@ -19,11 +18,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { primaryBtnColor, signUpFormBG, textColor } from "../colors";
 import Feather from "@expo/vector-icons/Feather";
-import * as ImagePicker from "expo-image-picker";
-import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
-import { FontAwesome } from "@expo/vector-icons";
-
-import uploadToCloudinary from "@/services/cloudinary/UploadImageToCloudinary";
+import ProfilePicture from "@/components/ProfilePicture";
 
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -63,46 +58,6 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  const [image, setImage] = useState<string | null>(null);
-  const [imageCloudinaryLoading, setImageCloudinaryLoading] = useState(false);
-  // const [hasPermission, setHasPermission] = useState(false);
-
-  // // Request permission for the image picker
-  // const requestPermission = async () => {
-  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //   return status === "granted";
-  // };
-
-  // Select an image for the profile picture
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-    console.log(result);
-
-    if (!result.canceled) {
-      const selectedImage = result.assets[0];
-      const imageUri = selectedImage.uri;
-      console.log(imageUri);
-      setImage(imageUri); // Save the image URI to state
-      // handleChange("profilePicture", result.uri); // Save the image URI in the form
-
-      // Now upload to Cloudinary
-      console.log("cloudinary started");
-      await uploadToCloudinary(
-        imageUri,
-        setImage,
-        setImageCloudinaryLoading
-      ).then(() => {
-        setImageCloudinaryLoading(false);
-      });
-      console.log("Image Uploaded");
-    }
-  };
 
   // Listen for keyboard visibility changes
   useEffect(() => {
@@ -249,46 +204,7 @@ const SignupForm = () => {
           >
             {/* Profile Picture Input Section */}
             <View style={{ marginVertical: 0 }}>
-              <TouchableOpacity onPress={pickImage}>
-                <View
-                  style={[
-                    {
-                      position: "absolute",
-                      bottom: 15,
-                      right: -3,
-                      zIndex: 10,
-                      backgroundColor: "white",
-                      padding: 5,
-                      borderRadius: 50,
-                    },
-                  ]}
-                >
-                  {imageCloudinaryLoading ? (
-                    <ActivityIndicator size={18} color="#007BFF" />
-                  ) : (
-                    <FontAwesome
-                      name="pencil"
-                      size={18}
-                      color="rgb(29, 28, 28)"
-                    />
-                  )}
-                </View>
-
-                <View style={styles.imageContainer}>
-                  {image ? (
-                    <Image
-                      source={{ uri: image }}
-                      style={styles.profileImage}
-                    />
-                  ) : (
-                    <LottieAnimation
-                      source={require("@/assets/animations/profile-dummy.json")}
-                      width={200}
-                      height={200}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
+              <ProfilePicture />
             </View>
 
             <View style={{ marginVertical: 5, height: 30, width: "100%" }}>
