@@ -10,3 +10,14 @@ screnshots
 .idea/git_toolbox_prj.xml
 .idea/git_toolbox_blame.xml
 .idea/CS691-Spring2025-Team6.iml
+backend/app/**/__pycache__/
+
+backend/app/__pycache__/__init__.cpython-313.pyc
+backend/app/__pycache__/__init__.cpython-313.pyc
+backend/app/__pycache__/main.cpython-313.pyc
+backend/app/api/__pycache__/__init__.cpython-313.pyc
+backend/app/api/__pycache__/events.cpython-313.pyc
+backend/app/models/__pycache__/__init__.cpython-313.pyc
+backend/app/models/__pycache__/event.cpython-313.pyc
+backend/app/services/__pycache__/__init__.cpython-313.pyc
+backend/app/services/__pycache__/recommender.cpython-313.pyc
