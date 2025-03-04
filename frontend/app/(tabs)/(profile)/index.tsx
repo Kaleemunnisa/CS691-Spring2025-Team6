@@ -45,17 +45,23 @@ const ProfileScreen = () => {
         />
       ) : (
         <>
-          <ProfileUpdateScreen
-            editClick={editClick}
-            closeEditProfile={() => {
-              setEditClick(false);
-            }}
-          />
+          {userData ? (
+            <>
+              <ProfileUpdateScreen
+                userData={userData}
+                editClick={editClick}
+                closeEditProfile={() => {
+                  setEditClick(false);
+                }}
+              />
 
-          {/* Profile Section with fixed height based on content */}
-          <ProfileSection userData={userData} setEditClick={setEditClick} />
+              <ProfileSection userData={userData} setEditClick={setEditClick} />
 
-          <FavoritesSection uid={user?.uid || ""} />
+              <FavoritesSection uid={user?.uid || ""} />
+            </>
+          ) : (
+            <Text>Loading user data...</Text>
+          )}
         </>
       )}
     </SafeAreaView>
