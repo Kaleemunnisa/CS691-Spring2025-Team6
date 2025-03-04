@@ -1,13 +1,11 @@
-# app/main.py
-
 from fastapi import FastAPI
-from app.api import get_recommendations
-from app.models import Event, RecommendationRequest
-from app.services.recommender import recommend_events
+from app.api.events import router as event_router  # Import your router
 
-app = FastAPI()
+app = FastAPI()  # This must exist
 
-@app.post("/recommend")
-async def get_recommendations(request: RecommendationRequest):
-    recommendations = recommend_events(request.fetched_events, request.favorite_events)
-    return {"recommendations": recommendations}
+# Include your API router
+app.include_router(event_router, prefix="/events")
+
+@app.get("/")
+async def root():
+    return {"message": "API is running"}

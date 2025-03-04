@@ -9,17 +9,18 @@ def recommend_events(fetched_events, favorite_events):
         return fetched_events[:5]
 
     # Convert events to DataFrame
-    fetched_df = pd.DataFrame([event.dict() for event in fetched_events])
-    favorite_df = pd.DataFrame([event.dict() for event in favorite_events])
+    fetched_df = pd.DataFrame([event for event in fetched_events])
+    print(fetched_df)
+    favorite_df = pd.DataFrame([event for event in favorite_events])
+    print(favorite_df)
 
-    # Assign numerical values to category and genre
+    # Assign numerical values to category (no genre field in your example event)
     all_events = pd.concat([fetched_df, favorite_df]).drop_duplicates()
     all_events["category_encoded"] = all_events["category"].astype("category").cat.codes
-    all_events["genre_encoded"] = all_events["genre"].astype("category").cat.codes
 
-    # Compute similarity based on category & genre
-    all_features = all_events[["category_encoded", "genre_encoded"]]
-    favorite_features = favorite_df[["category_encoded", "genre_encoded"]]
+    # Compute similarity based on category only
+    favorite_features = favorite_df[["category_encoded"]]
+    all_features = all_events[["category_encoded"]]
 
     similarity_scores = cosine_similarity(favorite_features, all_features)
     scores = np.mean(similarity_scores, axis=0)
@@ -30,4 +31,6 @@ def recommend_events(fetched_events, favorite_events):
     # Exclude already favorited events and sort by similarity
     recommended = all_events[~all_events["id"].isin(favorite_df["id"])].sort_values("score", ascending=False).head(5)
 
-    return recommended[["id", "name", "category", "genre", "imageUrl"]].to_dict(orient="records")
+    # Return all fields of the recommended events
+    return recommended.to_dict(orient="records")
+
