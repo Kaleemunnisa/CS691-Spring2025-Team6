@@ -76,14 +76,6 @@ const SignupForm = () => {
 
   // Select an image for the profile picture
   const pickImage = async () => {
-    // Request permission before allowing the user to pick an image
-    // const permissionGranted = await requestPermission();
-
-    // if (!permissionGranted) {
-    //   alert("Permission to access media library is required!");
-    //   return;
-    // }
-
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
@@ -300,7 +292,7 @@ const SignupForm = () => {
             </View>
 
             <View style={{ marginVertical: 5, height: 30, width: "100%" }}>
-              {loading && <ActivityIndicator size="large" color="#007BFF" />}
+              {/* {loading && <ActivityIndicator size="large" color="#007BFF" />} */}
               {error && <Text style={styles.error}>{error}</Text>}
             </View>
             <Text style={styles.title}>
@@ -314,7 +306,7 @@ const SignupForm = () => {
                 // backgroundColor:'white'
               }}
             >
-              {loading && <ActivityIndicator size="large" color="#007BFF" />}
+              {loading && <ActivityIndicator size={18} color="#007BFF" />}
               {error && <Text style={styles.error}>{error}</Text>}
             </View>
 
