@@ -9,5 +9,5 @@ class Event(BaseModel):
     imageUrl: str
 
 class RecommendationRequest(BaseModel):
-    fetched_events: List[Event]  # Events from Ticketmaster
-    favorite_events: List[Event]  # User’s saved events from Firebase
+    fetched_events: List[dict]  # Events from Ticketmaster
+    favorite_events: List[dict]  # User’s saved events from Firebase
