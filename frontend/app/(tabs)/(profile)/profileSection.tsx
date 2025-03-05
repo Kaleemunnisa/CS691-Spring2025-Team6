@@ -23,31 +23,33 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   //userData
 
   return (
-    <View style={styles.profileSection}>
-      <View style={styles.profileCard}>
-        <View style={styles.profileRow}>
-          <Image
-            source={{ uri: userData?.profilePicture }}
-            style={styles.profileImage}
-          />
-          {userData ? (
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{userData.name}</Text>
-              <Text style={styles.userUsername}>{userData.userName}</Text>
-            </View>
-          ) : (
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>User Name</Text>
-              <Text style={styles.userUsername}>Name</Text>
-            </View>
-          )}
+    <TouchableOpacity onPress={handleEditClick}>
+      <View style={styles.profileSection}>
+        <View style={styles.profileCard}>
+          <View style={styles.profileRow}>
+            <Image
+              source={{ uri: userData?.profilePicture }}
+              style={styles.profileImage}
+            />
+            {userData ? (
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>{userData.name}</Text>
+                <Text style={styles.userUsername}>{userData.userName}</Text>
+              </View>
+            ) : (
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>User Name</Text>
+                <Text style={styles.userUsername}>Name</Text>
+              </View>
+            )}
 
-          <TouchableOpacity onPress={handleEditClick} style={styles.editIcon}>
-            <FontAwesome name="edit" size={26} color="white" />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={handleEditClick} style={styles.editIcon}>
+              <FontAwesome name="edit" size={26} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

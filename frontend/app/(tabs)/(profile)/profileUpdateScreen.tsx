@@ -57,9 +57,10 @@ const ProfileUpdateScreen: React.FC<updateScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     // flex: 1, // Ensures the SafeAreaView takes up full height and width
-    height: "100%",
+    height: "120%",
     position: "absolute",
-    flex: 1,
+
+    // flex: 1,
     width: "100%",
     backgroundColor: "#fff",
     // borderWidth:2,
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     // justifyContent: "flex-start", // Centers content vertically
     // alignItems: "center", // Centers content horizontally
     // backgroundColor:'red'
+    height: "100%",
   },
   backButtonContainer: {
     position: "relative",
