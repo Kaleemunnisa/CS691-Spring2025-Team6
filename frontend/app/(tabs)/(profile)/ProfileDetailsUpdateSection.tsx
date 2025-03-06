@@ -69,62 +69,60 @@ const ProfileDetailsUpdateSection: React.FC<
   // };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "height" : "height"} // Ensure proper keyboard handling on both iOS & Android
-        style={{ flex: 1 }}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-          >
-            <View style={styles.viewContainer}>
-              {/* Display Profile Picture */}
-              <View style={styles.profilePictureContainer}>
-                <ProfilePicture
-                  firebasePictureUrl={userData.profilePicture}
-                  editScreen={true}
-                />
-              </View>
-
-              {/* Text Inputs for Name and UserName */}
-              <TextInputWithIcon
-                icon="pencil"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.nativeEvent.text)}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "height" : "height"} // Ensure proper keyboard handling on both iOS & Android
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.viewContainer}>
+            {/* Display Profile Picture */}
+            <View style={styles.profilePictureContainer}>
+              <ProfilePicture
+                firebasePictureUrl={userData.profilePicture}
+                editScreen={true}
               />
-              <TextInputWithIcon
-                icon="pencil"
-                placeholder="UserName"
-                value={userName}
-                onChange={(e) => setUserName(e.nativeEvent.text)}
-              />
-              <TextInputWithIcon
-                icon="pencil"
-                placeholder="Email"
-                value={userData.email}
-                onChange={(e) => setEmail(e.nativeEvent.text)}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Change Password"
-                value={"*******"}
-                secureTextEntry
-                editable={false}
-                onTouchEnd={() => setChangePasswordAllow(!changePasswordAllow)}
-              />
-              {changePasswordAllow && <ChangePasswordScreen />}
-
-              <Button title="Save" />
             </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+
+            {/* Text Inputs for Name and UserName */}
+            <TextInputWithIcon
+              icon="pencil"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.nativeEvent.text)}
+            />
+            <TextInputWithIcon
+              icon="pencil"
+              placeholder="UserName"
+              value={userName}
+              onChange={(e) => setUserName(e.nativeEvent.text)}
+            />
+            <TextInputWithIcon
+              icon="pencil"
+              placeholder="Email"
+              value={userData.email}
+              onChange={(e) => setEmail(e.nativeEvent.text)}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Change Password"
+              value={"*******"}
+              secureTextEntry
+              editable={false}
+              onTouchEnd={() => setChangePasswordAllow(!changePasswordAllow)}
+            />
+            {changePasswordAllow && <ChangePasswordScreen />}
+
+            <Button title="Save" />
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -132,6 +130,7 @@ const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
     // backgroundColor: "red",
+    height: "100%",
   },
   scrollContainer: {
     // flexGrow: 1,

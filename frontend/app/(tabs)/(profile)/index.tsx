@@ -79,13 +79,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  eventsSection: {
-    flex: 1, // Takes remaining space
-    // backgroundColor: "#fff",
-    // marginTop: 30,
-    position: "relative", // Allows the blending effect to overlay
-  },
-
   eventsContainer: {
     padding: 16,
   },
