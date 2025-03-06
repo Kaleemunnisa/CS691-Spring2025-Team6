@@ -24,62 +24,9 @@ const fetchCityInfo = async (city: string) => {
 };
 
 const ChatBotScreen = () => {
-  const [mess, setMess] = useState("");
-  useEffect(() => {
-    const fetchData = async () => {
-      setMess(await generateAIContent("About Austin"));
-    };
-    fetchData();
-  }, []);
-  // setMess(await generateAIContent("About Austin"));
-  // const [messages, setMessages] = useState([
-  //   {
-  //     _id: 1,
-  //     text: "Hello! Ask me about any city, and I'll fetch details for you.",
-  //     createdAt: new Date(),
-  //     user: { _id: 2, name: "Bot" },
-  //   },
-  // ]);
-
-  // // const onSend = useCallback(async (newMessages: any[] = []) => {
-  // //   setMessages((previousMessages) =>
-  // //     // GiftedChat.append(previousMessages, newMessages)
-  // //   );
-
-  //   const userMessage = newMessages[0].text;
-
-  //   // Fetch city details from Wikipedia
-  //   const cityDetails = await fetchCityInfo(userMessage);
-
-  //   const botResponse = {
-  //     _id: new Date().getTime(),
-  //     text:
-  //       cityDetails.error || `${cityDetails.city}: ${cityDetails.description}`,
-  //     createdAt: new Date(),
-  //     user: { _id: 2, name: "Bot" },
-  //   };
-
-  //   // Add Wikipedia link
-  //   if (cityDetails.wikipedia) {
-  //     botResponse.text += `\n\nFor more details, visit: ${cityDetails.wikipedia}`;
-  //   }
-
-  //   // Add image if available
-  //   if (cityDetails.image) {
-  //     botResponse.text += `\n\n![City Image](${cityDetails.image})`;
-  //   }
-
-  //   setMessages((prevMessages) =>
-  //     // GiftedChat.append(prevMessages, [botResponse])
-  //   );
-  // }, []);
-
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ padding: 10 }}>
-        {/* Render Markdown content */}
-        <Markdown>{mess}</Markdown>
-      </ScrollView>
+      <Text>ChatBotScreen</Text>
     </SafeAreaView>
   );
 };
@@ -87,8 +34,98 @@ const ChatBotScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "black",
+    backgroundColor: "while",
+    padding: 20,
+    justifyContent: "center",
+    alignItems:'center'
   },
+  chatContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 20,
+  },
+  chatMessage: {
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,         // 1  // 2
+    backgroundColor: "lightgrey",
+  },
+  chatMessageUser: {
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,         // 1  // 2
+    backgroundColor: "lightblue",
+  },
+  chatMessageBot: {
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,         // 1  // 2
+    backgroundColor: "lightgreen",
+  },
+  chatMessageText: {
+    fontSize: 16,
+  },
+  chatMessageUserText: {
+    fontSize: 16,
+  },
+  chatMessageBotText: {
+    fontSize: 16,
+  },
+  chatMessageTime: {
+    fontSize: 12,
+    color: "grey",
+  },
+  chatMessageUserTime: {
+    fontSize: 12,
+    color: "grey",
+  },
+  chatMessageBotTime: {
+    fontSize: 12,
+    color: "grey",
+  },
+  chatMessageImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+  },
+  chatMessageUserImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+  },
+  chatMessageBotImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+  },
+  chatMessageLink: {
+    color: "blue",
+  },
+  chatMessageUserLink: {
+    color: "blue",
+  },
+  chatMessageBotLink: {
+    color: "blue",
+  },
+  chatMessageCode: {
+    backgroundColor: "lightgrey",
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+  },
+  chatMessageUserCode: {
+    backgroundColor: "lightblue",
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+  },
+  chatMessageBotCode: {
+    backgroundColor: "lightgreen",
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+  },
+    
 });
 
 export default ChatBotScreen;

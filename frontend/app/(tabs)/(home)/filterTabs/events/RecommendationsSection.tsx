@@ -13,7 +13,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   uid,
   cityEvents,
 }) => {
-  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<any>();
   const [favorites, setFavorites] = useState<any[] | null>(null);
 
   useEffect(() => {
@@ -39,8 +39,9 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
       cityEvents,
       favorites
     ).then((data) => {
+      console.log(data);
       if (data) {
-        setRecommendations(data.recommendations);
+        setRecommendations(data);
       }
     });
     console.log("Recommendations main", recommendations);
@@ -50,7 +51,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 
   useEffect(() => {
     fetchRecommendationshandler();
-  }, [favorites]);
+  }, [cityEvents, favorites]);
   if (!favorites) {
     return <Text>Recommendations Loading...</Text>;
   }
@@ -59,7 +60,9 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
     <FlatList
       data={recommendations}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <EventCard event={item} />}
+      renderItem={({ item }) => (
+        <EventCard event={item} showFavorite={true} uid={uid} />
+      )}
       horizontal
       contentContainerStyle={{ padding: 2 }}
     />

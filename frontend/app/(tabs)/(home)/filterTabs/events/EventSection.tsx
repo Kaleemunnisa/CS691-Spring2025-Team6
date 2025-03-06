@@ -56,7 +56,7 @@ const EventSection: React.FC<EventSectionProps> = ({
 
 const styles = StyleSheet.create({
   section: {
-    paddingBottom: 20,
+    paddingBottom: 100,
   },
   youMightLikeSection: {
     paddingBottom: 100,
