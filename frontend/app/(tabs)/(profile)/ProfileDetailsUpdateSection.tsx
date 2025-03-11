@@ -2,7 +2,6 @@ import ProfilePicture from "@/components/ProfilePicture";
 import React, { useState } from "react";
 import {
   View,
-  Text,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -13,13 +12,6 @@ import {
   Button,
   Platform,
 } from "react-native";
-
-import {
-  getAuth,
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from "firebase/auth";
 import ChangePasswordScreen from "./components/ChangePasswordSection";
 import TextInputWithIcon from "./components/TextInputWithIcon";
 interface ProfileDetailsUpdateSectionProps {
@@ -145,7 +137,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-    // backgroundColor: "green",
+    // backgroundColor: "red",
     height: "100%",
     paddingBottom: 100,
     paddingTop: 10,

@@ -1,27 +1,25 @@
-import { primaryColor } from "@/app/(auth)/colors";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
+  Text,
+  StyleSheet,
+  ActivityIndicator,
   SafeAreaView,
   View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Image,
-  Animated,
-  ActivityIndicator,
+  Alert,
 } from "react-native";
-
 import getCurrentUserData from "@/services/firebase/fetchUserDetails";
 import ProfileUpdateScreen from "./profileUpdateScreen";
 import ProfileSection from "./profileSection";
-import { getUserFavorites } from "@/services/firebase/favourites";
 import userAuth from "@/services/firebase/userAuth";
 import FavoritesSection from "./favoritesSection";
 // import { faV } from "@fortawesome/free-solid-svg-icons";
+import { signOutUser } from "@/services/firebase/firebaseAuth";
+import { useRouter } from "expo-router";
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
   const [editClick, setEditClick] = useState(false);
+  const router = useRouter();
 
   const { user, loading } = userAuth();
   //changing the userdata
@@ -35,6 +33,21 @@ const ProfileScreen = () => {
     });
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const success = await signOutUser();
+      if (success) {
+        router.replace("/(auth)/login"); // Redirect to login screen
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Logout Failed", error.message);
+      } else {
+        Alert.alert("Logout Failed", "An unknown error occurred");
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
@@ -46,7 +59,7 @@ const ProfileScreen = () => {
       ) : (
         <>
           {userData ? (
-            <>
+            <View style={styles.container}>
               <ProfileUpdateScreen
                 userData={userData}
                 editClick={editClick}
@@ -58,7 +71,7 @@ const ProfileScreen = () => {
               <ProfileSection userData={userData} setEditClick={setEditClick} />
 
               <FavoritesSection uid={user?.uid || ""} />
-            </>
+            </View>
           ) : (
             <Text>Loading user data...</Text>
           )}

@@ -1,5 +1,4 @@
-import ChatBotScreen from "./ChatBotScreen";
-
+import { Text } from "react-native";
 export const ChatBot = () => {
-  return <ChatBotScreen />;
+  return <Text>ChatBot</Text>;
 };

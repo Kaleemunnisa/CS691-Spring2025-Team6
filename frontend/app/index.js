@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 // Importing the login and signup components from their respective folders
 import LoginScreen from "./(auth)/login";
 

@@ -75,7 +75,9 @@ const styles = StyleSheet.create({
   backButtonContainer: {
     position: "relative",
     // alignSelf:'flex-start'
-    // backgroundColor: "red",
+    backgroundColor: "white",
+    width: "100%",
+    // height: 50,
     display: "flex",
     flexDirection: "row",
   },

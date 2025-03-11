@@ -1,18 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-  SafeAreaView,
-  Animated,
-  Platform,
-} from "react-native";
-
+import { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // import EventCard from "./EventCard";
 // import { fetchEvents } from "../../api/fetchEvents";
@@ -20,11 +7,8 @@ import { fetchEvents } from "@/services/api/fetchEvents";
 import BackGround from "./BackGround";
 import FilterTabBar from "./filterTabs/FilterTabBar";
 import InputSection from "./inputSection/InputSection";
-import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidingContainer";
 // import auth from "@react-native-firebase/auth";
-import { getUserFavorites } from "@/services/firebase/favourites";
 // import auth from "@react-native-firebase/auth";
-import userAuth from "@/services/firebase/userAuth";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");

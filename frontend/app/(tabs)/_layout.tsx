@@ -1,5 +1,4 @@
-import { Stack, Tabs } from "expo-router";
-
+import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   Entypo,
