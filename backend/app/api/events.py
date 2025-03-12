@@ -1,8 +1,8 @@
 # app/api/events.py
 import logging
 from fastapi import APIRouter
-from app.models.event import RecommendationRequest
-from app.services.recommender import recommend_events
+from models.event import RecommendationRequest
+from services.recommender import recommend_events
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)

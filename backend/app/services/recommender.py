@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from app.models.event import Event
+from models.event import Event
 from sklearn.preprocessing import OneHotEncoder
 
 def recommend_events(fetched_events, favorite_events):
