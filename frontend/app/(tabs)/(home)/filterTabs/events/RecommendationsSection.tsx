@@ -12,13 +12,13 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   uid,
   cityEvents,
 }) => {
-  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<any>([]);
   const [favorites, setFavorites] = useState<any[] | null>(null);
 
   useEffect(() => {
     // console.log("Recommendations", uid);
     fetFavorites();
-    console.log("Recommendations", favorites);
+    console.log("favoriteData", favorites);
   }, [uid]);
 
   const fetFavorites = async () => {
@@ -37,17 +37,13 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
     console.log("Entered the recommendations fetchRecommendationshandler");
     console.log(typeof cityEvents, cityEvents.length);
     console.log(typeof favorites, favorites.length);
-    const recommendations = await fetchRecommendations(
-      cityEvents,
-      favorites
-    ).then((data) => {
-      if (data) {
-        setRecommendations(data.recommendations);
-      }
-    });
-    console.log("Recommendations main", recommendations);
+    const recommendations = await fetchRecommendations(cityEvents, favorites);
+    // console.log("Recommendations main", data.recommendations);
+    if (recommendations) {
+      setRecommendations(recommendations);
+    }
 
-    // setRecommendations(recommendations);
+    console.log("Recommendations last", recommendations);
   };
 
   useEffect(() => {
