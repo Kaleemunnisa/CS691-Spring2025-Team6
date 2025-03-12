@@ -52,7 +52,7 @@ export default function HomeScreen() {
     console.log(cityEvents);
     setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
-    console.log(otherEvents);
+    console.log("Other Events: ->>>", otherEvents);
   }, [cityEvents]);
   return (
     <View style={[styles.safeArea, { bottom: tabBarHeight }]}>
