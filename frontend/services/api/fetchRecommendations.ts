@@ -27,7 +27,7 @@ export const fetchRecommendations = async (
 
     if (response.ok) {
       const data: RecommendationResponse = await response.json();
-      console.log("Recommendations:", data.recommendations);
+      console.log("Recommendations: ", data);
       return data;
     } else {
       console.error("Error fetching recommendations:", response.statusText);

@@ -1,9 +1,8 @@
-import { Text, FlatList, ScrollView } from "react-native";
+import { Text, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import { getUserFavorites } from "@/services/firebase/favourites";
 import EventCard from "@/components/EventCard";
 // import { ScrollView } from "react-native-gesture-handler";
-import { ScrollViewBase } from "react-native";
 import { fetchRecommendations } from "@/services/api/fetchRecommendations";
 interface RecommendationsSectionProps {
   uid: string;
@@ -35,6 +34,9 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   const fetchRecommendationshandler = async () => {
     // console.log("Fetching recommendations");
     if (!cityEvents || !favorites) return;
+    console.log("Entered the recommendations fetchRecommendationshandler");
+    console.log(typeof cityEvents, cityEvents.length);
+    console.log(typeof favorites, favorites.length);
     const recommendations = await fetchRecommendations(
       cityEvents,
       favorites
