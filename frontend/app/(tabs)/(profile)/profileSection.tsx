@@ -1,8 +1,16 @@
 // import React from 'react';
-import React, { useEffect, useState } from "react";
 import { primaryColor } from "@/app/(auth)/colors";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { signOutUser } from "@/services/firebase/firebaseAuth";
+import { useRouter } from "expo-router";
 
 interface ProfileSectionProps {
   userData: {
@@ -22,9 +30,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   };
   //userData
 
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      router.replace("/(auth)/login"); // Redirect to login screen
+    } catch (error) {
+      Alert.alert("Logout Failed", (error as any).message);
+    }
+  };
+
   return (
-    <TouchableOpacity onPress={handleEditClick}>
-      <View style={styles.profileSection}>
+    <View style={styles.profileSection}>
+      <TouchableOpacity onPress={handleEditClick}>
         <View style={styles.profileCard}>
           <View style={styles.profileRow}>
             <Image
@@ -42,14 +61,21 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                 <Text style={styles.userUsername}>Name</Text>
               </View>
             )}
+            <TouchableOpacity onPress={handleLogout} style={styles.editIcon}>
+              <FontAwesome
+                name="power-off"
+                size={26}
+                color="rgba(239, 232, 232, 0.95)"
+              />
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={handleEditClick} style={styles.editIcon}>
               <FontAwesome name="edit" size={26} color="white" />
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 

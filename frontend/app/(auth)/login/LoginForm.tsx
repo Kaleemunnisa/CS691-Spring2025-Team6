@@ -1,5 +1,5 @@
 // app/auth/login/loginform.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   TextInput,
@@ -9,14 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router"; // Import the router
-
 import { signIn } from "@/services/firebase/firebaseAuth";
 import { primaryBtnColor } from "../colors";
 
 const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("satya@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [password, setPassword] = useState("123123");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
