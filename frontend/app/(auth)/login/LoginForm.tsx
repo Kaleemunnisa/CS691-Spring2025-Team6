@@ -11,6 +11,7 @@ import {
 import { useRouter } from "expo-router"; // Import the router
 import { signIn } from "@/services/firebase/firebaseAuth";
 import { primaryBtnColor } from "../colors";
+import { useGoogleSignIn } from "@/services/firebase/googleAuth";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -26,6 +27,8 @@ const LoginForm = () => {
   const handleSignUp = () => {
     router.navigate("/(auth)/signup");
   };
+
+  const { initiateSignIn, googleAuthLoading } = useGoogleSignIn();
 
   return (
     <View style={styles.formContainer}>
@@ -58,6 +61,14 @@ const LoginForm = () => {
             color={"white"}
           />
         </View>
+        {/* Google Sign-In Button */}
+        {/* <TouchableOpacity
+          style={styles.googleButton}
+          onPress={initiateSignIn}
+          disabled={loading}
+        >
+          <Text style={styles.googleText}>Sign in with Google</Text>
+        </TouchableOpacity> */}
         <View style={styles.signupCtn}>
           {/* Tagline */}
           <Text style={styles.tagLine}>Join our travel family today!</Text>
@@ -73,6 +84,20 @@ const LoginForm = () => {
 };
 
 const styles = StyleSheet.create({
+  googleButton: {
+    backgroundColor: "#DB4437",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 15,
+  },
+  googleText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
   signupCtn: {
     marginTop: 20,
     flexDirection: "row", // Align elements side by side
@@ -128,3 +153,7 @@ const styles = StyleSheet.create({
 });
 
 export default LoginForm;
+
+// ios client id 608284775680-biutu0f7n1ho0ipjn4ctssekoclirbff.apps.googleusercontent.com
+// andriod client id 608284775680-4mr6s3j3v303okir98aru2h2u5nd7bg2.apps.googleusercontent.com
+// web client id 608284775680-ofta4b1hi2p1lggef8bm7u0l9psd37bt.apps.googleusercontent.com
