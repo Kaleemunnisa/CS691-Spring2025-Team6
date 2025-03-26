@@ -25,6 +25,7 @@ import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidi
 import { getUserFavorites } from "@/services/firebase/favourites";
 // import auth from "@react-native-firebase/auth";
 import userAuth from "@/services/firebase/userAuth";
+import updateCitySearchCount from "@/services/firebase/savePreviousSearches";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");
@@ -62,6 +63,8 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
+    console.log("HomeScreen mounted");
+    console.log(`${city}, ${state}, ${country}, ${placeID}`);
     console.log(`${cityEvents} city events....`);
     let cityEventsLength: any = cityEvents.length;
     console.log({ cityEventsLength });
@@ -69,6 +72,11 @@ export default function HomeScreen() {
     setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
     console.log(otherEvents);
+    if (cityEventsLength > 0) {
+      updateCitySearchCount(placeID).then(() => {
+        console.log("City search count updated");
+      });
+    }
   }, [cityEvents]);
   return (
     <View style={[styles.safeArea, { bottom: tabBarHeight }]}>
