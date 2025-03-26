@@ -30,7 +30,7 @@ export const fetchRecommendations = async (
       console.log("Recommendations:", data.recommendations);
       return data;
     } else {
-      console.error("Error fetching recommendations:", response.statusText);
+      // console.error("Error fetching recommendations:", response.statusText);
       return null;
     }
   } catch (error) {

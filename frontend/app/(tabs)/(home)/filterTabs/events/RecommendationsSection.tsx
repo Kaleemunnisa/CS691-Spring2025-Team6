@@ -20,6 +20,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 
   const [searchRecord, setSearchRecord] = useState<any[] | null>([]);
   const [searchRecordEvents, setSearchRecordEvents] = useState<any[]>([]);
+  const [recommendationLoading, setRecommendationLoading] = useState(true);
 
   useEffect(() => {
     if (searchRecord && searchRecord?.length > 0) {
@@ -46,23 +47,29 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 
   const fetFavorites = async () => {
     // console.log("Fetching favorites");
-    const favoriteData = await getUserFavorites(uid);
-    console.log("Favorite Data", favoriteData);
-    if (favoriteData) {
-      setFavorites(favoriteData.events); // Assuming `events` is an array of favorite events
-      //   setShouldFetchFavorites(false);
-    }
+    const favoriteData = await getUserFavorites(uid).then((data) => {
+      if (data) {
+        setFavorites(data.events); // Assuming `events` is an array of favorite events
+        //   setShouldFetchFavorites(false);
+        console.log("Favorites then", favorites);
+      }
+    });
+    // console.log("Favorite Data", favoriteData);
   };
   const fetchUserPreviousSearches = async () => {
-    // console.log("Fetching previous searches");
-    const records = await fetchUserSearchRecords();
-    console.log("Search Records", searchRecord);
-    setSearchRecord(records);
+    console.info("Fetching previous searches");
+    const records = await fetchUserSearchRecords().then((data) => {
+      if (data) {
+        console.log("Search Records then", data);
+        setSearchRecord(data);
+      }
+    });
+    // console.log("Search Records", searchRecord);
   };
 
   const fetchRecommendationshandler = async () => {
     // console.log("Fetching recommendations");
-    if (!cityEvents || !favorites) return;
+    if (!cityEvents || !favorites || !searchRecord) return;
     const recommendations = await fetchRecommendations(
       searchRecordEvents,
       favorites
@@ -70,6 +77,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
       console.log("recommendation at fetch", data);
       if (data) {
         setRecommendations(data);
+        setRecommendationLoading(false);
       }
     });
     console.log("Recommendations main", recommendations);
@@ -84,8 +92,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 
   useEffect(() => {
     fetchRecommendationshandler();
-  }, [cityEvents, favorites]);
-  if (!favorites) {
+  }, [searchRecordEvents, favorites]);
+  if (recommendationLoading) {
     return <Text>Recommendations Loading...</Text>;
   }
 
