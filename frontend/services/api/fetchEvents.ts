@@ -168,3 +168,9 @@ export const fetchEvents = async (
   //   console.log(cityEvents.length);
   setLoading(false);
 };
+
+
+
+export const fetchEventsWithCoordinates = async (coordinates: {lat:string,lon:string}) => {
+  
+};

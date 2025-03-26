@@ -27,6 +27,8 @@ import { getUserFavorites } from "@/services/firebase/favourites";
 import userAuth from "@/services/firebase/userAuth";
 import updateCitySearchCount from "@/services/firebase/savePreviousSearches";
 
+import { fetchCityByCoordinates } from "@/services/api/fetchCityDetails";
+
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");
   const [lat, setLat] = useState("");
@@ -51,6 +53,7 @@ export default function HomeScreen() {
   const [noEvents, setNoEvents] = useState(false);
 
   const [userUid, setUserUid] = useState<any>();
+  const [incrementSearchCount, setIncrementSearchCount] = useState(true);
 
   const clearEvents = () => {
     setPlaceID("");
@@ -71,13 +74,30 @@ export default function HomeScreen() {
     console.log(cityEvents);
     setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
-    console.log(otherEvents);
+    console.log("cityName", city);
+    // console.log(otherEvents);
     if (cityEventsLength > 0) {
-      updateCitySearchCount(placeID).then(() => {
+      console.log("Updating search count");
+      const coordinates = { lat, lon };
+      console.log("Coordinates", coordinates);
+      updateCitySearchCount(coordinates, placeID, city).then(() => {
         console.log("City search count updated");
       });
+      setIncrementSearchCount(false);
     }
+
+    fetchCityByCoordinates({ lat, lon }, city).then((data) => {
+      console.log("City fetched by coordinates", data);
+      //   if (Array.isArray(searchRecord)) {
+      //     setSearchRecord([...searchRecord, data]);
+      //   } else {
+      //     setSearchRecord([data]);
+      //   }
+      //   console.log("Search Record", searchRecord);
+      // });
+    });
   }, [cityEvents]);
+
   return (
     <View style={[styles.safeArea, { bottom: tabBarHeight }]}>
       <BackGround loading={loading} />

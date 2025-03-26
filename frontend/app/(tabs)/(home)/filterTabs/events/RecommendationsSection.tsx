@@ -5,6 +5,8 @@ import EventCard from "@/components/EventCard";
 // import { ScrollView } from "react-native-gesture-handler";
 import { ScrollViewBase } from "react-native";
 import { fetchRecommendations } from "@/services/api/fetchRecommendations";
+import fetchUserSearchRecords from "@/services/firebase/fetchPreviousSearches";
+import fetchEventsWithCoordinatesAndCity from "@/services/api/fetchEventsMultipleCities";
 interface RecommendationsSectionProps {
   uid: string;
   cityEvents: any[];
@@ -16,10 +18,30 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   const [recommendations, setRecommendations] = useState<any>();
   const [favorites, setFavorites] = useState<any[] | null>(null);
 
+  const [searchRecord, setSearchRecord] = useState<any[] | null>([]);
+  const [searchRecordEvents, setSearchRecordEvents] = useState<any[]>([]);
+
   useEffect(() => {
-    // console.log("Recommendations", uid);
-    fetFavorites();
-    console.log("Recommendations", favorites);
+    if (searchRecord && searchRecord?.length > 0) {
+      // const placeIdList = searchRecord.map((record) => record.placeId);
+
+      // console.log(placeIdList);
+
+      fetchEventsWithCoordinatesAndCity(searchRecord).then((data) => {
+        // console.log("Events fetched with placeIDs", data);
+        if (data) {
+          setSearchRecordEvents(data);
+          console.log("Search Record Events", searchRecordEvents);
+        }
+      });
+    }
+  }, [searchRecord]);
+  useEffect(() => {
+    // // console.log("Recommendations", uid);
+    // fetchUserPreviousSearches();
+    // fetFavorites();
+    // console.log("favoriteData", favorites);
+    performFirebaseOperations();
   }, [uid]);
 
   const fetFavorites = async () => {
@@ -31,15 +53,21 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
       //   setShouldFetchFavorites(false);
     }
   };
+  const fetchUserPreviousSearches = async () => {
+    // console.log("Fetching previous searches");
+    const records = await fetchUserSearchRecords();
+    console.log("Search Records", searchRecord);
+    setSearchRecord(records);
+  };
 
   const fetchRecommendationshandler = async () => {
     // console.log("Fetching recommendations");
     if (!cityEvents || !favorites) return;
     const recommendations = await fetchRecommendations(
-      cityEvents,
+      searchRecordEvents,
       favorites
     ).then((data) => {
-      console.log(data);
+      console.log("recommendation at fetch", data);
       if (data) {
         setRecommendations(data);
       }
@@ -47,6 +75,11 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
     console.log("Recommendations main", recommendations);
 
     // setRecommendations(recommendations);
+  };
+
+  const performFirebaseOperations = async () => {
+    fetchUserPreviousSearches();
+    fetFavorites();
   };
 
   useEffect(() => {
