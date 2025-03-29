@@ -22,3 +22,4 @@ backend/app/models/__pycache__/event.cpython-313.pyc
 backend/app/services/__pycache__/__init__.cpython-313.pyc
 backend/app/services/__pycache__/recommender.cpython-313.pyc
 frontend/.vscode/settings.json
+frontend/eas.json

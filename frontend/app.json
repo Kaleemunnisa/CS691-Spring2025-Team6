@@ -10,14 +10,29 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.myapp.frontend"
+      "bundleIdentifier": "com.myapp.frontend",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "608284775680-biutu0f7n1ho0ipjn4ctssekoclirbff.apps.googleusercontent.com"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.myapp.frontend"
+      "package": "com.myapp.frontend",
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    },
+    "extra": {
+      "expoClientId": "608284775680-ofta4b1hi2p1lggef8bm7u0l9psd37bt.apps.googleusercontent.com",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "be6a7732-5c44-488b-908a-bc580146a104"
+      }
     },
     "web": {
       "bundler": "metro",

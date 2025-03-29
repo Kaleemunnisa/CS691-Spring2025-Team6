@@ -25,6 +25,9 @@ import KeyboardAvoidingContainer from "@/utils/keyBoard_utilities/KeyboardAvoidi
 import { getUserFavorites } from "@/services/firebase/favourites";
 // import auth from "@react-native-firebase/auth";
 import userAuth from "@/services/firebase/userAuth";
+import updateCitySearchCount from "@/services/firebase/savePreviousSearches";
+
+import { fetchCityByCoordinates } from "@/services/api/fetchCityDetails";
 
 export default function HomeScreen() {
   const [placeID, setPlaceID] = useState("");
@@ -50,6 +53,7 @@ export default function HomeScreen() {
   const [noEvents, setNoEvents] = useState(false);
 
   const [userUid, setUserUid] = useState<any>();
+  const [incrementSearchCount, setIncrementSearchCount] = useState(true);
 
   const clearEvents = () => {
     setPlaceID("");
@@ -62,14 +66,38 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
+    console.log("HomeScreen mounted");
+    console.log(`${city}, ${state}, ${country}, ${placeID}`);
     console.log(`${cityEvents} city events....`);
     let cityEventsLength: any = cityEvents.length;
     console.log({ cityEventsLength });
     console.log(cityEvents);
     setNoEvents(() => cityEventsLength === 0);
     console.log("city_id->>>>>", placeID);
-    console.log(otherEvents);
+    console.log("cityName", city);
+    // console.log(otherEvents);
+    if (cityEventsLength > 0) {
+      console.log("Updating search count");
+      const coordinates = { lat, lon };
+      console.log("Coordinates", coordinates);
+      updateCitySearchCount(coordinates, placeID, city).then(() => {
+        console.log("City search count updated");
+      });
+      setIncrementSearchCount(false);
+    }
+
+    fetchCityByCoordinates({ lat, lon }, city).then((data) => {
+      console.log("City fetched by coordinates", data);
+      //   if (Array.isArray(searchRecord)) {
+      //     setSearchRecord([...searchRecord, data]);
+      //   } else {
+      //     setSearchRecord([data]);
+      //   }
+      //   console.log("Search Record", searchRecord);
+      // });
+    });
   }, [cityEvents]);
+
   return (
     <View style={[styles.safeArea, { bottom: tabBarHeight }]}>
       <BackGround loading={loading} />

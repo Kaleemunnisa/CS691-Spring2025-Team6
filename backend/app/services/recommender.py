@@ -49,3 +49,4 @@ def recommend_events(fetched_events, favorite_events):
     recommended_events = [event for event in fetched_events if event['id'] in recommended_ids]  
 
     return recommended_events
+# uvicorn main:app --reload

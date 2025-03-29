@@ -58,3 +58,28 @@ export const fetchCityDetails = async (city, country) => {
     return null;
   }
 };
+
+export const fetchCityByCoordinates = async (coordinates, city) => {
+  console.log("fetchCityByCoordinates -> coordinates", coordinates);
+  console.log("fetchCityByCoordinates -> city", city);
+  try {
+    const response = await fetch(
+      `https://api.geoapify.com/v1/geocode/search?apiKey=${GEOAPIFY_API_KEY}&lon=${coordinates.lon}&lat=${coordinates.lat}&city=${city}`
+    );
+
+    const data = await response.json();
+    // console.log("fetchCityByCoordinates -> data", data);
+
+    if (data.features && data.features.length > 0) {
+      const result = data.features[0].properties; // Access properties from the first feature
+      return {
+        city: result.city || result.name, // Fallback to name if city is not available
+        stateCode: result.state_code || null,
+        countryCode: result.country_code || null,
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching city details by place ID:", error);
+    return null;
+  }
+};
