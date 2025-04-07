@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Animated,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 // import { AnimatedView } from "react-native-reanimated/lib/typescript/component/View";
 import Feather from "@expo/vector-icons/Feather";
@@ -46,9 +47,11 @@ const ProfileUpdateScreen: React.FC<updateScreenProps> = ({
           <Text style={styles.EditProfileText}>Update Profile</Text>
         </View>
 
-        <View style={[{ width: "100%", height: "100%" }]}>
-          <ProfileDetailsUpdateSection userData={userData} />
-        </View>
+        <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+          {/* <View style={[{ width: "100%", height: "100%" }]}> */}
+            <ProfileDetailsUpdateSection userData={userData} />
+          {/* </View> */}
+        </ScrollView>
       </SafeAreaView>
     </Animated.View>
   );

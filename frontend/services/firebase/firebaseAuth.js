@@ -23,11 +23,12 @@ export const signUp = async (userType, userData) => {
 
     // Common user info to store
     const userInfo = {
-      profilepicture: userData.profilePicture,
+      profilePicture: userData.profilePicture,
       email: userData.email,
-      username: userData.username,
+      userName: userData.userName,
       uid: userId,
       userType: userType, // Adding userType
+      name: userData.name,
     };
 
     // Add user info to the 'users' collection
@@ -50,6 +51,7 @@ export const signUp = async (userType, userData) => {
         ...userInfo,
         businessType: userData.businessType,
         location: userData.location,
+        images: userData.images,
       });
     }
 

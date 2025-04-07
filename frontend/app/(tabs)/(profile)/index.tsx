@@ -18,6 +18,7 @@ import { getUserFavorites } from "@/services/firebase/favourites";
 import userAuth from "@/services/firebase/userAuth";
 import FavoritesSection from "./favoritesSection";
 // import { faV } from "@fortawesome/free-solid-svg-icons";
+import getUserDataByType from "@/services/firebase/fetchUserDetailsByType";
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
@@ -35,6 +36,22 @@ const ProfileScreen = () => {
     });
   }, []);
 
+  const [userDataFull, setUserDataFull] = useState<any>(null);
+
+  useEffect(() => {
+    getUserDataByType(userData?.userType)
+      .then((data) => {
+        setUserDataFull(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [userData]);
+
+  useEffect(() => {
+    console.log(userDataFull);
+  }, [userDataFull]);
+
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
@@ -45,17 +62,20 @@ const ProfileScreen = () => {
         />
       ) : (
         <>
-          {userData ? (
+          {userDataFull ? (
             <>
               <ProfileUpdateScreen
-                userData={userData}
+                userData={userDataFull}
                 editClick={editClick}
                 closeEditProfile={() => {
                   setEditClick(false);
                 }}
               />
 
-              <ProfileSection userData={userData} setEditClick={setEditClick} />
+              <ProfileSection
+                userData={userDataFull}
+                setEditClick={setEditClick}
+              />
 
               <FavoritesSection uid={user?.uid || ""} />
             </>

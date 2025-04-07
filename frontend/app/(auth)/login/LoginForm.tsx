@@ -15,8 +15,13 @@ import { useGoogleSignIn } from "@/services/firebase/googleAuth";
 
 const LoginForm = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("satya@gmail.com");
-  const [password, setPassword] = useState("123123");
+  const [email, setEmail] = useState("satyanandan846@gmail.com"); //tourist
+  const [password, setPassword] = useState("Satya@143");
+
+  // const [email, setEmail] = useState("famousfish@gmail.com"); //business
+  // const [password, setPassword] = useState("FamousFish@143");
+  // const [email, setEmail] = useState("praveen@gmail.com"); //guide
+  // const [password, setPassword] = useState("PondiGuide@143");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +33,7 @@ const LoginForm = () => {
     router.navigate("/(auth)/signup");
   };
 
-  const { initiateSignIn, googleAuthLoading } = useGoogleSignIn();
+  // const { initiateSignIn, googleAuthLoading } = useGoogleSignIn();
 
   return (
     <View style={styles.formContainer}>

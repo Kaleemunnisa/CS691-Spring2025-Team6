@@ -19,13 +19,30 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { primaryBtnColor, signUpFormBG, textColor } from "../colors";
 import Feather from "@expo/vector-icons/Feather";
 import ProfilePicture from "@/components/ProfilePicture";
+import BusinessImagesAddSection from "./businessImagesAddSection";
 
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 };
+
+type BusinessData = {
+  profilePicture: string | null;
+  name: string;
+  email: string;
+  userName: string;
+  password: string;
+  confirmPassword: string;
+  businessType: string;
+  location: string;
+  images: any[]; // <-- Define images as an array of any type
+};
 const SignupForm = () => {
   const { userType } = useLocalSearchParams() as { userType: string };
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
+    null
+  );
   const [touristData, setTouristData] = useState({
     profilePicture: "",
     name: "",
@@ -44,7 +61,17 @@ const SignupForm = () => {
     location: "",
     yearsOfExperience: "",
   });
-  const [businessData, setBusinessData] = useState({
+  // const [businessData, setBusinessData] = useState({
+  //   profilePicture: "",
+  //   name: "",
+  //   email: "",
+  //   userName: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   businessType: "",
+  //   location: "",
+  // });
+  const [businessData, setBusinessData] = useState<BusinessData>({
     profilePicture: "",
     name: "",
     email: "",
@@ -53,6 +80,7 @@ const SignupForm = () => {
     confirmPassword: "",
     businessType: "",
     location: "",
+    images: [], // Add this!
   });
 
   const [loading, setLoading] = useState(false);
@@ -101,6 +129,97 @@ const SignupForm = () => {
     console.log(guideData);
   }, [guideData]);
   // Handle form submission
+  // const handleSubmit = async () => {
+  //   // Check if passwords match
+  //   if (
+  //     (touristData.password &&
+  //       touristData.password !== touristData.confirmPassword) ||
+  //     (guideData.password &&
+  //       guideData.password !== guideData.confirmPassword) ||
+  //     (businessData.password &&
+  //       businessData.password !== businessData.confirmPassword)
+  //   ) {
+  //     setError("Passwords do not match");
+  //     return;
+  //   }
+
+  //   // Validate email format for all user types
+  //   const emailData =
+  //     userType === "tourist"
+  //       ? touristData
+  //       : userType === "guide"
+  //       ? guideData
+  //       : businessData;
+  //   if (!isValidEmail(emailData.email)) {
+  //     setError("Invalid email format");
+  //     return;
+  //   }
+
+  //   // Validate required fields for each user type
+  //   let userData;
+  //   if (userType === "tourist") {
+  //     if (
+  //       !touristData.name ||
+  //       !touristData.email ||
+  //       !touristData.password ||
+  //       !touristData.userName
+  //     ) {
+  //       setError("Please fill in all required fields for tourist.");
+  //       return;
+  //     }
+  //     userData = touristData;
+  //   } else if (userType === "guide") {
+  //     if (
+  //       !guideData.name ||
+  //       !guideData.email ||
+  //       !guideData.password ||
+  //       !guideData.userName ||
+  //       !guideData.location ||
+  //       !guideData.yearsOfExperience
+  //     ) {
+  //       setError("Please fill in all required fields for guide.");
+  //       return;
+  //     }
+  //     userData = guideData;
+  //   } else if (userType === "business") {
+  //     const missingFields: string[] = [];
+
+  //     // Check for missing required fields and collect the names of missing fields
+  //     if (!businessData.name) missingFields.push("Name");
+  //     if (!businessData.email) missingFields.push("Email");
+  //     if (!businessData.password) missingFields.push("Password");
+  //     if (!businessData.userName) missingFields.push("UName");
+  //     if (!businessData.businessType) missingFields.push("Business Type");
+  //     if (!businessData.location) missingFields.push("Location");
+
+  //     // If there are missing fields, show an error message
+  //     if (missingFields.length > 0) {
+  //       setError(
+  //         `Please fill in the following required fields for business: ${missingFields.join(
+  //           ", "
+  //         )}.`
+  //       );
+  //       return;
+  //     }
+
+  //     userData = businessData;
+  //   }
+
+  //   setLoading(true);
+  //   setError(null);
+
+  //   try {
+  //     // Pass the correct user data to signUp
+  //     await signUp(userType, userData);
+  //     console.log("Signup successful!");
+  //     router.navigate("/(tabs)/(home)"); // Navigate to home screen after successful signup
+  //   } catch (err) {
+  //     setError("Signup failed. " + (err as any).message);
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async () => {
     // Check if passwords match
     if (
@@ -154,17 +273,24 @@ const SignupForm = () => {
       }
       userData = guideData;
     } else if (userType === "business") {
-      if (
-        !businessData.name ||
-        !businessData.email ||
-        !businessData.password ||
-        !businessData.userName ||
-        !businessData.businessType ||
-        !businessData.location
-      ) {
-        setError("Please fill in all required fields for business.");
+      const missingFields: string[] = [];
+
+      if (!businessData.name) missingFields.push("Name");
+      if (!businessData.email) missingFields.push("Email");
+      if (!businessData.password) missingFields.push("Password");
+      if (!businessData.userName) missingFields.push("UName");
+      if (!businessData.businessType) missingFields.push("Business Type");
+      if (!businessData.location) missingFields.push("Location");
+
+      if (missingFields.length > 0) {
+        setError(
+          `Please fill in the following required fields for business: ${missingFields.join(
+            ", "
+          )}.`
+        );
         return;
       }
+
       userData = businessData;
     }
 
@@ -172,21 +298,51 @@ const SignupForm = () => {
     setError(null);
 
     try {
-      // Pass the correct user data to signUp
       await signUp(userType, userData);
       console.log("Signup successful!");
       router.navigate("/(tabs)/(home)"); // Navigate to home screen after successful signup
     } catch (err) {
-      setError("Signup failed. " + (err as any).message);
+      const errorCode = (err as any).code;
+      if (errorCode === "auth/email-already-in-use") {
+        setError(
+          "This email is already in use. Please try logging in or use another email."
+        );
+      } else {
+        setError("Signup failed. " + (err as any).message);
+      }
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    console.log("Business Data:", businessData);
+  }, [businessData]);
+
+  useEffect(() => {
+    console.log("Profile Picture URL:", profilePictureUrl);
+
+    setBusinessData((prevData) => ({
+      ...prevData,
+      profilePicture: profilePictureUrl,
+    }));
+    // setGuideData((prevData) => ({
+    //   ...prevData,
+    //   profilePicture: profilePictureUrl,
+    // }));
+    // setTouristData((prevData) => ({
+    //   ...prevData,
+    //   profilePicture: profilePictureUrl,
+    // }));
+  }, [profilePictureUrl]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => router.back()}>
+      <TouchableOpacity
+        onPress={() => router.back()}
+        style={{ position: "absolute", top: 40, left: 10 }}
+      >
         <Feather name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -199,17 +355,20 @@ const SignupForm = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={[
               styles.scrollContainer,
-              !keyboardVisible && { height: "100%" },
+              // !keyboardVisible && { height: "100%" },
             ]}
           >
             {/* Profile Picture Input Section */}
             <View style={{ marginVertical: 0 }}>
-              <ProfilePicture />
+              <ProfilePicture
+                setProfilePictureUrl={setProfilePictureUrl}
+                profilePictureUrl={profilePictureUrl}
+              />
             </View>
 
             <View style={{ marginVertical: 5, height: 30, width: "100%" }}>
               {/* {loading && <ActivityIndicator size="large" color="#007BFF" />} */}
-              {error && <Text style={styles.error}>{error}</Text>}
+              {/* {error && <Text style={styles.error}>{error}</Text>} */}
             </View>
             <Text style={styles.title}>
               Be Our {capitalizeFirstLetter(userType as string)}
@@ -244,8 +403,8 @@ const SignupForm = () => {
             />
             <TextInput
               style={styles.input}
-              placeholder="Username"
-              onChangeText={(value) => handleChange("username", value)}
+              placeholder="UserName"
+              onChangeText={(value) => handleChange("userName", value)}
               placeholderTextColor={textColor}
             />
             <TextInput
@@ -330,6 +489,15 @@ const SignupForm = () => {
                 />
 
                 {/* images of businessData */}
+                <BusinessImagesAddSection
+                  images={businessData.images}
+                  setImages={(newImages) => {
+                    setBusinessData((prevData) => ({
+                      ...prevData,
+                      images: newImages,
+                    }));
+                  }}
+                />
               </>
             )}
 
@@ -393,10 +561,12 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: signUpFormBG,
     justifyContent: "center",
     padding: 20,
+    // height:"100%"
+    flexGrow: 1,
   },
   scrollContainer: {
     paddingTop: 20,
@@ -404,6 +574,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     // backgroundColor: "red",
+    // height: "auto",
+    // flex:1,
+    flexGrow: 1,
   },
   title: {
     fontSize: 14,

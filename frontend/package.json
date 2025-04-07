@@ -49,6 +49,7 @@
     "expo-system-ui": "~4.0.7",
     "expo-web-browser": "~14.0.2",
     "firebase": "^11.3.0",
+    "lodash": "^4.17.21",
     "lottie-ios": "^4.5.1",
     "lottie-react-native": "7.1.0",
     "marked": "^15.0.7",

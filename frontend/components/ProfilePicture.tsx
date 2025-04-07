@@ -11,44 +11,57 @@ import pickImage from "@/utils/image-pickers/PickImage";
 import { FontAwesome } from "@expo/vector-icons";
 import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 
-// import { useEffect } from "react";
-
 const ProfilePicture = ({
   editable = true,
   firebasePictureUrl = null,
   editScreen = false,
+  setProfilePictureUrl,
+  profilePictureUrl,
 }: {
   editable?: boolean;
   firebasePictureUrl?: string | null;
   editScreen?: boolean;
+  setProfilePictureUrl: React.Dispatch<React.SetStateAction<string | null>>;
+  profilePictureUrl: string | null;
 }) => {
   const [image, setImage] = useState<string | null>(null);
-  //   if (editScreen) {
-  //     setImage(firebasePictureUrl);
-  //   }
   const [imageCloudinaryLoading, setImageCloudinaryLoading] = useState(false);
 
+  // Sync state with firebasePictureUrl if in edit mode
   useEffect(() => {
-    if (editScreen) {
-      // If the screen is in edit mode, use the firebasePictureUrl
-      setImage(firebasePictureUrl);
+    if (editScreen && firebasePictureUrl) {
+      setImage(firebasePictureUrl); // Set initial image if editing
     } else {
-      // If not in edit mode, set image to null or some default value
-      setImage(null);
+      setImage(null); // Reset image when not editing
     }
   }, [editScreen, firebasePictureUrl]);
-  const handlePickImage = () => {
-    // Call pickImage with the correct arguments
+
+  const handlePickImage = async () => {
     if (editable) {
-      pickImage(setImage, setImageCloudinaryLoading);
+      setImageCloudinaryLoading(true); // Start loading animation
+      await pickImage(setProfilePictureUrl, setImageCloudinaryLoading); // Wait for image pick
+      console.log("Image picked:", profilePictureUrl);
+
+      if (profilePictureUrl) {
+        // setProfilePictureUrl(image); // Set the parent component's state with the new image URI
+        // setImage(image); // Optionally update local state with the image URI
+        // setImage(profilePictureUrl); // Update local state with the new image URI
+        console.log("Image URI set:", profilePictureUrl);
+      } else {
+        alert("Image upload failed!");
+      }
     } else {
       alert("Image cannot be updated!");
-      setImage(null);
-      //   console.log("disabled", image);
+      setImage(null); // Reset image when editable is false
     }
   };
+  useEffect(() => {
+    if (profilePictureUrl) {
+      setImage(profilePictureUrl);
+    }
+  }, [profilePictureUrl]);
+
   return (
-    // editable is false then disabled is true
     <TouchableOpacity onPress={handlePickImage}>
       <View
         style={[
@@ -60,7 +73,7 @@ const ProfilePicture = ({
             backgroundColor: "white",
             padding: 5,
             borderRadius: 50,
-            opacity: editable ? 1 : 0.5, // Change opacity when not editable
+            opacity: editable ? 1 : 0.5, // Opacity change when not editable
           },
         ]}
       >
@@ -68,15 +81,15 @@ const ProfilePicture = ({
           <ActivityIndicator size={18} color="#007BFF" />
         ) : editable ? (
           <FontAwesome
-            name="pencil" // "pencil" icon when editable is true
+            name="pencil" // Icon for editable state
             size={18}
-            color="rgb(29, 28, 28)" // Color when editable is true
+            color="rgb(29, 28, 28)"
           />
         ) : (
           <FontAwesome
-            name="ban" // "pencil" icon when editable is true
+            name="ban" // Icon when editable is false
             size={18}
-            color="rgb(29, 28, 28)" // Color when editable is true
+            color="rgb(29, 28, 28)"
           />
         )}
       </View>
@@ -84,10 +97,7 @@ const ProfilePicture = ({
       <View
         style={[
           styles.imageContainer,
-          !editable && {
-            /* Styles when editable is false */
-            opacity: 0.5,
-          },
+          !editable && { opacity: 0.5 }, // Reduce opacity when not editable
         ]}
       >
         {image ? (
@@ -112,7 +122,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     justifyContent: "center",
     alignItems: "center",
-    // marginBottom: 15,
     alignSelf: "center",
   },
   profileImage: {
@@ -121,4 +130,5 @@ const styles = StyleSheet.create({
     borderRadius: 75,
   },
 });
+
 export default ProfilePicture;
