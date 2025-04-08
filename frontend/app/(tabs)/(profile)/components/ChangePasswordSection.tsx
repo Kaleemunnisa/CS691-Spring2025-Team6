@@ -4,13 +4,15 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TextInput, Button, Alert, StyleSheet } from "react-native";
+import _ from "lodash";
 
 const ChangePasswordScreen = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [changePasswordDisable, setChangePasswordDisable] = useState(true);
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -45,6 +47,19 @@ const ChangePasswordScreen = () => {
     }
   };
 
+  useEffect(() => {
+    if (
+      oldPassword.length > 0 &&
+      newPassword.length > 0 &&
+      confirmPassword.length > 0 &&
+      newPassword === confirmPassword
+    ) {
+      setChangePasswordDisable(false);
+    } else {
+      setChangePasswordDisable(true);
+    }
+  }, [oldPassword, newPassword, confirmPassword]);
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -68,13 +83,18 @@ const ChangePasswordScreen = () => {
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
-      <Button title="Change Password" onPress={handlePasswordChange} />
+      <Button
+        title="Change Password"
+        onPress={handlePasswordChange}
+        disabled={changePasswordDisable}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",

@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import uploadToCloudinary from "@/services/cloudinary/UploadImageToCloudinary";
+import { uploadToCloudinary } from "@/services/cloudinary/UploadImageToCloudinary";
 
 const pickImage = async (
   setImage: React.Dispatch<React.SetStateAction<string | null>>,
@@ -24,12 +24,16 @@ const pickImage = async (
     console.log("cloudinary started");
     await uploadToCloudinary(
       imageUri,
-      setImage,
+      (data) => {
+        setImage(data.uri);
+      },
       setImageCloudinaryLoading
     ).then(() => {
       setImageCloudinaryLoading(false);
+      console.log("Image Uploaded");
+      // return imageUri;
     });
-    console.log("Image Uploaded");
+    // return imageUri;
   }
 };
 export default pickImage;

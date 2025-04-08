@@ -1,4 +1,4 @@
-// import React from 'react';
+import { useState, useEffect } from "react";
 import { primaryColor } from "@/app/(auth)/colors";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
@@ -14,9 +14,21 @@ import { useRouter } from "expo-router";
 
 interface ProfileSectionProps {
   userData: {
+    userType: string;
+    uid: string;
     profilePicture: string;
     name: string;
     userName: string;
+    email: string;
+    phoneNumber: string;
+    bio: string;
+    location: string;
+    website: string;
+    socialLinks: {
+      facebook: string;
+      instagram: string;
+      twitter: string;
+    };
   };
   setEditClick: any;
 }
@@ -52,8 +64,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             />
             {userData ? (
               <View style={styles.userInfo}>
-                <Text style={styles.userName}>{userData.name}</Text>
-                <Text style={styles.userUsername}>{userData.userName}</Text>
+                <Text style={styles.userName}>{userData?.name}</Text>
+                <Text style={styles.userUsername}>{userData?.userName}</Text>
               </View>
             ) : (
               <View style={styles.userInfo}>
