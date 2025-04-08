@@ -17,7 +17,7 @@ const pickImage = async (
     const selectedImage = result.assets[0];
     const imageUri = selectedImage.uri;
     console.log(imageUri);
-    setImage(imageUri); // Save the image URI to state
+    // setImage(imageUri); // Save the image URI to state
     // handleChange("profilePicture", result.uri); // Save the image URI in the form
 
     // Now upload to Cloudinary
@@ -26,14 +26,17 @@ const pickImage = async (
       imageUri,
       (data) => {
         setImage(data.uri);
+        // return data.uri;
       },
       setImageCloudinaryLoading
     ).then(() => {
       setImageCloudinaryLoading(false);
       console.log("Image Uploaded");
-      // return imageUri;
+
+      // return null;
     });
-    // return imageUri;
+    // return null;
   }
+  // return null; // Ensure the function always returns a value
 };
 export default pickImage;
