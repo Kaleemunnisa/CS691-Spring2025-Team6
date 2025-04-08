@@ -21,12 +21,15 @@ import BusinessImagesUpdateSection from "./components/BusinessImages";
 import { FontAwesome } from "@expo/vector-icons";
 
 import _ from "lodash";
+import updateUserDetails from "@/services/firebase/updateUserDetails";
+
+import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 interface ProfileDetailsUpdateSectionProps {
   userData: any;
 }
 
 interface BusinessImage {
-  uri: string;
+  // assetId: string;
   public_id: string;
   [key: string]: any;
 }
@@ -47,6 +50,8 @@ const ProfileDetailsUpdateSection: React.FC<
 
   const [businessImages, setBusinessImages] = useState<BusinessImage[]>([]);
 
+  const [loadScreen, setLoadScreen] = useState(false);
+
   useEffect(() => {
     if (userData.images && userData.images.length > 0) {
       setBusinessImages(userData.images);
@@ -64,12 +69,15 @@ const ProfileDetailsUpdateSection: React.FC<
   //state to update business images
   useEffect(() => {
     console.log("Business Images inside update section", businessImages);
-    setCurrentUserData((prevData: any) => ({
-      ...prevData,
-      images: businessImages,
-    }));
+    if (currentUserData.userType === "business") {
+      setCurrentUserData((prevData: any) => ({
+        ...prevData,
+        images: businessImages,
+      }));
+    }
+
     console.log("Current User Data", currentUserData.images);
-  }, [businessImages]);
+  }, [businessImages, currentUserData.images]);
 
   // state to update profile picture
   useEffect(() => {
@@ -80,15 +88,60 @@ const ProfileDetailsUpdateSection: React.FC<
     }));
   }, [profilePicture]);
 
+  // useEffect(() => {
+
+  //   console.log(currentUserData=== userData);
+  //   const hasChanged = !_.isEqual(currentUserData, userData);
+  //   setEnableSave(hasChanged);
+  // }, [currentUserData, userData]);
+
   useEffect(() => {
-    const hasChanged = !_.isEqual(currentUserData, userData);
+    const changes: Record<string, { from: any; to: any }> = {};
+
+    Object.keys(currentUserData || {}).forEach((key) => {
+      if (!_.isEqual(currentUserData[key], userData[key])) {
+        changes[key] = {
+          from: userData[key],
+          to: currentUserData[key],
+        };
+      }
+    });
+
+    if (Object.keys(changes).length > 0) {
+      console.log("Changed fields:", changes);
+    } else {
+      console.log("No changes detected.");
+    }
+
+    const hasChanged = Object.keys(changes).length > 0;
     setEnableSave(hasChanged);
   }, [currentUserData, userData]);
 
   const capitalizeFirst = (str: string) => {
-    let tempValue = str;
-    tempValue.charAt(0).toUpperCase() + tempValue.slice(1);
-    return tempValue;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  //handle save button
+  const handleSave = async () => {
+    setLoadScreen(true);
+    // Perform save operation here
+    console.log("Save button clicked");
+    console.log("Current User Data", currentUserData);
+    console.log("Business Images", businessImages);
+    console.log("Profile Picture", profilePicture);
+    // Reset the enableSave state
+
+    const result = await updateUserDetails(currentUserData);
+
+    if (result.success) {
+      // Handle success (e.g., navigate to another screen, show success message)
+      setLoadScreen(false);
+      console.log("Update successful:", result.message);
+    } else {
+      // Handle failure (e.g., show error message)
+      console.error("Update failed:", result.message);
+    }
+    setEnableSave(false);
   };
 
   return (
@@ -96,6 +149,15 @@ const ProfileDetailsUpdateSection: React.FC<
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={{ flex: 1 }}
     >
+      {loadScreen && (
+        <View style={styles.loadScreen}>
+          <LottieAnimation
+            source={require("@/assets/animations/loading-animation.json")}
+            width={100}
+            height={100}
+          />
+        </View>
+      )}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -134,6 +196,7 @@ const ProfileDetailsUpdateSection: React.FC<
               value={currentUserData.email}
               onChange={handleFieldChange("email")}
               label="Email"
+              editable={false}
             />
 
             {userData.location && (
@@ -148,9 +211,9 @@ const ProfileDetailsUpdateSection: React.FC<
 
             {userData.businessType && (
               <TextInputWithIcon
-                icon="pencil"
-                placeholder="Email"
-                value={currentUserData.businessType}
+                // icon="pencil"
+                placeholder="Business Type"
+                value={capitalizeFirst(currentUserData.businessType)}
                 onChange={handleFieldChange("businessType")}
                 editable={false}
                 label="Business Type"
@@ -161,7 +224,7 @@ const ProfileDetailsUpdateSection: React.FC<
               <TextInputWithIcon
                 icon="pencil"
                 placeholder="User Type"
-                value={currentUserData.userType}
+                value={capitalizeFirst(currentUserData.userType)}
                 onChange={handleFieldChange("userType")}
                 editable={false}
                 label="User Type"
@@ -208,7 +271,7 @@ const ProfileDetailsUpdateSection: React.FC<
               />
             )}
 
-            <Button title="Save" disabled={!enableSave} />
+            <Button title="Save" disabled={!enableSave} onPress={handleSave} />
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -217,6 +280,19 @@ const ProfileDetailsUpdateSection: React.FC<
 };
 
 const styles = StyleSheet.create({
+  loadScreen: {
+    // flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 10,
+    opacity: 0.5,
+  },
   keyboardAvoidingView: {
     flex: 1,
   },
@@ -234,6 +310,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 100,
     paddingTop: 10,
+    // position:"absolute"
   },
   input: {
     width: "80%",

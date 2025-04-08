@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/Feather";
 import pickImage from "@/utils/image-pickers/PickImage"; // Adjust the path as needed
 
 interface BusinessImage {
-  uri: string;
+  // assetId: string;
   public_id: string;
   [key: string]: any;
 }
@@ -36,14 +36,9 @@ const BusinessImagesUpdateSection: React.FC<
   //   loading,
   //   error,
 }) => {
-  //   useEffect(() => {
-  //     if (businessImages && businessImages.length === 0) {
-  //       setBusinessImages?.(userData.images);
-  //     }
-  //   }, [userData]);
-
   useEffect(() => {
     console.log("Business Images inside update section", businessImages);
+    // console.log("Business Images inside update section", businessImages[0].public_id);
   }, [businessImages]);
 
   const [imageNeedToChange, setImageNeedToChange] = useState<any>();
@@ -58,11 +53,16 @@ const BusinessImagesUpdateSection: React.FC<
     console.log("Image picked need to change:", imageNeedToChange);
 
     if (imageNeedToChange) {
+      console.log("Image need to change", imageNeedToChange);
+
+      // Update the image at the given index with only the public_id field
       updatedImages[index] = {
-        ...updatedImages[index],
-        uri: imageNeedToChange,
+        public_id: imageNeedToChange, // Only include the public_id
       };
+
       console.log("Updated Images", updatedImages);
+
+      // Set the updated images and stop the loading
       setBusinessImages?.(updatedImages);
       setImageUpdateLoading(false);
     }
@@ -76,7 +76,7 @@ const BusinessImagesUpdateSection: React.FC<
     index: number;
   }) => (
     <View style={styles.imageWrapper}>
-      <Image source={{ uri: item.uri }} style={styles.image} />
+      <Image source={{ uri: item.public_id }} style={styles.image} />
       <TouchableOpacity
         style={styles.editIcon}
         onPress={() => handleChangeImage(index)}
@@ -96,7 +96,7 @@ const BusinessImagesUpdateSection: React.FC<
         horizontal
         keyExtractor={(item: BusinessImage) => item.public_id}
         renderItem={renderImageItem}
-        contentContainerStyle={{ paddingVertical: 10 }}
+        contentContainerStyle={styles.imageFlatList}
         showsHorizontalScrollIndicator={false}
       />
     </View>
@@ -104,17 +104,28 @@ const BusinessImagesUpdateSection: React.FC<
 };
 
 const styles = StyleSheet.create({
+  imageFlatList: {
+    paddingVertical: 5,
+    flexWrap: "wrap",
+    // backgroundColor: "red",
+    width: "100%",
+    gap: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
   container: {
     width: "80%",
     flex: 1,
     justifyContent: "center",
     alignItems: "flex-start",
-    backgroundColor: "#f8f8f8",
-    padding: 20,
-    borderRadius: 10,
+    backgroundColor: "#fff",
+    // padding: 20,
+    // borderRadius: 10,
     marginVertical: 10,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: "#ccc",
+    flexWrap: "wrap",
   },
   title: {
     fontSize: 20,
@@ -129,12 +140,14 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     position: "relative",
-    marginRight: 12,
+    // marginRight: 12,
+
+    // width:'100%'
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
+    width: 150,
+    height: 150,
+    // borderRadius: 8,
     resizeMode: "cover",
   },
   editIcon: {

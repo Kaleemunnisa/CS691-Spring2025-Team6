@@ -19,6 +19,7 @@ import userAuth from "@/services/firebase/userAuth";
 import FavoritesSection from "./favoritesSection";
 // import { faV } from "@fortawesome/free-solid-svg-icons";
 import getUserDataByType from "@/services/firebase/fetchUserDetailsByType";
+import LottieAnimation from "@/utils/animations-helper/DotLottieAnimations";
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
@@ -80,7 +81,15 @@ const ProfileScreen = () => {
               <FavoritesSection uid={user?.uid || ""} />
             </>
           ) : (
-            <Text>Loading user data...</Text>
+            <View style={styles.loadingUserDataIndicator}>
+              <LottieAnimation
+                source={require("@/assets/animations/loading-animation.json")}
+                autoPlay
+                loop
+                width={100}
+                height={100}
+              />
+            </View>
           )}
         </>
       )}
@@ -89,6 +98,16 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingUserDataIndicator: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(225,225,225,0.3)",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",

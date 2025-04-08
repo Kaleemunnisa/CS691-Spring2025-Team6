@@ -37,6 +37,8 @@ type BusinessData = {
   images: any[]; // <-- Define images as an array of any type
 };
 const SignupForm = () => {
+  const [imagesAddedToCloudinaryStatus, setImagesAddedToCloudinaryStatus] =
+    useState(false);
   const { userType } = useLocalSearchParams() as { userType: string };
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -337,6 +339,27 @@ const SignupForm = () => {
     // }));
   }, [profilePictureUrl]);
 
+  const fetchImagePublic_ids = (images: any) => {
+    const public_ids = images.map((image: any) => ({
+      assetId: image.assetId,
+      public_id: image.public_id,
+    }));
+    return public_ids;
+  };
+
+  useEffect(() => {
+    if (
+      businessData.images.length > 0 &&
+      businessData.images[0].public_id &&
+      imagesAddedToCloudinaryStatus
+    ) {
+      setBusinessData((prevData) => ({
+        ...prevData,
+        images: fetchImagePublic_ids(businessData.images),
+      }));
+      console.log("Business Data with Public IDs:", businessData);
+    }
+  }, [imagesAddedToCloudinaryStatus]);
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -490,6 +513,9 @@ const SignupForm = () => {
 
                 {/* images of businessData */}
                 <BusinessImagesAddSection
+                  setImagesAddedToCloudinaryStatus={
+                    setImagesAddedToCloudinaryStatus
+                  }
                   images={businessData.images}
                   setImages={(newImages) => {
                     setBusinessData((prevData) => ({

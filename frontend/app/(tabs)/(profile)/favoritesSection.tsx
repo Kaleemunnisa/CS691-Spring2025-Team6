@@ -4,7 +4,10 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent,
+  ActivityIndicator,
+  TouchableOpacity,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
 import { getUserFavorites } from "@/services/firebase/favourites"; // Import your getUserFavorites function
 import EventCard from "@/components/EventCard"; // Import EventCard component
@@ -17,11 +20,11 @@ interface FavoritesSectionProps {
 const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
   const [favorites, setFavorites] = useState<any[] | null>(null);
   const [scrollY, setScrollY] = useState(0);
-  const[showFavorites, setShowFavorites] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   //dynamic event fetching when any event is removed or added
-  const [shouldFetchFavorites, setShouldFetchFavorites] = useState<boolean>(false);
-
+  const [shouldFetchFavorites, setShouldFetchFavorites] =
+    useState<boolean>(false);
 
   //fetch fav events
   const fetchFavorites = async () => {
@@ -32,10 +35,9 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
     }
   };
 
-
   useEffect(() => {
-  if (uid) {
-    console.log("uid", uid);
+    if (uid) {
+      console.log("uid", uid);
       fetchFavorites();
     }
     console.log("favourties", favorites);
@@ -44,15 +46,15 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
   }, [uid]);
 
   useEffect(() => {
-    if(shouldFetchFavorites){
+    if (shouldFetchFavorites) {
       fetchFavorites();
     }
   }, [shouldFetchFavorites]);
 
   useEffect(() => {
-    if(favorites?.length!==0){
+    if (favorites?.length !== 0) {
       setShowFavorites(true);
-    }else{
+    } else {
       setShowFavorites(false);
     }
   }, []);
@@ -60,12 +62,10 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
   if (!favorites) {
     return (
       <View style={styles.loaderContainer}>
-        <Text>Loading favorites...</Text>
+        <Text>Add Favourites</Text>
       </View>
     );
   }
-
-
 
   //handle Scroll
 
@@ -74,12 +74,10 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
     setScrollY(currentScrollPosition);
     // console.log("Scrolled to:", currentScrollPosition);
     // Add any additional logic here based on scroll position
-    if(currentScrollPosition < 0 && currentScrollPosition <=-90) {
+    if (currentScrollPosition < 0 && currentScrollPosition <= -90) {
       fetchFavorites();
       setShouldFetchFavorites(true);
     }
-
-
   };
 
   return (
@@ -88,35 +86,30 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
         Fa
         <FontAwesome name="heart" size={24} color="red" />
         orites
-
       </Text>
-      {shouldFetchFavorites && (
-          <ActivityIndicator size="large"  />
-      )}
+      {shouldFetchFavorites && <ActivityIndicator size="large" />}
 
       {!showFavorites ? (
         <Text>Add Fav</Text>
       ) : (
-          <>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={favorites}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                    <EventCard
-                        key={index}
-                        event={item}
-                        uid={uid}
-                        showFavorite={true} // Pass showFavorite prop
-                        setShouldFetchFavorites={setShouldFetchFavorites}
-                    />
-
-                )}
-                onScroll={handleScroll}
-                scrollEventThrottle={30}
-            />
-          </>
-
+        <>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={favorites}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <EventCard
+                key={index}
+                event={item}
+                uid={uid}
+                showFavorite={true} // Pass showFavorite prop
+                setShouldFetchFavorites={setShouldFetchFavorites}
+              />
+            )}
+            onScroll={handleScroll}
+            scrollEventThrottle={30}
+          />
+        </>
 
         // <ActivityIndicator size={24} />
       )}
@@ -141,7 +134,14 @@ const styles = StyleSheet.create({
   loaderContainer: {
     justifyContent: "center",
     alignItems: "center",
-    height: 200,
+    height: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    alignContent: "center",
   },
 });
 

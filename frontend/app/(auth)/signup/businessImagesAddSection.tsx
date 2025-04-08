@@ -237,10 +237,17 @@ import {
 } from "@/services/cloudinary/UploadImageToCloudinary";
 
 type Props = {
+  setImagesAddedToCloudinaryStatus: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   images: any[];
   setImages: (images: any[]) => void;
 };
-const BusinessImagesAddSection = ({ images, setImages }: Props) => {
+const BusinessImagesAddSection = ({
+  setImagesAddedToCloudinaryStatus,
+  images,
+  setImages,
+}: Props) => {
   // const [images, setImages] = useState<any[]>([]); // All images, including local and Cloudinary
   const [loading, setLoading] = useState(false);
   const [uploadingImages, setUploadingImages] = useState<any[]>([]); // Track images being uploaded
@@ -337,6 +344,7 @@ const BusinessImagesAddSection = ({ images, setImages }: Props) => {
       );
       setImages(updatedImages);
       setUploadSuccess(true);
+      setImagesAddedToCloudinaryStatus(true);
       Alert.alert("Success", "Images uploaded successfully!");
     } catch (error) {
       console.error("Upload failed:", error);
@@ -394,7 +402,7 @@ const BusinessImagesAddSection = ({ images, setImages }: Props) => {
         {images.map((item, index) => (
           <View key={index.toString()} style={styles.imageContainer}>
             <Image
-              source={{ uri: typeof item === "string" ? item : item.uri }}
+              source={{ uri: typeof item === "string" ? item : item.public_id }}
               style={styles.image}
             />
             <TouchableOpacity
