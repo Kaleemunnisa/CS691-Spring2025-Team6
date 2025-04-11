@@ -10,17 +10,18 @@ import { FontAwesome } from "@expo/vector-icons";
 
 // Define the interface for props
 interface TextInputWithIconProps extends TextInputProps {
-  icon?: string;
+  icon?: any;
   editable?: boolean;
   label?: string;
 }
 
 // Reusable Component
 const TextInputWithIcon: React.FC<TextInputWithIconProps> = ({
+  editable = true,
+  icon = "pencil",
   placeholder,
   value,
   onChangeText,
-  editable = true,
   label,
   ...rest
 }) => {
@@ -44,7 +45,7 @@ const TextInputWithIcon: React.FC<TextInputWithIconProps> = ({
 
         <FontAwesome
           style={styles.icon}
-          name={editable ? "pencil" : "minus-circle"}
+          name={icon}
           size={18}
           color={
             editable ? "rgba(126, 192, 79, 0.79)" : "rgba(255, 0, 0, 0.43)"
@@ -58,7 +59,7 @@ const TextInputWithIcon: React.FC<TextInputWithIconProps> = ({
 // Styles
 const styles = StyleSheet.create({
   wrapper: {
-    width: "80%",
+    width: "100%",
     marginBottom: 15,
   },
   inputContainer: {
