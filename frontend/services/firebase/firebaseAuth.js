@@ -5,7 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, db } from "../../config/firebaseConfig";
+import { auth, db } from "@/config/firebaseConfig";
 
 // Sign up with email and password
 import { doc, setDoc, getDoc } from "firebase/firestore";

@@ -212,6 +212,7 @@ const ProfileDetailsUpdateSection: React.FC<
             {userData.businessType && (
               <TextInputWithIcon
                 // icon="pencil"
+
                 placeholder="Business Type"
                 value={capitalizeFirst(currentUserData.businessType)}
                 onChange={handleFieldChange("businessType")}
@@ -303,9 +304,10 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingVertical: 20,
     // maxHeight: 2000,
+    // width: "80%",
   },
   viewContainer: {
-    width: "100%",
+    width: "90%",
     justifyContent: "flex-start",
     alignItems: "center",
     paddingBottom: 100,
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
     // position:"absolute"
   },
   input: {
-    width: "80%",
+    width: "100%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
@@ -340,7 +342,7 @@ const styles = StyleSheet.create({
   },
   passwordContainerIcon: {
     position: "absolute",
-    right: 50,
+    right: 10,
     bottom: 25,
     alignSelf: "auto",
     // marginLeft: 10, // Space between input and icon

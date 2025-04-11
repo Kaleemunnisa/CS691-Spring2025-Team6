@@ -2,29 +2,57 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
-  Button,
   Image,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import pickImage from "@/utils/image-pickers/PickImage";
-import { Event, Post, Location } from "@/types/postTypes";
+import { Event, Post } from "@/types/postTypes";
 import TextInputWithIcon from "../(profile)/components/TextInputWithIcon";
 import { FontAwesome } from "@expo/vector-icons";
 
+import { SafeAreaView } from "react-native-safe-area-context";
+
 const GOOGLE_PLACES_API_KEY = "YOUR_GOOGLE_PLACES_API_KEY";
+import { auth } from "@/config/firebaseConfig";
+import { saveUserCreatedEvent } from "@/services/firebase/userEvents";
+
+import { saveUserCreatedPost } from "@/services/firebase/userPosts";
+import UserCreateEventSection from "./eventAddScreen";
+
+const onSaveEvent = async (event: Event) => {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const userId = currentUser.uid;
+    const { id, ...eventDataWithoutId } = event;
+
+    // Save event to Firestore
+    const savedId = await saveUserCreatedEvent(eventDataWithoutId);
+    console.log("✅ Event saved with ID:", savedId);
+  } catch (error) {
+    console.error("❌ Failed to save event:", error);
+  }
+};
 
 const PostAddScreen = () => {
   const [post, setPost] = useState<Post>({
+    id: "",
     imageUrls: [],
     taggedUsers: [],
     description: "",
     location: null,
-    events: [],
   });
 
   const [loading, setLoading] = useState(false);
@@ -74,155 +102,140 @@ const PostAddScreen = () => {
     console.log("Post image URLs:", post.imageUrls);
   }, [post]);
 
-  const handleAddEvent = () => {
-    const newEvent: Event = {
-      name: "",
-      dateTime: "",
-      venue: "",
-      city: "",
-      state: "",
-      image: "",
-      category: "",
-    };
-    setPost((prev) => ({ ...prev, events: [...prev.events, newEvent] }));
+  const handleSavePost = async () => {
+    try {
+      console.log("Saving post...");
+      saveUserCreatedPost(post).then((postId) => {
+        console.log("Post saved with ID:", postId);
+        console.log("Post data:", post);
+        // Reset the post state after saving
+        setPost({
+          id: "",
+          imageUrls: [],
+          taggedUsers: [],
+          description: "",
+          location: null,
+        });
+        console.log("Post saved successfully");
+      });
+    } catch (error) {
+      console.log("Error saving post:", error);
+    }
   };
-
-  const updateEvent = (index: number, key: keyof Event, value: any) => {
-    const updatedEvents = [...post.events];
-    updatedEvents[index][key] = value;
-    setPost((prev) => ({ ...prev, events: updatedEvents }));
-  };
-
-  const handleAddEventImage = async (eventIndex: number) => {
-    await pickImage((url) => updateEvent(eventIndex, "image", url), setLoading);
-  };
-
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.heading}>Share Your Experience</Text>
-      <Text style={styles.sectionTitle}>Create a Post: </Text>
-      <Button title="Add Images" onPress={handleAddPostImage} />
-      {loading && <ActivityIndicator size="small" color="#007bff" />}
-      {post.imageUrls && post.imageUrls.length > 0 && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginVertical: 10 }}
-        >
-          {post.imageUrls.map((uri, idx) => (
-            <View key={idx} style={styles.imageContainer}>
-              {/* <Text style={styles.imageText}>{uri}</Text> */}
-              <Image source={{ uri }} style={styles.image} />
-              <TouchableOpacity
-                onPress={() => handleRemoveImage(idx)}
-                style={styles.removeIcon}
+    <SafeAreaView style={{ flex: 1,marginTop:-40 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            style={styles.container}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Text style={styles.heading}>Share Your Experience</Text>
+            <Text style={styles.sectionTitle}>Create a Post: </Text>
+
+            <TouchableOpacity
+              onPress={handleAddPostImage}
+              style={styles.addButton}
+            >
+              <Text style={styles.addImageText}>Add Images</Text>
+            </TouchableOpacity>
+
+            {loading && <ActivityIndicator size="small" color="#007bff" />}
+
+            {post.imageUrls && post.imageUrls.length > 0 && (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{ marginVertical: 10 }}
               >
-                <FontAwesome name="remove" size={20} color="red" />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
-      )}
+                {post.imageUrls.map((uri, idx) => (
+                  <View key={idx} style={styles.imageContainer}>
+                    <Image source={{ uri }} style={styles.image} />
+                    <TouchableOpacity
+                      onPress={() => handleRemoveImage(idx)}
+                      style={styles.removeIcon}
+                    >
+                      <FontAwesome name="remove" size={20} color="red" />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </ScrollView>
+            )}
 
-      {/* <Text style={styles.sectionTitle}>Description</Text> */}
-      <TextInputWithIcon
-        label="Description"
-        placeholder="Write something..."
-        multiline
-        value={post.description}
-        onChangeText={(text) =>
-          setPost((prev) => ({ ...prev, description: text }))
-        }
-        // style={styles.textInput}
-      />
+            <TextInputWithIcon
+              label="Description"
+              placeholder="Write something..."
+              multiline
+              value={post.description}
+              onChangeText={(text) =>
+                setPost((prev) => ({ ...prev, description: text }))
+              }
+            />
 
-      {/* <Text style={styles.sectionTitle}>Location</Text> */}
+            <TextInputWithIcon
+              label="Location"
+              icon="map-pin"
+              placeholder="Search for location"
+              value={post.location?.name || ""}
+              onChangeText={(text) =>
+                setPost((prev) => ({
+                  ...prev,
+                  location: { ...prev.location, name: text },
+                }))
+              }
+            />
+            {post.location && (
+              <Text style={styles.locationText}>
+                📍 Selected: {post.location.name}
+              </Text>
+            )}
+            <TouchableOpacity
+              style={styles.savePostButton}
+              onPress={() => {
+                handleSavePost();
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
 
-      <TextInputWithIcon
-        label="Location"
-        // style={styles.textInput}
-        icon="map-pin"
-        placeholder="Search for location"
-        value={post.location?.name || ""}
-        onChangeText={(text) =>
-          setPost((prev) => ({
-            ...prev,
-            location: { ...prev.location, name: text },
-          }))
-        }
-      />
-      {post.location && (
-        <Text style={styles.locationText}>
-          📍 Selected: {post.location.name}
-        </Text>
-      )}
-
-      <Text style={styles.sectionTitle}>Events</Text>
-      {post.events.map((event, index) => (
-        <View key={index} style={styles.eventContainer}>
-          <TextInput
-            placeholder="Event Name"
-            value={event.name}
-            onChangeText={(text) => updateEvent(index, "name", text)}
-            style={styles.eventInput}
-          />
-          <TextInput
-            placeholder="Date & Time"
-            value={event.dateTime}
-            onChangeText={(text) => updateEvent(index, "dateTime", text)}
-            style={styles.eventInput}
-          />
-          <TextInput
-            placeholder="Venue"
-            value={event.venue}
-            onChangeText={(text) => updateEvent(index, "venue", text)}
-            style={styles.eventInput}
-          />
-          <TextInput
-            placeholder="City"
-            value={event.city}
-            onChangeText={(text) => updateEvent(index, "city", text)}
-            style={styles.eventInput}
-          />
-          <TextInput
-            placeholder="State"
-            value={event.state}
-            onChangeText={(text) => updateEvent(index, "state", text)}
-            style={styles.eventInput}
-          />
-          <TextInput
-            placeholder="Category"
-            value={event.category}
-            onChangeText={(text) => updateEvent(index, "category", text)}
-            style={styles.eventInput}
-          />
-
-          <Button
-            title="Pick Event Image"
-            onPress={() => handleAddEventImage(index)}
-          />
-          {event.image && (
-            <Image source={{ uri: event.image }} style={styles.eventImage} />
-          )}
-        </View>
-      ))}
-
-      <TouchableOpacity onPress={handleAddEvent} style={styles.addEventButton}>
-        <Text style={styles.addEventButtonText}>+ Add Event</Text>
-      </TouchableOpacity>
-
-      <Button
-        title="Submit Post"
-        onPress={() => {
-          console.log("Final Post Object:", post);
-          // Save to Firebase or backend
-        }}
-      />
-    </ScrollView>
+            <UserCreateEventSection />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  addImageText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#fff",
+    padding: 5,
+    alignSelf: "center",
+  },
+  addButton: {
+    backgroundColor: "#78B7D0",
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    marginVertical: 10,
+    marginBottom: 20,
+    padding: 10,
+    maxWidth: 400,
+  },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
@@ -232,11 +245,14 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
+    paddingTop: 0,
+    // backgroundColor: "black",
+    // marginTop: 10,
   },
   sectionTitle: {
     fontWeight: "bold",
     fontSize: 16,
-    marginTop: 16,
+    marginVertical: 10,
   },
   image: {
     width: 200, // Takes up the full width of the screen
@@ -259,7 +275,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   eventContainer: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: "#ddd",
     padding: 10,
     marginBottom: 12,
@@ -278,15 +294,16 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   addEventButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#78B7D0",
     padding: 10,
     borderRadius: 8,
-    marginBottom: 20,
+    marginVertical: 20,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  addEventButtonText: {
-    color: "white",
-    textAlign: "center",
-  },
+
   removeIcon: {
     position: "absolute",
     top: 15,
@@ -295,6 +312,15 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 5,
     zIndex: 1,
+  },
+  savePostButton: {
+    backgroundColor: "#227B94",
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginVertical: 10,
+    // width: 100,
+    alignSelf: "center",
   },
 });
 

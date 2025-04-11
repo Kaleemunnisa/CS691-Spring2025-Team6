@@ -5,6 +5,7 @@ export interface Location {
 }
 
 export interface Event {
+  id: string;
   name: string;
   dateTime: string;
   venue: string;
@@ -15,9 +16,9 @@ export interface Event {
 }
 
 export interface Post {
+  id: string; // Unique ID for the post
   imageUrls: string[]; // Images uploaded to Cloudinary
   taggedUsers: string[]; // UIDs or usernames
   description: string;
   location: Location | null;
-  events: Event[];
 }
