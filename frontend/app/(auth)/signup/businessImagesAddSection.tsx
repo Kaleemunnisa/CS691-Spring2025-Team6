@@ -402,7 +402,7 @@ const BusinessImagesAddSection = ({
         {images.map((item, index) => (
           <View key={index.toString()} style={styles.imageContainer}>
             <Image
-              source={{ uri: typeof item === "string" ? item : item.public_id }}
+              source={{ uri: uploadSuccess ? item.public_id : item.uri }}
               style={styles.image}
             />
             <TouchableOpacity

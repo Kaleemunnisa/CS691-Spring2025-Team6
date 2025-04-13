@@ -1,99 +1,107 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  Image,
+} from "react-native";
+import { Post } from "@/types/postTypes";
+import PostCard from "@/components/PostCard";
+import { fetchUserPosts } from "@/services/firebase/userPosts";
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
-  const [images, setImages] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
+  const handleFetchUserPosts = async () => {
+    try {
+      const fetchedPosts = await fetchUserPosts();
+      console.log("Fetched posts:", fetchedPosts);
+      setPosts(fetchedPosts);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      setPosts([]); // Set to empty array if there's an error
+    }
+  };
 
+  useEffect(() => {
+    handleFetchUserPosts();
+  }, []);
 
   return (
-    <View style={styles.container}>
-     
-
-      <View style={styles.contentWrapper}>
-        <Text style={styles.text}>Explore the Best Destinations</Text>
-        <TextInput style={styles.textInput} placeholder="Enter your destination" />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Let's Go</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.cardContainer}>
+            <PostCard post={item} />
+          </View>
+        )}
+        showsVerticalScrollIndicator={false} // Optionally hide the scroll bar
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor:'#F6F4F0',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  cardContainer: {
+    marginBottom: 16, // Adjust spacing between posts
+    // alignItems: "center", // Center the post horizontally
+    // paddingHorizontal: 8, // Add padding around the post
+    // backgroundColor:'red',
+
   },
-  scrollView: {
-    marginTop: 30,
-    marginBottom: 20,
+  postCard: {
+    // minWidth:300,
+    width: "100%", // Full width of the parent container
+    maxWidth: 600, // Maximum width similar to Instagram posts
+    borderRadius: 12, // Rounded corners
+    backgroundColor: "#fff", // White background for the post
+    overflow: "hidden", // Hide overflow content if any
+    marginBottom: 16, // Space between posts
+    shadowColor: "#000", // Shadow effect for Instagram-like look
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // Android shadow
   },
-  cityName: {
-    position: 'absolute',
-    top: '40%',
-    paddingHorizontal: 5,
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+  postImage: {
+    width: "100%",
+    alignSelf:'center', // Full width for the image
+    height: 400, // Fixed height for the image (adjustable based on your design)
+    resizeMode: "cover", // Ensures the image covers the entire width of the card
   },
-  rectangle: {
-    width: width * 0.9,
-    height: height * 0.4,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ddd',
-    borderRadius: 20,
+  postContent: {
+    padding: 10,
   },
-  image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-  },
-  button: {
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: '#3498db',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
+  postDescription: {
     fontSize: 16,
-    fontWeight: 'bold',
+    color: "#333",
   },
-  contentWrapper: {
-    width: '100%',
-    height: height * 0.23,
-    alignItems: 'center',
+  location: {
+    fontSize: 14,
+    color: "#888",
+    marginTop: 5,
   },
-  text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
+  postFooter: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  textInput: {
-    width: 200,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
+  postButton: {
+    backgroundColor: "#3498db",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+  },
+  postButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
