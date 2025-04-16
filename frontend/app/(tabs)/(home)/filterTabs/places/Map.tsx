@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import PlaceCard from "./PlaceCard"; // Your place details component
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -45,6 +51,8 @@ const Map: React.FC<MapProps> = ({
     longitudeDelta: 0.2,
   });
 
+  const [fetch, setFetch] = useState(true);
+
   // Fetch places from API
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -52,8 +60,15 @@ const Map: React.FC<MapProps> = ({
       setPlaces(fetchedPlaces);
     };
 
-    fetchPlaces();
-  }, [places]);
+    if (fetch) {
+      fetchPlaces();
+      setFetch(false);
+    }
+
+    if (places.length > 0) {
+      setFetch(false);
+    }
+  }, [places, fetch]);
 
   const onMarkerPress = (place: any) => {
     setSelectedPlace(place);
@@ -131,6 +146,12 @@ const Map: React.FC<MapProps> = ({
       </View>
 
       {/* place categories */}
+      {fetch && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text style={styles.loadingText}>Loading places...</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -193,6 +214,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.4)", // semi-transparent dark overlay
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 999, // make sure it sits above the map
+  },
+
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#fff",
   },
 });
 

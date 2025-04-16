@@ -39,15 +39,30 @@ const ProfileScreen = () => {
 
   const [userDataFull, setUserDataFull] = useState<any>(null);
 
+  // useEffect(() => {
+  //   console.log("User Type: -->>", userData?.userType);
+  //   getUserDataByType(userData?.userType)
+  //     .then((data) => {
+  //       setUserDataFull(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [userData]);
+
   useEffect(() => {
-    getUserDataByType(userData?.userType)
+    if (!userData?.userType) return; // wait until userType is available
+
+    console.log("User Type: -->>", userData.userType);
+
+    getUserDataByType(userData.userType)
       .then((data) => {
         setUserDataFull(data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [userData]);
+  }, [userData?.userType]);
 
   useEffect(() => {
     console.log(userDataFull);
@@ -107,6 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(225,225,225,0.3)",
+    // height:"100%",
   },
   container: {
     flex: 1,

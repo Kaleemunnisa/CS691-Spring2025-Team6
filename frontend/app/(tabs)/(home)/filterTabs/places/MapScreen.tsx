@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity,ActivityIndicator } from "react-native";
 import Map from "./Map"; // Adjust path based on your folder structure
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { fetchFoodPlaces } from "@/services/api/fetchFoodPlaces";

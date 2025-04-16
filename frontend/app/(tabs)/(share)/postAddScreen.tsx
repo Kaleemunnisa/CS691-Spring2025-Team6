@@ -13,7 +13,7 @@ import {
   Platform,
 } from "react-native";
 import pickImage from "@/utils/image-pickers/PickImage";
-import { Event, Post } from "@/types/postTypes";
+import { Event, Post } from "@/types/types";
 import TextInputWithIcon from "../(profile)/components/TextInputWithIcon";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -123,7 +123,7 @@ const PostAddScreen = () => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1,marginTop:-40 }}>
+    <SafeAreaView style={{ flex: 1, marginTop: -40 }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

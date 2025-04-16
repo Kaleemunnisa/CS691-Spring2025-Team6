@@ -8,42 +8,41 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
-import { Post } from "@/types/postTypes";
+import { Post, PostDisplay } from "@/types/types";
 import PostCard from "@/components/PostCard";
 import { fetchUserPosts } from "@/services/firebase/userPosts";
+import { fetchPaginatedPosts } from "@/services/firebase/postsFeed";
+import FeedScreen from "./FeedScreen";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 const { width } = Dimensions.get("window");
 
-export default function HomeScreen() {
-  const [posts, setPosts] = useState<Post[]>([]);
+export default function PostScreen() {
+  const [posts, setPosts] = useState<PostDisplay[]>([]);
+  const tabBarHeight = useBottomTabBarHeight(); // Get the height of the bottom tab bar
 
-  const handleFetchUserPosts = async () => {
-    try {
-      const fetchedPosts = await fetchUserPosts();
-      console.log("Fetched posts:", fetchedPosts);
-      setPosts(fetchedPosts);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setPosts([]); // Set to empty array if there's an error
-    }
-  };
+  // const handleFetchUserPosts = async () => {
+  //   try {
+  //     const fetchedPosts = await fetchUserPosts();
+  //     console.log("Fetched posts:", fetchedPosts);
+  //     setPosts(fetchedPosts);
+  //   } catch (error) {
+  //     console.error("Error fetching posts:", error);
+  //     setPosts([]); // Set to empty array if there's an error
+  //   }
+  // };
 
   useEffect(() => {
-    handleFetchUserPosts();
+    // handleFetchUserPosts();
+    console.log("Bottom tab bar height:", tabBarHeight);
+    fetchPaginatedPosts(1, 10);
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        data={posts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.cardContainer}>
-            <PostCard post={item} />
-          </View>
-        )}
-        showsVerticalScrollIndicator={false} // Optionally hide the scroll bar
-      />
+    <SafeAreaView style={{ flex: 1, paddingBottom: tabBarHeight + 100 }}>
+      <View style={{ paddingBottom: tabBarHeight - 34 }}>
+        <FeedScreen />
+      </View>
     </SafeAreaView>
   );
 }
@@ -54,7 +53,6 @@ const styles = StyleSheet.create({
     // alignItems: "center", // Center the post horizontally
     // paddingHorizontal: 8, // Add padding around the post
     // backgroundColor:'red',
-
   },
   postCard: {
     // minWidth:300,
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: "100%",
-    alignSelf:'center', // Full width for the image
+    alignSelf: "center", // Full width for the image
     height: 400, // Fixed height for the image (adjustable based on your design)
     resizeMode: "cover", // Ensures the image covers the entire width of the card
   },

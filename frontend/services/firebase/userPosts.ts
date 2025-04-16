@@ -1,6 +1,14 @@
-import { doc, getDoc,setDoc,addDoc,arrayRemove,arrayUnion,serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  arrayRemove,
+  arrayUnion,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db, auth } from "@/config/firebaseConfig";
-import { Post } from "@/types/postTypes";
+import { Post } from "@/types/types";
 
 /**
  * Fetches all posts saved under the user's document in Firestore.
@@ -27,7 +35,6 @@ export const fetchUserPosts = async (): Promise<Post[]> => {
 
   return posts;
 };
-
 
 /**
  * Saves a user-created post to an array field in the user's document (e.g., user_posts/<uid>).

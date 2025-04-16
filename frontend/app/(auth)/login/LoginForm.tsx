@@ -15,9 +15,10 @@ import { useGoogleSignIn } from "@/services/firebase/googleAuth";
 
 const LoginForm = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("satyanandan846@gmail.com"); //tourist
-  const [password, setPassword] = useState("Satya@143");
-
+  // const [email, setEmail] = useState("satyanandan846@gmail.com"); //tourist
+  // const [password, setPassword] = useState("Satya@143");
+  const [email, setEmail] = useState("srinu@gmail.com"); //tourist
+  const [password, setPassword] = useState("Srinu@143");
   // const [email, setEmail] = useState("famousfish@gmail.com"); //business
   // const [password, setPassword] = useState("FamousFish@143");
   // const [email, setEmail] = useState("riyaz@gmail.com"); //business
