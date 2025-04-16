@@ -9,7 +9,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db, auth } from "@/config/firebaseConfig"; // Import db and auth from your config
-import { Event, Post } from "@/types/postTypes"; // Your Event interface
+import { Event, Post } from "@/types/types"; // Your Event interface
 
 /**
  * Saves a user-created event to an array field in the user's document (e.g., user_created_events/<uid>).

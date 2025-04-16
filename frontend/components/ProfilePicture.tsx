@@ -41,15 +41,16 @@ const ProfilePicture = ({
       setImageCloudinaryLoading(true); // Start loading animation
       await pickImage(setProfilePictureUrl, setImageCloudinaryLoading); // Wait for image pick
       console.log("Image picked:", profilePictureUrl);
+      setImageCloudinaryLoading(false)
 
-      if (profilePictureUrl) {
-        // setProfilePictureUrl(image); // Set the parent component's state with the new image URI
-        // setImage(image); // Optionally update local state with the image URI
-        // setImage(profilePictureUrl); // Update local state with the new image URI
-        console.log("Image URI set:", profilePictureUrl);
-      } else {
-        alert("Image upload failed!");
-      }
+      // if (profilePictureUrl) {
+      //   // setProfilePictureUrl(image); // Set the parent component's state with the new image URI
+      //   // setImage(image); // Optionally update local state with the image URI
+      //   // setImage(profilePictureUrl); // Update local state with the new image URI
+      //   console.log("Image URI set:", profilePictureUrl);
+      // } else {
+      //   alert("Image upload failed!");
+      // }
     } else {
       alert("Image cannot be updated!");
       setImage(null); // Reset image when editable is false

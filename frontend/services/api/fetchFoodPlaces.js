@@ -5,11 +5,13 @@ import { GEOAPIFY_KEY } from "./ApiKeys";
 // Function to fetch places from API
 export const fetchFoodPlaces = async (CITY_ID) => {
   try {
+    console.log("city id in fetch food places:->>", CITY_ID);
     const response = await fetch(
       `https://api.geoapify.com/v2/places?categories=catering.fast_food,catering.cafe,catering.food_court,catering.bar,catering.pub,catering.ice_cream&filter=place:${CITY_ID}&limit=50&apiKey=${GEOAPIFY_KEY}`
     );
     const data = await response.json();
-    // console.log("food places", data.features[0]);
+    // console.log("food places", data.features);
+
     return data.features || [];
   } catch (error) {
     // console.error("Error fetching places:", error);
@@ -17,3 +19,17 @@ export const fetchFoodPlaces = async (CITY_ID) => {
     return [];
   }
 };
+
+// export const fetchFoodPlaces = async (lat, lon) => {
+//   try {
+//     const response = await fetch(
+//       `https://api.geoapify.com/v2/places?categories=catering.fast_food,catering.cafe,catering.food_court,catering.bar,catering.pub,catering.ice_cream&filter=circle:${lon},${lat},10000&limit=50&apiKey=${GEOAPIFY_KEY}`
+//     );
+//     const data = await response.json();
+
+//     return data.features || [];
+//   } catch (error) {
+//     console.log("Can't fetch data:", error);
+//     return [];
+//   }
+// };

@@ -36,6 +36,8 @@ const pickImage = async (
       // return null;
     });
     // return null;
+  } else {
+    setImageCloudinaryLoading(false);
   }
   // return null; // Ensure the function always returns a value
 };
