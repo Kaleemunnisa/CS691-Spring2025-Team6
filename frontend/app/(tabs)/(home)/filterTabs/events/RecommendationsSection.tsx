@@ -27,7 +27,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
       // const placeIdList = searchRecord.map((record) => record.placeId);
 
       // console.log(placeIdList);
-
+      console.log("SearchRecord:->>> ", searchRecord);
       fetchEventsWithCoordinatesAndCity(searchRecord).then((data) => {
         // console.log("Events fetched with placeIDs", data);
         if (data) {
@@ -68,7 +68,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   };
 
   const fetchRecommendationshandler = async () => {
-    // console.log("Fetching recommendations");
+    console.log("Fetching recommendations....");
     if (!cityEvents || !favorites || !searchRecord) return;
     const recommendations = await fetchRecommendations(
       searchRecordEvents,
@@ -91,6 +91,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   };
 
   useEffect(() => {
+    console.log("got changes in searches records or favorite");
     fetchRecommendationshandler();
   }, [searchRecordEvents, favorites]);
   if (recommendationLoading) {

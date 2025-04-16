@@ -10,6 +10,7 @@ async function fetchEventsWithCoordinatesAndCity(
 ) {
   try {
     // Create an array of promises to fetch events for each city using coordinates
+
     const eventRequests = previousSearchRecords.map((record) =>
       axios.get(`https://app.ticketmaster.com/discovery/v2/events.json`, {
         params: {
@@ -50,7 +51,7 @@ async function fetchEventsWithCoordinatesAndCity(
     console.log("Filtered Events:", allEvents);
     return allEvents;
   } catch (error) {
-    console.log("Error fetching events:", error);
+    // console.log("Error fetching events:", error);
     return [];
   }
 }

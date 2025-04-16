@@ -17,20 +17,23 @@ export const fetchRecommendations = async (
   };
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/events/recommend", {
+    console.log("fetched_events in fetchRecommendations", fetchedEvents);
+    console.log("FetchRecommendation try function");
+    const response = await fetch("http://172.20.10.14:8000/events/recommend", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
     });
+    console.log("response", response);
 
     if (response.ok) {
       const data: RecommendationResponse = await response.json();
       console.log("Recommendations:", data.recommendations);
       return data;
     } else {
-      // console.error("Error fetching recommendations:", response.statusText);
+      console.log("Error fetching recommendations:", response.statusText);
       return null;
     }
   } catch (error) {
