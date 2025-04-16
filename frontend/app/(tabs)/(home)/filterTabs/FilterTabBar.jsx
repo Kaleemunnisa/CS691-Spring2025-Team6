@@ -72,12 +72,12 @@ const FilterTabBar = ({ placeID, lon, lat, city, cityEvents, otherEvents }) => {
           isActive={activeTab === "Places"}
           activeColor="#95b0ed"
         />
-        <OutlinedButton
+        {/* <OutlinedButton
           title="More"
           onPress={() => setActiveTab("More")}
           isActive={activeTab === "More"}
           activeColor="#90CAF9"
-        />
+        /> */}
       </View>
 
       {/* Content Display */}

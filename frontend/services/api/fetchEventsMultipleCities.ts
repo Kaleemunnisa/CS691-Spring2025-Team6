@@ -17,7 +17,7 @@ async function fetchEventsWithCoordinatesAndCity(
           apikey: TICKETMASTER_API_KEY,
           // Use latitude and longitude to get events for the city
           latlong: `${record.latitude},${record.longitude}`, // Combine lat, long for event fetching
-          size: 6, // Limit the number of events per city (adjust size as needed)
+          size: 5, // Limit the number of events per city (adjust size as needed)
         },
       })
     );
