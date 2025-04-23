@@ -52,6 +52,7 @@ const Map: React.FC<MapProps> = ({
   });
 
   const [fetch, setFetch] = useState(true);
+ 
 
   // Fetch places from API
   useEffect(() => {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { TICKETMASTER_API_KEY } from "@/services/api/ApiKeys";
+import { TicketMasterEventsUrl } from "./urls";
 
 async function fetchEventsWithCoordinatesAndCity(
   previousSearchRecords: {
@@ -12,7 +13,7 @@ async function fetchEventsWithCoordinatesAndCity(
     // Create an array of promises to fetch events for each city using coordinates
 
     const eventRequests = previousSearchRecords.map((record) =>
-      axios.get(`https://app.ticketmaster.com/discovery/v2/events.json`, {
+      axios.get(TicketMasterEventsUrl, {
         params: {
           apikey: TICKETMASTER_API_KEY,
           // Use latitude and longitude to get events for the city
