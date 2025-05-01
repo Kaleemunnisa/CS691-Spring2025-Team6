@@ -203,9 +203,10 @@ const ProfileDetailsUpdateSection: React.FC<
               <TextInputWithIcon
                 icon="pencil"
                 placeholder="Location"
-                value={currentUserData.location}
+                value={currentUserData.location.city}
                 onChange={handleFieldChange("location")}
                 label="Location of you Business"
+                editable={false}
               />
             )}
 

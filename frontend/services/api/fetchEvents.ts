@@ -3,6 +3,7 @@ import axios from "axios";
 
 // import allEventsData from "../(tabs)/(home)/data/eventsData";
 import { TICKETMASTER_API_KEY } from "./ApiKeys";
+import { TicketMasterEventsUrl } from "./urls";
 
 export const fetchEvents = async (
   city: any,
@@ -18,18 +19,15 @@ export const fetchEvents = async (
 
   try {
     // Step 1: Fetch events for the detected country (including music, sports, etc.)
-    const eventRes = await axios.get(
-      `https://app.ticketmaster.com/discovery/v2/events.json`,
-      {
-        params: {
-          countryCode: countryCode, // Use the detected country code if needed
-          stateCode: stateCode,
-          apikey: TICKETMASTER_API_KEY,
-          city: city, // Filter by the entered city
-          size: 30, // Fetch more events to ensure variety
-        },
-      }
-    );
+    const eventRes = await axios.get(TicketMasterEventsUrl, {
+      params: {
+        countryCode: countryCode, // Use the detected country code if needed
+        stateCode: stateCode,
+        apikey: TICKETMASTER_API_KEY,
+        city: city, // Filter by the entered city
+        size: 30, // Fetch more events to ensure variety
+      },
+    });
     const allEvents = eventRes.data._embedded?.events || [];
 
     // Step 2: Parse and sort events by date and time
@@ -112,17 +110,14 @@ export const fetchEvents = async (
 
     // Step 4: If no events in "You Might Like", fetch events from neighboring states
     if (Object.keys(otherEventsByGenre).length === 0) {
-      const fallbackEventRes = await axios.get(
-        `https://app.ticketmaster.com/discovery/v2/events.json`,
-        {
-          params: {
-            countryCode: countryCode,
-            stateCode: stateCode,
-            apikey: TICKETMASTER_API_KEY,
-            size: 5, // Fetch 5 fallback events
-          },
-        }
-      );
+      const fallbackEventRes = await axios.get(TicketMasterEventsUrl, {
+        params: {
+          countryCode: countryCode,
+          stateCode: stateCode,
+          apikey: TICKETMASTER_API_KEY,
+          size: 5, // Fetch 5 fallback events
+        },
+      });
       const fallbackEvents = fallbackEventRes.data._embedded?.events || [];
 
       fallbackEvents.forEach(
@@ -169,8 +164,7 @@ export const fetchEvents = async (
   setLoading(false);
 };
 
-
-
-export const fetchEventsWithCoordinates = async (coordinates: {lat:string,lon:string}) => {
-  
-};
+export const fetchEventsWithCoordinates = async (coordinates: {
+  lat: string;
+  lon: string;
+}) => {};

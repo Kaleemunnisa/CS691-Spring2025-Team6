@@ -113,11 +113,11 @@ const FavoritesSection: React.FC<FavoritesSectionProps> = ({ uid }) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>
+      {/* <Text style={styles.sectionTitle}>
         Fa
         <FontAwesome name="heart" size={24} color="red" />
         orites
-      </Text>
+      </Text> */}
       {shouldFetchFavorites && <ActivityIndicator size="large" />}
 
       {!showFavorites ? (

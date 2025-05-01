@@ -21,10 +21,90 @@ import Feather from "@expo/vector-icons/Feather";
 import ProfilePicture from "@/components/ProfilePicture";
 import BusinessImagesAddSection from "./businessImagesAddSection";
 
+import { fetchCitySuggestions } from "@/services/api/fetchCitySuggestions";
+
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 };
 
+const dummySuggestions = [
+  {
+    city: "Chennai",
+    country: "India",
+    countryCode: "in",
+    lat: 13.0836939,
+    lon: 80.270186,
+    placeID:
+      "51927538ba4a11544059d8bf46edd92a2a40f00103f901e4acb9c000000000c002079203093630303030312b696e",
+    state: "Tamil Nadu",
+    stateCode: "TN",
+  },
+  {
+    city: undefined,
+    country: "India",
+    countryCode: "in",
+    lat: 13.000841300000001,
+    lon: 80.20230352827184,
+    placeID:
+      "51c0727f8af20c544059e6f857456e002a40f00101f901a1b5780000000000c00209",
+    state: "Tamil Nadu",
+    stateCode: "TN",
+  },
+  {
+    city: "Chennaipally",
+    country: "India",
+    countryCode: "in",
+    lat: 18.0311127,
+    lon: 78.3926264,
+    placeID:
+      "51f5e27aca209953405982fd7c00f7073240f00103f901e0615b6f01000000c002079203093530323234382b696e",
+    state: "Telangana",
+    stateCode: "TG",
+  },
+  {
+    city: "Chennaipalem",
+    country: "India",
+    countryCode: "in",
+    lat: 16.7876351,
+    lon: 79.4987159,
+    placeID:
+      "51b11f18f6eadf53405983ae3374a2c93040f00103f90160a4048801000000c00208",
+    state: "Telangana",
+    stateCode: "TG",
+  },
+  {
+    city: "Gali Chennaiah Palem",
+    country: "India",
+    countryCode: "in",
+    lat: 15.6155348,
+    lon: 78.5840007,
+    placeID:
+      "51d5d5784460a55340598d199760273b2f40f00103f901e9d89bbc01000000c00208",
+    state: "Andhra Pradesh",
+    stateCode: "AP",
+  },
+];
+
+type Location = {
+  city: string;
+  country: string;
+  countryCode: string;
+  lat: string;
+  lon: string;
+  placeID: string;
+  state: string;
+  stateCode: string;
+};
+type Suggestion = {
+  city: string;
+  country: string;
+  countryCode: string;
+  lat: string;
+  lon: string;
+  placeID: string;
+  state: string;
+  stateCode: string;
+};
 type BusinessData = {
   profilePicture: string | null;
   name: string;
@@ -33,10 +113,13 @@ type BusinessData = {
   password: string;
   confirmPassword: string;
   businessType: string;
-  location: string;
+  location: Location;
   images: any[]; // <-- Define images as an array of any type
 };
 const SignupForm = () => {
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const [imagesAddedToCloudinaryStatus, setImagesAddedToCloudinaryStatus] =
     useState(false);
   const { userType } = useLocalSearchParams() as { userType: string };
@@ -81,9 +164,36 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
     businessType: "",
-    location: "",
+    location: {
+      city: "",
+      state: "",
+      country: "",
+      lat: "",
+      lon: "",
+      countryCode: "",
+      placeID: "",
+      stateCode: "",
+    },
     images: [], // Add this!
   });
+
+  useEffect(() => {
+    if (businessData.location.city.length == 0) {
+      setBusinessData({
+        ...businessData,
+        location: {
+          city: "",
+          state: "",
+          country: "",
+          lat: "",
+          lon: "",
+          countryCode: "",
+          placeID: "",
+          stateCode: "",
+        },
+      });
+    }
+  }, [businessData.location.city]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -123,105 +233,61 @@ const SignupForm = () => {
     } else if (userType === "guide") {
       setGuideData({ ...guideData, [name]: value });
     } else if (userType === "business") {
-      setBusinessData({ ...businessData, [name]: value });
+      if (name === "location") {
+        // Update the city inside the location object
+        setBusinessData({
+          ...businessData,
+          location: {
+            ...businessData.location,
+            city: value, // You can change this to state/country if needed
+          },
+        });
+      } else {
+        setBusinessData({ ...businessData, [name]: value });
+      }
     }
   };
 
   useEffect(() => {
+    console.log("Fetch Suggestions");
+    const fetchSuggestions = async () => {
+      if (businessData.location.city.trim().length > 0) {
+        console.log("inside suggestions if");
+        const fetchedSuggestions = await fetchCitySuggestions(
+          businessData.location.city
+        );
+
+        // Remove duplicates based on city, state, and country
+        const uniqueSuggestions = fetchedSuggestions.filter(
+          (item: any, index: any, self: any) =>
+            index ===
+            self.findIndex(
+              (t: any) =>
+                t.placeID === item.placeID &&
+                t.city === item.city &&
+                t.state === item.state &&
+                t.stateCode === item.stateCode &&
+                t.country === item.country &&
+                t.countryCode === item.countryCode
+            )
+        );
+
+        setSuggestions(uniqueSuggestions);
+        console.log(suggestions);
+        setShowSuggestions(true); // Show suggestions when updated
+      } else {
+        setSuggestions([]); // Clear suggestions if input is empty
+        setShowSuggestions(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [businessData.location.city]); // Runs every time city is updated
+
+  useEffect(() => {
     console.log(guideData);
   }, [guideData]);
-  // Handle form submission
-  // const handleSubmit = async () => {
-  //   // Check if passwords match
-  //   if (
-  //     (touristData.password &&
-  //       touristData.password !== touristData.confirmPassword) ||
-  //     (guideData.password &&
-  //       guideData.password !== guideData.confirmPassword) ||
-  //     (businessData.password &&
-  //       businessData.password !== businessData.confirmPassword)
-  //   ) {
-  //     setError("Passwords do not match");
-  //     return;
-  //   }
 
-  //   // Validate email format for all user types
-  //   const emailData =
-  //     userType === "tourist"
-  //       ? touristData
-  //       : userType === "guide"
-  //       ? guideData
-  //       : businessData;
-  //   if (!isValidEmail(emailData.email)) {
-  //     setError("Invalid email format");
-  //     return;
-  //   }
-
-  //   // Validate required fields for each user type
-  //   let userData;
-  //   if (userType === "tourist") {
-  //     if (
-  //       !touristData.name ||
-  //       !touristData.email ||
-  //       !touristData.password ||
-  //       !touristData.userName
-  //     ) {
-  //       setError("Please fill in all required fields for tourist.");
-  //       return;
-  //     }
-  //     userData = touristData;
-  //   } else if (userType === "guide") {
-  //     if (
-  //       !guideData.name ||
-  //       !guideData.email ||
-  //       !guideData.password ||
-  //       !guideData.userName ||
-  //       !guideData.location ||
-  //       !guideData.yearsOfExperience
-  //     ) {
-  //       setError("Please fill in all required fields for guide.");
-  //       return;
-  //     }
-  //     userData = guideData;
-  //   } else if (userType === "business") {
-  //     const missingFields: string[] = [];
-
-  //     // Check for missing required fields and collect the names of missing fields
-  //     if (!businessData.name) missingFields.push("Name");
-  //     if (!businessData.email) missingFields.push("Email");
-  //     if (!businessData.password) missingFields.push("Password");
-  //     if (!businessData.userName) missingFields.push("UName");
-  //     if (!businessData.businessType) missingFields.push("Business Type");
-  //     if (!businessData.location) missingFields.push("Location");
-
-  //     // If there are missing fields, show an error message
-  //     if (missingFields.length > 0) {
-  //       setError(
-  //         `Please fill in the following required fields for business: ${missingFields.join(
-  //           ", "
-  //         )}.`
-  //       );
-  //       return;
-  //     }
-
-  //     userData = businessData;
-  //   }
-
-  //   setLoading(true);
-  //   setError(null);
-
-  //   try {
-  //     // Pass the correct user data to signUp
-  //     await signUp(userType, userData);
-  //     console.log("Signup successful!");
-  //     router.navigate("/(tabs)/(home)"); // Navigate to home screen after successful signup
-  //   } catch (err) {
-  //     setError("Signup failed. " + (err as any).message);
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const handleSubmit = async () => {
     // Check if passwords match
     if (
@@ -329,14 +395,6 @@ const SignupForm = () => {
       ...prevData,
       profilePicture: profilePictureUrl,
     }));
-    // setGuideData((prevData) => ({
-    //   ...prevData,
-    //   profilePicture: profilePictureUrl,
-    // }));
-    // setTouristData((prevData) => ({
-    //   ...prevData,
-    //   profilePicture: profilePictureUrl,
-    // }));
   }, [profilePictureUrl]);
 
   const fetchImagePublic_ids = (images: any) => {
@@ -503,14 +561,54 @@ const SignupForm = () => {
                   />
                   <Picker.Item label="Game Spots" value="games" color="black" />
                 </Picker>
+                <View style={styles.suggestionAndLocationContainer}>
+                  {showSuggestions && suggestions.length > 0 && (
+                    // {/* // <View style={styles.suggestionsWrapper}> */}
+                    <View style={styles.suggestionsWrapper}>
+                      {/* <Text>Suggestions</Text> */}
+                      <ScrollView
+                        style={styles.suggestionsContainer}
+                        keyboardShouldPersistTaps="handled"
+                      >
+                        {suggestions.map((suggestion: Suggestion, index) => (
+                          <TouchableOpacity
+                            key={index}
+                            style={styles.suggestionItem}
+                            onPress={() => {
+                              setBusinessData({
+                                ...businessData,
+                                location: {
+                                  ...businessData.location,
+                                  ...suggestion,
+                                },
+                              });
+                              setShowSuggestions(false);
+                            }}
+                          >
+                            <Text style={styles.suggestionText}>
+                              {suggestion.city}, {suggestion.stateCode},{" "}
+                              {suggestion.countryCode}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  )}
 
-                <TextInput
-                  style={styles.input}
-                  placeholder="Business Location"
-                  onChangeText={(value) => handleChange("location", value)}
-                  placeholderTextColor={textColor}
-                />
-
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Business Location"
+                    onChangeText={(value) => handleChange("location", value)}
+                    placeholderTextColor={textColor}
+                    onFocus={() => setShowSuggestions(true)}
+                  />
+                  {businessData.location.city.length > 0 &&
+                    !showSuggestions && (
+                      <Text>
+                        {`${businessData.location.city}, ${businessData.location.stateCode}, ${businessData.location.countryCode}`}
+                      </Text>
+                    )}
+                </View>
                 {/* images of businessData */}
                 <BusinessImagesAddSection
                   setImagesAddedToCloudinaryStatus={
@@ -640,6 +738,51 @@ const styles = StyleSheet.create({
     color: "red",
     marginTop: 10,
   },
+  suggestionAndLocationContainer: {
+    width: "100%",
+    alignContent: "center",
+    // backgroundColor:"white",
+    // position:'absolute'
+  },
+  suggestionsWrapper: {
+    width: "100%",
+    flex: 1,
+    backgroundColor: "white",
+    padding: 5,
+    display: "flex",
+    flexDirection: "column",
+  },
+  suggestionsContainer: {
+    padding: 10,
+  },
+  suggestionText: {},
+  suggestionItem: {
+    marginVertical: 5,
+    borderBottomWidth: 0.18,
+    paddingBottom: 4,
+  },
 });
 
 export default SignupForm;
+
+// const dummyBuinessData = {
+//   businessType: "cafe",
+//   confirmPassword: "",
+//   email: "",
+//   images: [],
+//   location: {
+//     city: "Ventura",
+//     country: "United States",
+//     countryCode: "us",
+//     lat: 34.2783355,
+//     lon: -119.293174,
+//     placeID:
+//       "516682e15cc3d25dc0596ce8667fa0234140f00101f901cdb7010000000000c00208",
+//     state: "California",
+//     stateCode: "CA",
+//   },
+//   name: "",
+//   password: "",
+//   profilePicture: null,
+//   userName: "",
+// };

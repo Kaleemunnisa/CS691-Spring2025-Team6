@@ -77,6 +77,7 @@ function InputSection({
         );
 
         setSuggestions(uniqueSuggestions);
+        console.log(suggestions);
         setShowSuggestions(true); // Show suggestions when updated
       } else {
         setSuggestions([]); // Clear suggestions if input is empty
