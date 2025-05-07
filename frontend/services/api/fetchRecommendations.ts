@@ -19,7 +19,7 @@ export const fetchRecommendations = async (
   try {
     console.log("fetched_events in fetchRecommendations", fetchedEvents);
     console.log("FetchRecommendation try function");
-    const response = await fetch("http://172.20.10.14:8000/events/recommend", {
+    const response = await fetch("http://192.168.1.82:8000/events/recommend", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

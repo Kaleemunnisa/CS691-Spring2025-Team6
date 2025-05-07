@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   loaderContainer: {
     justifyContent: "flex-start",
     alignItems: "center",
-    height: "100%",
+    // height: "100%",
     position: "relative",
     paddingTop: "20%",
     // top: 0,
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     // alignContent: "center",
     // backgroundColor:'red',
     zIndex: -1000,
+    // backgroundColor: "red",
   },
 
   // loaderContainer: {

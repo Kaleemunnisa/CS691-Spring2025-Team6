@@ -30,6 +30,7 @@ export default function TabLayout() {
 
           // Increase height
           paddingHorizontal: 5, // Adjust padding for centering items
+          paddingBottom: 10,
 
           borderTopWidth: 0, // Remove default border line at the top
           elevation: 0, // Android shadow
