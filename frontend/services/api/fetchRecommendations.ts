@@ -1,3 +1,7 @@
+import Constants from "expo-constants";
+
+const { recommend_api } = Constants.expoConfig?.extra?.backend;
+
 export interface RecommendationRequest {
   fetched_events: any[]; // Adjust the type based on your data structure
   favorite_events: any[];
@@ -15,11 +19,11 @@ export const fetchRecommendations = async (
     fetched_events: fetchedEvents,
     favorite_events: favoriteEvents,
   };
-
+  // http://192.168.1.82:8000/events/recommend
   try {
     console.log("fetched_events in fetchRecommendations", fetchedEvents);
     console.log("FetchRecommendation try function");
-    const response = await fetch("http://192.168.1.82:8000/events/recommend", {
+    const response = await fetch(recommend_api, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
