@@ -63,14 +63,23 @@ const LoginForm = () => {
         selectionColor={"white"}
       />
       <View>
-        <View style={styles.loginINbtn}>
+        {/* <View style={styles.loginINbtn}>
           <Button
             title={loading ? "Logging in..." : "Login"}
             onPress={handleLogin}
             disabled={loading}
             color={"white"}
           />
-        </View>
+        </View> */}
+        <TouchableOpacity
+          style={[styles.loginINbtn2, loading && { opacity: 0.6 }]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.loginText}>
+            {loading ? "Logging in..." : "Login"}
+          </Text>
+        </TouchableOpacity>
         {/* Google Sign-In Button */}
         {/* <TouchableOpacity
           style={styles.googleButton}
@@ -94,6 +103,20 @@ const LoginForm = () => {
 };
 
 const styles = StyleSheet.create({
+  loginINbtn2: {
+    backgroundColor: primaryBtnColor,
+    paddingVertical: 12,
+    alignItems: "center",
+    borderRadius: 8,
+    width: "60%",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  loginText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   googleButton: {
     backgroundColor: "#DB4437",
     paddingVertical: 10,
