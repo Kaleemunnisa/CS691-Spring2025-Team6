@@ -5,7 +5,15 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import { View, TextInput, Button, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import _ from "lodash";
 
 const ChangePasswordScreen = () => {
@@ -83,11 +91,17 @@ const ChangePasswordScreen = () => {
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
-      <Button
-        title="Change Password"
+      <TouchableOpacity
         onPress={handlePasswordChange}
         disabled={changePasswordDisable}
-      />
+        style={[
+          styles.button,
+          changePasswordDisable && styles.disabledButton,
+          { width: "80%" },
+        ]}
+      >
+        <Text style={styles.buttonText}>Change Password</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -107,6 +121,19 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 5,
+  },
+  button: {
+    backgroundColor: "#007BFF",
+    padding: 12,
+    borderRadius: 6,
+    alignItems: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#ccc",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
