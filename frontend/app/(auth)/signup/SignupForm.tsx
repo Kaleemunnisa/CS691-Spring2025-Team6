@@ -23,6 +23,8 @@ import BusinessImagesAddSection from "./businessImagesAddSection";
 
 import { fetchCitySuggestions } from "@/services/api/fetchCitySuggestions";
 
+import BusinessTypeDropdown from "./BusinessTypeDropDown";
+
 const capitalizeFirstLetter = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 };
@@ -528,39 +530,52 @@ const SignupForm = () => {
             {userType === "business" && (
               <>
                 <Text style={styles.label}>Business Type:</Text>
-                <Picker
-                  selectedValue={businessData.businessType}
-                  onValueChange={(value) => handleChange("businessType", value)}
-                  style={styles.picker}
-                  itemStyle={styles.pickerItem}
-                >
-                  {/* <Picker.Item
-                    label="Select Business Type"
-                    value=""
-                    color={textColor}
-                  /> */}
-                  <Picker.Item
-                    label="Restaurant"
-                    value="restaurant"
-                    color={textColor}
-                  />
-                  <Picker.Item
-                    label="Cafe & Bakery"
-                    value="cafe"
-                    color={textColor}
-                  />
-                  <Picker.Item
-                    label="Stay Provider"
-                    value="stay"
-                    color={textColor}
-                  />
-                  <Picker.Item
-                    label="Movie Theaters"
-                    value="movie"
-                    color={textColor}
-                  />
-                  <Picker.Item label="Game Spots" value="games" color="black" />
-                </Picker>
+                <View style={{ height: 50 }}>
+                  {Platform.OS === "ios" ? (
+                    <Picker
+                      selectedValue={businessData.businessType}
+                      onValueChange={(value) =>
+                        handleChange("businessType", value)
+                      }
+                      style={styles.picker}
+                      itemStyle={styles.pickerItem}
+                    >
+                      <Picker.Item
+                        label="Restaurant"
+                        value="restaurant"
+                        color={textColor}
+                      />
+                      <Picker.Item
+                        label="Cafe & Bakery"
+                        value="cafe"
+                        color={textColor}
+                      />
+                      <Picker.Item
+                        label="Stay Provider"
+                        value="stay"
+                        color={textColor}
+                      />
+                      <Picker.Item
+                        label="Movie Theaters"
+                        value="movie"
+                        color={textColor}
+                      />
+                      <Picker.Item
+                        label="Game Spots"
+                        value="games"
+                        color="black"
+                      />
+                    </Picker>
+                  ) : (
+                    <View style={{ flex: 1 }}>
+                      <BusinessTypeDropdown
+                        businessData={businessData}
+                        handleChange={handleChange}
+                        textColor="black"
+                      />
+                    </View>
+                  )}
+                </View>
                 <View style={styles.suggestionAndLocationContainer}>
                   {showSuggestions && suggestions.length > 0 && (
                     // {/* // <View style={styles.suggestionsWrapper}> */}
@@ -742,7 +757,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignContent: "center",
     // backgroundColor:"white",
-    // position:'absolute'
+    // position: "absolute",
   },
   suggestionsWrapper: {
     width: "100%",

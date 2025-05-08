@@ -13,6 +13,8 @@ import {
   Button,
   Platform,
   Image,
+  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import ChangePasswordScreen from "./components/ChangePasswordSection";
 import TextInputWithIcon from "./components/TextInputWithIcon";
@@ -233,29 +235,32 @@ const ProfileDetailsUpdateSection: React.FC<
               />
             )}
             <View style={styles.passWordInputContainerButton}>
-              <TextInput
-                style={styles.input}
-                placeholder="Change Password"
-                value={"Update Password"}
-                // secureTextEntry
-                editable={false}
-                onTouchEnd={() => setChangePasswordAllow(!changePasswordAllow)}
-              />
-              {changePasswordAllow ? (
-                <FontAwesome
-                  style={styles.passwordContainerIcon}
-                  name="arrow-up" // "pencil" icon when editable is true
-                  size={18}
-                  color="rgba(29, 28, 28, 0.42)" // Color when editable is true
+              <TouchableOpacity
+                onPress={() => setChangePasswordAllow(!changePasswordAllow)}
+                style={{ width: "100%" }}
+              >
+                <TextInput
+                  style={styles.input}
+                  placeholder="Change Password"
+                  value="Update Password"
+                  editable={false}
                 />
-              ) : (
-                <FontAwesome
-                  style={styles.passwordContainerIcon}
-                  name="arrow-down" // "pencil" icon when editable is true
-                  size={18}
-                  color="rgba(29, 28, 28, 0.42)" // Color when editable is true
-                />
-              )}
+                {changePasswordAllow ? (
+                  <FontAwesome
+                    style={styles.passwordContainerIcon}
+                    name="arrow-up" // "pencil" icon when editable is true
+                    size={18}
+                    color="rgba(29, 28, 28, 0.42)" // Color when editable is true
+                  />
+                ) : (
+                  <FontAwesome
+                    style={styles.passwordContainerIcon}
+                    name="arrow-down" // "pencil" icon when editable is true
+                    size={18}
+                    color="rgba(29, 28, 28, 0.42)" // Color when editable is true
+                  />
+                )}
+              </TouchableOpacity>
             </View>
 
             {changePasswordAllow && (
@@ -273,7 +278,22 @@ const ProfileDetailsUpdateSection: React.FC<
               />
             )}
 
-            <Button title="Save" disabled={!enableSave} onPress={handleSave} />
+            <Pressable
+              onPress={handleSave}
+              disabled={!enableSave}
+              style={({ pressed }) => [
+                {
+                  width: 150,
+                  backgroundColor: enableSave ? "#2196F4" : "#ccc",
+                  padding: 12,
+                  borderRadius: 6,
+                  alignItems: "center",
+                  opacity: pressed ? 0.7 : 1,
+                },
+              ]}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Save</Text>
+            </Pressable>
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

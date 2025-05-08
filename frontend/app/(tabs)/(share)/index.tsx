@@ -20,7 +20,7 @@ export default function HomeScreen() {
   const [images, setImages] = useState([]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, paddingBottom: 20 }}>
       <View style={styles.container}>
         <PostAddScreen />
       </View>

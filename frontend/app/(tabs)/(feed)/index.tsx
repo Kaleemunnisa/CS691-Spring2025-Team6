@@ -39,7 +39,7 @@ export default function PostScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingBottom: tabBarHeight + 100 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={{ paddingBottom: tabBarHeight - 34 }}>
         <FeedScreen />
       </View>

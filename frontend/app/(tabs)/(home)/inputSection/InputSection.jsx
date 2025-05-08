@@ -153,7 +153,7 @@ function InputSection({
             isKeyboardVisible &&
               !showContent && [
                 styles.keyBoardisActiveInputStyle,
-                { height: keyboardHeight + 50 },
+                // { height: keyboardHeight +50},
               ],
           ]}
         >
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     width: "100%",
-    bottom: 300,
+    // bottom: 300,
   },
   textInput: {
     minHeight: "40",
